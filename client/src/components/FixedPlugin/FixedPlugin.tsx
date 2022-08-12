@@ -5,7 +5,7 @@ import { SettingsIcon } from "components/Icons/Icons";
 import PropTypes from "prop-types";
 import React from "react";
 
-export default function FixedPlugin(props) {
+export const FixedPlugin = (props) => {
   const { secondary, onChange, onSwitch, fixed, ...rest } = props;
   // Chakra Color Mode
   let navbarIcon = useColorModeValue("gray.500", "gray.200");
@@ -41,7 +41,7 @@ export default function FixedPlugin(props) {
       </Button>
     </>
   );
-}
+};
 
 FixedPlugin.propTypes = {
   fixed: PropTypes.bool,
