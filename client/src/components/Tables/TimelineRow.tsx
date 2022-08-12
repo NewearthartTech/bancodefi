@@ -1,10 +1,10 @@
-import { Box, Flex, Icon, Text, useColorModeValue } from "@chakra-ui/react";
-import React from "react";
+import { Box, Flex, Icon, Text, useColorModeValue } from '@chakra-ui/react'
+import React from 'react'
 
-function TimelineRow(props) {
-  const { logo, title, date, color, index, arrLength } = props;
-  const textColor = useColorModeValue("gray.700", "white.300");
-  const bgIconColor = useColorModeValue("white.300", "gray.700");
+export const TimelineRow = (props) => {
+  const { logo, title, date, color, index, arrLength } = props
+  const textColor = useColorModeValue('gray.700', 'white.300')
+  const bgIconColor = useColorModeValue('white.300', 'gray.700')
 
   return (
     <Flex alignItems="center" minH="78px" justifyContent="start" mb="5px">
@@ -13,18 +13,18 @@ function TimelineRow(props) {
           as={logo}
           bg={bgIconColor}
           color={color}
-          h={"30px"}
-          w={"26px"}
+          h={'30px'}
+          w={'26px'}
           pe="6px"
           zIndex="1"
           position="relative"
-          right={document.documentElement.dir === "rtl" ? "-8px" : ""}
-          left={document.documentElement.dir === "rtl" ? "" : "-8px"}
+          right={document.documentElement.dir === 'rtl' ? '-8px' : ''}
+          left={document.documentElement.dir === 'rtl' ? '' : '-8px'}
         />
         <Box
           w="2px"
           bg="gray.200"
-          h={index === arrLength - 1 ? "15px" : "100%"}
+          h={index === arrLength - 1 ? '15px' : '100%'}
         ></Box>
       </Flex>
       <Flex direction="column" justifyContent="flex-start" h="100%">
@@ -36,7 +36,7 @@ function TimelineRow(props) {
         </Text>
       </Flex>
     </Flex>
-  );
+  )
 }
 
-export default TimelineRow;
+export default TimelineRow

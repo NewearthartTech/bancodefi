@@ -18,7 +18,7 @@ import { theme } from '@banco/theme'
 import MainPanel from '../components/Layout/MainPanel'
 import PanelContainer from '../components/Layout/PanelContainer'
 import PanelContent from '../components/Layout/PanelContent'
-export default function Dashboard(props) {
+export const RTLLayout = (props) => {
   const { ...rest } = props
   // states and functions
   const [sidebarVariant, setSidebarVariant] = useState('transparent')

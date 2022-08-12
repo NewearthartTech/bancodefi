@@ -1,17 +1,16 @@
-import { QuestionIcon } from "@chakra-ui/icons";
-import { Button, Flex, Link, Text } from "@chakra-ui/react";
-import SidebarHelpImage from "assets/img/SidebarHelpImage.png";
-import IconBox from "components/Icons/IconBox";
-import React from "react";
+import { QuestionIcon } from '@chakra-ui/icons'
+import { Button, Flex, Link, Text } from '@chakra-ui/react'
+import { IconBox } from '@banco/components'
+import React from 'react'
 
 export function SidebarHelp(props) {
   // Pass the computed styles into the `__css` prop
-  const { children, ...rest } = props;
+  const { children, ...rest } = props
   return (
     <Flex
       borderRadius="15px"
       flexDirection="column"
-      bgImage={SidebarHelpImage}
+      bgImage={'assets/img/SidebarHelpImage.png'}
       justifyContent="flex-start"
       alignItems="start"
       boxSize="border-box"
@@ -37,14 +36,14 @@ export function SidebarHelp(props) {
           fontWeight="bold"
           w="100%"
           bg="white"
-          _hover="none"
+          _hover={null}
           _active={{
-            bg: "white",
-            transform: "none",
-            borderColor: "transparent",
+            bg: 'white',
+            transform: 'none',
+            borderColor: 'transparent',
           }}
           _focus={{
-            boxShadow: "none",
+            boxShadow: 'none',
           }}
           color="black"
         >
@@ -52,5 +51,5 @@ export function SidebarHelp(props) {
         </Button>
       </Link>
     </Flex>
-  );
+  )
 }

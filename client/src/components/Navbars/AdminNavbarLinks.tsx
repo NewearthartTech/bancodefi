@@ -16,9 +16,6 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 // Assets
-import avatar1 from '@banco/assets/img/avatars/avatar1.png'
-import avatar2 from 'assets/img/avatars/avatar2.png'
-import avatar3 from 'assets/img/avatars/avatar3.png'
 // Custom Icons
 import {
   ProfileIcon,
@@ -159,7 +156,7 @@ export const AdminNavbarLinks = (props: AdminNavbarLinks) => {
                 info="from Alicia"
                 boldInfo="New Message"
                 aName="Alicia"
-                aSrc={avatar1}
+                aSrc={'public/assets/img/avatars/avatar1.png'}
               />
             </MenuItem>
             <MenuItem borderRadius="8px" mb="10px">
@@ -168,7 +165,7 @@ export const AdminNavbarLinks = (props: AdminNavbarLinks) => {
                 info="by Josh Henry"
                 boldInfo="New Album"
                 aName="Josh Henry"
-                aSrc={avatar2}
+                aSrc={'assets/img/avatars/avatar2.png'}
               />
             </MenuItem>
             <MenuItem borderRadius="8px">
@@ -177,7 +174,7 @@ export const AdminNavbarLinks = (props: AdminNavbarLinks) => {
                 info="Payment succesfully completed!"
                 boldInfo=""
                 aName="Kara"
-                aSrc={avatar3}
+                aSrc={'/assets/img/avatars/avatar1.pngs'}
               />
             </MenuItem>
           </Flex>
