@@ -14,39 +14,50 @@ import {
   Text,
   useColorMode,
   useColorModeValue,
-} from "@chakra-ui/react";
-import GitHubButton from "react-github-btn";
-import { Separator } from "components/Separator/Separator";
-import PropTypes from "prop-types";
-import React, { useState } from "react";
-import { FaTwitter, FaFacebook } from "react-icons/fa";
+} from '@chakra-ui/react'
+import GitHubButton from 'react-github-btn'
+import { Separator } from '@banco/components'
+import PropTypes from 'prop-types'
+import React, { useState } from 'react'
+import { FaTwitter, FaFacebook } from 'react-icons/fa'
 
-export default function Configurator(props) {
-  const { secondary, isOpen, onClose, fixed, ...rest } = props;
-  const [switched, setSwitched] = useState(props.isChecked);
+interface Configurator {
+  secondary: any
+  isOpen: boolean
+  onClose: () => void
+  fixed?: boolean
+  isChecked: boolean
+  onSwitch: (value: any) => void
+  onOpaque: () => void
+  onTransparent: () => void
+}
 
-  const { colorMode, toggleColorMode } = useColorMode();
+export const Configurator = (props: Configurator) => {
+  const { secondary, isOpen, onClose, fixed, ...rest } = props
+  const [switched, setSwitched] = useState(props.isChecked)
+
+  const { colorMode, toggleColorMode } = useColorMode()
   // Chakra Color Mode
-  let fixedDisplay = "flex";
+  let fixedDisplay = 'flex'
   if (props.secondary) {
-    fixedDisplay = "none";
+    fixedDisplay = 'none'
   }
 
   let bgButton = useColorModeValue(
-    "linear-gradient(81.62deg, #313860 2.25%, #151928 79.87%)",
-    "white"
-  );
-  let colorButton = useColorModeValue("white", "gray.700");
-  const secondaryButtonBg = useColorModeValue("white", "transparent");
-  const secondaryButtonBorder = useColorModeValue("gray.700", "white");
-  const secondaryButtonColor = useColorModeValue("gray.700", "white");
-  const settingsRef = React.useRef();
+    'linear-gradient(81.62deg, #313860 2.25%, #151928 79.87%)',
+    'white',
+  )
+  let colorButton = useColorModeValue('white', 'gray.700')
+  const secondaryButtonBg = useColorModeValue('white', 'transparent')
+  const secondaryButtonBorder = useColorModeValue('gray.700', 'white')
+  const secondaryButtonColor = useColorModeValue('gray.700', 'white')
+  const settingsRef = React.useRef()
   return (
     <>
       <Drawer
         isOpen={props.isOpen}
         onClose={props.onClose}
-        placement={document.documentElement.dir === "rtl" ? "left" : "right"}
+        placement={document.documentElement.dir === 'rtl' ? 'left' : 'right'}
         finalFocusRef={settingsRef}
         blockScrollOnMount={false}
       >
@@ -90,7 +101,7 @@ export default function Configurator(props) {
                     w="50%"
                     p="8px 32px"
                     mb={5}
-                    _hover="teal.300"
+                    _hover={{ color: 'teal.300' }}
                     color="white"
                     fontSize="xs"
                     onClick={props.onOpaque}
@@ -112,11 +123,11 @@ export default function Configurator(props) {
                   isChecked={switched}
                   onChange={(event) => {
                     if (switched === true) {
-                      props.onSwitch(false);
-                      setSwitched(false);
+                      props.onSwitch(false)
+                      setSwitched(false)
                     } else {
-                      props.onSwitch(true);
-                      setSwitched(true);
+                      props.onSwitch(true)
+                      setSwitched(true)
                     }
                   }}
                 />
@@ -130,7 +141,7 @@ export default function Configurator(props) {
                   Dark/Light
                 </Text>
                 <Button onClick={toggleColorMode}>
-                  Toggle {colorMode === "light" ? "Dark" : "Light"}
+                  Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
                 </Button>
               </Flex>
 
@@ -200,7 +211,7 @@ export default function Configurator(props) {
                   </Text>
                   <Flex justifyContent="center" alignContent="center">
                     <Link
-                      isExternal="true"
+                      isExternal={true}
                       href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.creative-tim.com%2Fproduct%2Fpurity-ui-dashboard&text=Check%20Purity%20UI%20Dashboard%20made%20by%20%40CreativeTim%20and%20%40simmmple_web%20%23webdesign%20%23dashboard%20%23chakra"
                     >
                       <Button
@@ -212,7 +223,7 @@ export default function Configurator(props) {
                       </Button>
                     </Link>
                     <Link
-                      isExternal="true"
+                      isExternal={true}
                       href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.creative-tim.com%2Fproduct%2Fpurity-ui-dashboard"
                     >
                       <Button colorScheme="facebook" leftIcon={<FaFacebook />}>
@@ -227,11 +238,11 @@ export default function Configurator(props) {
         </DrawerContent>
       </Drawer>
     </>
-  );
+  )
 }
 Configurator.propTypes = {
   secondary: PropTypes.bool,
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
   fixed: PropTypes.bool,
-};
+}

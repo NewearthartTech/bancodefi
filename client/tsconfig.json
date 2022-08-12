@@ -1,9 +1,51 @@
 {
   "compilerOptions": {
-    "jsx": "react",
-    "baseUrl": "src",
+    "target": "es2015",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "sourceMap": true,
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
     "paths": {
-      "*": ["src/*"]
+      "@banco/assets/*": ["src/assets/*"],
+      "@banco/assets": ["src/assets"],
+      "@banco/routes": ["src/routes.tsx"],
+      "@banco/components": ["src/components/index.ts"],
+      "@banco/components/*": ["src/components/*"],
+      "@banco/layouts": ["src/layouts/index.ts"],
+      "@banco/layouts/*": ["src/layouts/*"],
+      "@banco/theme": ["src/theme/index.ts"],
+      "@banco/theme/*": ["src/theme/*"],
+      "@banco/variables": ["src/variables/index.ts"],
+      "@banco/variables/*": ["src/variables/*"],
+      "@banco/views": ["src/views/index.ts"],
+      "@banco/views/*": ["src/views/*"],
+      "@banco/types/*": ["src/types/*"]
     }
-  }
+  },
+
+  "include": [
+    "next-env.d.ts", 
+    "**/*.ts", 
+    "**/*.tsx", 
+    "./lib", 
+    "./lib/types/react-html-element-props.d.ts"
+  ],
+  "exclude": ["node_modules", "tmp", ".next", "build", "public", "dist"]
+
 }

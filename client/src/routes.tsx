@@ -1,5 +1,5 @@
 // import
-import Dashboard from "views/Dashboard/Dashboard";
+import { Dashboard } from "@banco/views/Dashboard/Dashboard";
 import Tables from "views/Dashboard/Tables";
 import Billing from "views/Dashboard/Billing";
 import RTLPage from "views/Dashboard/RTL";
