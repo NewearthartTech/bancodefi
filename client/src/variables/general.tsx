@@ -28,6 +28,7 @@ import {
   FaShoppingCart,
 } from 'react-icons/fa'
 import { SiDropbox } from 'react-icons/si'
+import { Loan } from 'src/types'
 
 export const dashboardTableData = [
   {
@@ -111,48 +112,16 @@ export const timelineData = [
     date: '18 DEC 4:41 PM',
   },
 ]
-export const rtlDashboardTableData = [
+export const loanTableData: Loan[] = [
   {
-    logo: AdobexdLogo,
-    name: 'نسخة Purity UI',
-    members: [avatar1, avatar2, avatar3, avatar4, avatar5],
-    budget: '$14,000',
-    progression: 60,
-  },
-  {
-    logo: AtlassianLogo,
-    name: 'إضافة مسار التقدم',
-    members: [avatar3, avatar2],
-    budget: '$3,000',
-    progression: 10,
-  },
-  {
-    logo: SlackLogo,
-    name: 'إصلاح أخطاء النظام الأساسي',
-    members: [avatar10, avatar4],
-    budget: 'غير مضبوط',
-    progression: 100,
-  },
-  {
-    logo: SpotifyLogo,
-    name: 'إطلاق تطبيق الهاتف المحمول الخاص بنا',
-    members: [avatar2, avatar3, avatar7, avatar8],
-    budget: '$32,000',
-    progression: 100,
-  },
-  {
-    logo: JiraLogo,
-    name: 'أضف صفحة التسعير الجديدة',
-    members: [avatar10, avatar3, avatar7, avatar2, avatar8],
-    budget: '$400',
-    progression: 25,
-  },
-  {
-    logo: InvisionLogo,
-    name: 'إعادة تصميم متجر جديد على الإنترنت',
-    members: [avatar9, avatar3, avatar2],
-    budget: '$7,600',
-    progression: 40,
+    loanID: 'MVV8sMM',
+    loanRequester: 'AOw4Rh...7oW1',
+    requesterPFP: avatar1,
+    collateralID: 'Smoky Mountain',
+    collectionName: 'mtnFrens',
+    principal: 74149,
+    interestRate: 8.49,
+    duration: 30,
   },
 ]
 

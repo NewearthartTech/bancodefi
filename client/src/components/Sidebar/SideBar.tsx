@@ -2,7 +2,7 @@
 // chakra imports
 import { Box, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
-import SidebarContent from './SidebarContent'
+import { SidebarContent } from './SidebarContent'
 
 // FUNCTIONS
 
@@ -45,7 +45,7 @@ export const Sidebar = (props) => {
           m={sidebarMargins}
           borderRadius={sidebarRadius}
         >
-          <SidebarContent routes={routes} logoText={'PURITY UI DASHBOARD'} />
+          <SidebarContent routes={routes} logoText={'Banco'} />
         </Box>
       </Box>
     </Box>

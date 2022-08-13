@@ -29,13 +29,15 @@
       "@banco/components/*": ["src/components/*"],
       "@banco/layouts": ["src/layouts/index.ts"],
       "@banco/layouts/*": ["src/layouts/*"],
+      "@banco/pages": ["src/pages/index.ts"],
+      "@banco/pages/*": ["src/pages/*"],
       "@banco/theme": ["src/theme/index.ts"],
       "@banco/theme/*": ["src/theme/*"],
       "@banco/variables": ["src/variables/index.ts"],
       "@banco/variables/*": ["src/variables/*"],
       "@banco/views": ["src/views/index.ts"],
       "@banco/views/*": ["src/views/*"],
-      "@banco/types/*": ["src/types/*"]
+      "@banco/types": ["src/types/index.ts"]
     }
   },
 

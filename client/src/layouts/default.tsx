@@ -18,13 +18,16 @@ import { theme } from '@banco/theme'
 import MainPanel from '../components/Layout/MainPanel'
 import PanelContainer from '../components/Layout/PanelContainer'
 import PanelContent from '../components/Layout/PanelContent'
-export const RTLLayout = (props) => {
-  const { ...rest } = props
+import { Fonts } from '@banco/theme'
+
+interface DefaultLayout extends ReactChildren {}
+
+export const DefaultLayout = ({ children }: DefaultLayout) => {
   // states and functions
   const [sidebarVariant, setSidebarVariant] = useState('transparent')
   const [fixed, setFixed] = useState(false)
   const getRoute = () => {
-    return window.location.pathname !== '/admin/full-screen-maps'
+    false
   }
   const getActiveRoute = (routes) => {
     let activeRoute = 'Default Brand Text'
@@ -41,6 +44,7 @@ export const RTLLayout = (props) => {
         }
       } else {
         if (
+          typeof window !== 'undefined' &&
           window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
         ) {
           return routes[i].name
@@ -60,6 +64,7 @@ export const RTLLayout = (props) => {
         }
       } else {
         if (
+          typeof window !== 'undefined' &&
           window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
         ) {
           if (routes[i].secondaryNavbar) {
@@ -92,66 +97,30 @@ export const RTLLayout = (props) => {
     })
   }
   const { isOpen, onOpen, onClose } = useDisclosure()
-  document.documentElement.dir = 'rtl'
   // Chakra Color Mode
   return (
     <ChakraProvider theme={theme} resetCSS={false}>
-      <RtlProvider>
-        <Sidebar
-          routes={routes}
-          logoText={'PURITY UI DASHBOARD'}
-          display="none"
-          sidebarVariant={sidebarVariant}
-          {...rest}
-        />
-        <MainPanel
-          variant="rtl"
-          w={{
-            base: '100%',
-            xl: 'calc(100% - 275px)',
-          }}
-        >
-          <Portal>
-            <AdminNavbar
-              onOpen={onOpen}
-              logoText={'PURITY UI DASHBOARD'}
-              brandText={getActiveRoute(routes)}
-              secondary={getActiveNavbar(routes)}
-              fixed={fixed}
-              {...rest}
-            />
-          </Portal>
-          {getRoute() ? (
-            <PanelContent>
-              <PanelContainer>
-                <Switch>
-                  {getRoutes(routes)}
-                  <Redirect from="/rtl" to="/rtl/rtl-support-page" />
-                </Switch>
-              </PanelContainer>
-            </PanelContent>
-          ) : null}
-          <Footer />
-          <Portal>
-            <FixedPlugin
-              secondary={getActiveNavbar(routes)}
-              fixed={fixed}
-              onOpen={onOpen}
-            />
-          </Portal>
-          <Configurator
-            secondary={getActiveNavbar(routes)}
-            isOpen={isOpen}
-            onClose={onClose}
-            isChecked={fixed}
-            onSwitch={(value) => {
-              setFixed(value)
-            }}
-            onOpaque={() => setSidebarVariant('opaque')}
-            onTransparent={() => setSidebarVariant('transparent')}
-          />
-        </MainPanel>
-      </RtlProvider>
+      <Fonts />
+      <Sidebar
+        routes={routes}
+        logoText={'Banco'}
+        display="none"
+        sidebarVariant={sidebarVariant}
+      />
+      <MainPanel
+        w={{
+          base: 'calc(100% - 295px)',
+        }}
+      >
+        <PanelContent>
+          <PanelContainer>{children}</PanelContainer>
+        </PanelContent>
+
+        <Footer />
+      </MainPanel>
     </ChakraProvider>
   )
+}
+function useEffect(arg0: () => void, arg1: undefined[]) {
+  throw new Error('Function not implemented.')
 }

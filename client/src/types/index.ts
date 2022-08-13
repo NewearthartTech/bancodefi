@@ -11,3 +11,14 @@ declare type DeepPartial<T> = T extends object
       [P in keyof T]?: DeepPartial<T[P]>
     }
   : T
+
+export type Loan = {
+  loanID: string
+  loanRequester: string
+  requesterPFP: string
+  collateralID: string
+  collectionName: string
+  principal: number
+  interestRate: number
+  duration: number
+}

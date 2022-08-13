@@ -1,8 +1,8 @@
-import { createIcon } from "@chakra-ui/icons";
+import { createIcon } from '@chakra-ui/icons'
 
 export const AdobexdLogo = createIcon({
-  displayName: "AdobexdLogo",
-  viewBox: "0 0 24 24",
+  displayName: 'AdobexdLogo',
+  viewBox: '0 0 24 24',
   path: (
     <g clipPath="url(#clip0)">
       <path
@@ -15,11 +15,11 @@ export const AdobexdLogo = createIcon({
       />
     </g>
   ),
-});
+})
 
 export const AtlassianLogo = createIcon({
-  displayName: "AtlassianLogo",
-  viewBox: "0 0 24 24",
+  displayName: 'AtlassianLogo',
+  viewBox: '0 0 24 24',
   path: (
     <g>
       <path
@@ -32,22 +32,22 @@ export const AtlassianLogo = createIcon({
       />
     </g>
   ),
-});
+})
 
 export const CartIcon = createIcon({
-  displayName: "CartIcon",
-  viewBox: "0 0 24 24",
+  displayName: 'CartIcon',
+  viewBox: '0 0 24 24',
   path: (
     <path
       fill="currentColor"
       d="M7.984 19.937a1.406 1.406 0 100-2.812 1.406 1.406 0 000 2.812zM17.828 19.937a1.406 1.406 0 100-2.812 1.406 1.406 0 000 2.812zM20.324 5.558a1.051 1.051 0 00-.815-.386H6.134l-.27-1.528a.703.703 0 00-.692-.581H2.359a.703.703 0 000 1.406h2.223L6.59 15.841a.703.703 0 00.692.581h11.25a.703.703 0 100-1.406H7.871l-.248-1.406h10.62a1.057 1.057 0 001.035-.848l1.266-6.328a1.055 1.055 0 00-.22-.876z"
     />
   ),
-});
+})
 
 export const ClockIcon = createIcon({
-  displayName: "ClockIcon",
-  viewBox: "0 0 24 24",
+  displayName: 'ClockIcon',
+  viewBox: '0 0 24 24',
   path: (
     <g>
       <g>
@@ -65,10 +65,69 @@ export const ClockIcon = createIcon({
       </g>
     </g>
   ),
-});
+})
+
+export const BancoLogo = createIcon({
+  displayName: 'BancoLogo',
+  viewBox: '0 0 40 40',
+  path: (
+    <g>
+      <path
+        d="M2.14284 37.8568C3.54353 39.2594 5.54624 40 7.93623 40C11.4319 40 15.6721 38.4388 20.0006 35.7315C24.327 38.4407 28.5692 40 32.065 40C34.4531 40 36.4556 39.2594 37.8584 37.8568C40.4048 35.31 40.6898 31.0075 38.663 25.7377C37.9446 23.8672 36.9492 21.9346 35.7393 20C36.9513 18.0655 37.9446 16.1329 38.663 14.2625C40.6898 8.99259 40.403 4.68796 37.8584 2.14329C36.4577 0.740525 34.4549 0 32.065 0C28.5692 0 24.3291 1.56131 20.0006 4.26851C15.6741 1.55931 11.4319 0 7.93623 0C5.54823 0 3.54553 0.740525 2.14284 2.14329C-0.403686 4.68996 -0.69063 8.99259 1.33616 14.2625C2.05655 16.1329 3.0499 18.0655 4.25994 20C3.04787 21.9346 2.05456 23.8672 1.33616 25.7377C-0.69063 31.0075 -0.403686 35.31 2.14284 37.8568ZM34.9145 27.1786C36.297 30.7706 36.3353 33.7025 35.0188 35.0192C34.3767 35.6613 33.3834 35.9864 32.0628 35.9864C29.721 35.9864 26.7531 34.9769 23.6187 33.2169C25.3485 31.8805 27.0663 30.3835 28.7238 28.7257C30.3692 27.0801 31.8723 25.3603 33.2168 23.6163C33.8911 24.8225 34.4669 26.0165 34.9145 27.1786ZM19.9986 30.871C17.9959 29.4362 15.9972 27.7744 14.1109 25.888C12.2146 23.9897 10.5329 22.0008 9.09412 20C10.5329 17.9992 12.2146 16.0105 14.1109 14.112C15.9972 12.2276 17.9959 10.5659 19.9986 9.12907C22.0013 10.564 24 12.2256 25.8862 14.112C27.7826 16.0105 29.4643 17.9992 30.903 20C29.4643 22.0008 27.7826 23.9897 25.8862 25.888C24 27.7725 22.0013 29.434 19.9986 30.871ZM32.0628 4.01367C33.3813 4.01367 34.3746 4.33876 35.0188 4.98094C36.3353 6.29743 36.2992 9.22941 34.9145 12.8216C34.4669 13.9836 33.8911 15.1776 33.2168 16.3837C31.8723 14.6398 30.3692 12.92 28.7238 11.2744C27.0663 9.61672 25.3485 8.11962 23.6187 6.78309C26.7531 5.02511 29.721 4.01367 32.0628 4.01367ZM5.08269 12.8216C3.70007 9.22941 3.66194 6.29743 4.97834 4.98094C5.62048 4.33876 6.61382 4.01367 7.93423 4.01367C10.2761 4.01367 13.244 5.02309 16.3785 6.78309C14.6487 8.11962 12.933 9.61672 11.2734 11.2744C9.62788 12.92 8.12486 14.6398 6.78036 16.3837C6.10611 15.1776 5.53019 13.9836 5.08269 12.8216ZM5.08269 27.1786C5.53019 26.0165 6.10611 24.8225 6.78036 23.6163C8.12486 25.3603 9.62788 27.0801 11.2734 28.7257C12.9309 30.3835 14.6487 31.8805 16.3785 33.2169C13.242 34.9769 10.2761 35.9864 7.93423 35.9864C6.61582 35.9864 5.6225 35.6613 4.97834 35.0192C3.66194 33.7025 3.70007 30.7706 5.08269 27.1786Z"
+        fill="#1B1B1B"
+      />
+      <path d="M25 16H16V24H25V16Z" fill="#1B1B1B" />
+    </g>
+  ),
+})
+
+export const BankIcon = createIcon({
+  displayName: 'BankIcon',
+  viewBox: '0 0 16 15',
+  path: (
+    <path
+      d="M0 4.73659V7.89511H0.8V12.6309H0V14.9992H0.8H3.2H4.8H7.2H8.8H11.2H12.8L15.2 15L16 14.9992V12.6309H15.2V7.89511H16V4.73659L8 0L0 4.73659ZM3.2 12.6309V7.89511H4.8V12.6309H3.2ZM7.2 12.6309V7.89511H8.8V12.6309H7.2ZM12.8 12.6309H11.2V7.89511H12.8V12.6309ZM9.6 4.73659C9.6 5.60813 8.8832 6.31546 8 6.31546C7.1168 6.31546 6.4 5.60813 6.4 4.73659C6.4 3.86506 7.1168 3.15773 8 3.15773C8.8832 3.15773 9.6 3.86506 9.6 4.73659Z"
+      fill="currentColor"
+    />
+  ),
+})
+
+export const PlusIcon = createIcon({
+  displayName: 'PlusIcon',
+  viewBox: '0 0 13 13',
+  path: (
+    <path
+      d="M2.125 12.125H10.875C11.565 12.125 12.125 11.565 12.125 10.875V2.125C12.125 1.435 11.565 0.875 10.875 0.875H2.125C1.435 0.875 0.875 1.435 0.875 2.125V10.875C0.875 11.565 1.435 12.125 2.125 12.125ZM3.375 5.875H5.875V3.375H7.125V5.875H9.625V7.125H7.125V9.625H5.875V7.125H3.375V5.875Z"
+      fill="currentColor"
+    />
+  ),
+})
+
+export const CheckIcon = createIcon({
+  displayName: 'CheckIcon',
+  viewBox: '0 0 15 15',
+  path: (
+    <path
+      d="M7.5 0C3.3645 0 0 3.3645 0 7.5C0 11.6355 3.3645 15 7.5 15C11.6355 15 15 11.6355 15 7.5C15 3.3645 11.6355 0 7.5 0ZM6.00075 10.8098L3.216 8.031L4.275 6.969L5.99925 8.69025L9.96975 4.71975L11.0303 5.78025L6.00075 10.8098Z"
+      fill="currentColor"
+    />
+  ),
+})
+
+export const HandIcon = createIcon({
+  displayName: 'HandIcon',
+  viewBox: '0 0 17 13',
+  path: (
+    <path
+      d="M13.0331 6.30753L10.0833 8.6667H6.12498V7.87503H9.3431C9.65898 7.87503 9.84819 7.52274 9.67244 7.2599L8.96944 6.2054C8.67652 5.76445 8.18252 5.50003 7.6529 5.50003H6.12498H1.37498C0.937188 5.50003 0.583313 5.8539 0.583313 6.2917V11.0417C0.583313 11.9157 1.29265 12.625 2.16665 12.625H9.79752C10.4823 12.625 11.1339 12.3297 11.5851 11.8144L16.4166 6.2917L15.2671 5.90853C14.5032 5.65361 13.6624 5.80403 13.0331 6.30753ZM11.194 5.50003C12.5058 5.50003 13.569 4.43682 13.569 3.12503C13.569 0.981196 11.194 0.750031 11.194 0.750031C11.194 0.750031 8.81902 0.964571 8.81902 3.12503C8.81902 4.43682 9.88302 5.50003 11.194 5.50003Z"
+      fill="currentColor"
+    />
+  ),
+})
+
 export const CreativeTimLogo = createIcon({
-  displayName: "CreativeTimLogo",
-  viewBox: "0 0 100 100",
+  displayName: 'CreativeTimLogo',
+  viewBox: '0 0 100 100',
   path: (
     <g
       xmlns="http://www.w3.org/2000/svg"
@@ -120,22 +179,22 @@ export const CreativeTimLogo = createIcon({
   //   {...props}
   // >
   // </chakra.svg>
-});
+})
 
 export const CreditIcon = createIcon({
-  displayName: "CreditIcon",
-  viewBox: "0 0 24 24",
+  displayName: 'CreditIcon',
+  viewBox: '0 0 24 24',
   path: (
     <path
       fill="currentColor"
       d="M1.406 17.023a2.461 2.461 0 002.461 2.46h14.766a2.461 2.461 0 002.46-2.46v-6.768H1.407v6.768zm2.9-3.34a1.318 1.318 0 011.319-1.318h2.11a1.318 1.318 0 011.318 1.318v.879a1.318 1.318 0 01-1.319 1.318H5.625a1.318 1.318 0 01-1.318-1.318v-.879zM18.633 4.014H3.867a2.46 2.46 0 00-2.46 2.461v1.143h19.687V6.475a2.46 2.46 0 00-2.461-2.46z"
     />
   ),
-});
+})
 
 export const DashboardLogo = createIcon({
-  displayName: "DashboardLogo",
-  viewBox: "0 0 1000 257",
+  displayName: 'DashboardLogo',
+  viewBox: '0 0 1000 257',
   path: (
     <g width="998" height="257" viewBox="0 0 998 257" fill="none">
       <g clipPath="url(#clip0)">
@@ -187,11 +246,11 @@ export const DashboardLogo = createIcon({
       </defs>
     </g>
   ),
-});
+})
 
 export const DashboardLogoWhite = createIcon({
-  displayName: "DashboardLogo",
-  viewBox: "0 0 163.5 42",
+  displayName: 'DashboardLogo',
+  viewBox: '0 0 163.5 42',
   path: (
     <g fill="none">
       <path
@@ -204,11 +263,11 @@ export const DashboardLogoWhite = createIcon({
       />
     </g>
   ),
-});
+})
 
 export const DocumentIcon = createIcon({
-  displayName: "DocumentIcon",
-  viewBox: "0 0 24 24",
+  displayName: 'DocumentIcon',
+  viewBox: '0 0 24 24',
   path: (
     <g>
       <path
@@ -221,11 +280,11 @@ export const DocumentIcon = createIcon({
       />
     </g>
   ),
-});
+})
 
 export const GlobeIcon = createIcon({
-  displayName: "GlobeIcon",
-  viewBox: "0 0 24 24",
+  displayName: 'GlobeIcon',
+  viewBox: '0 0 24 24',
   path: (
     <g>
       <path
@@ -264,22 +323,22 @@ export const GlobeIcon = createIcon({
       />
     </g>
   ),
-});
+})
 
 export const HelpIcon = createIcon({
-  displayName: "HelpIcon",
-  viewBox: "0 0 24 24",
+  displayName: 'HelpIcon',
+  viewBox: '0 0 24 24',
   path: (
     <path
       fill="currentColor"
       d="M11.25 0C5.04 0 0 5.04 0 11.25S5.04 22.5 11.25 22.5 22.5 17.46 22.5 11.25 17.46 0 11.25 0zm-.352 17.813a1.172 1.172 0 110-2.344 1.172 1.172 0 010 2.344zm1.96-5.977c-.95.637-1.08 1.222-1.08 1.758a.82.82 0 11-1.641 0c0-1.284.59-2.305 1.806-3.121 1.13-.758 1.768-1.239 1.768-2.295 0-.718-.41-1.264-1.26-1.668-.199-.095-.644-.187-1.191-.18-.687.008-1.22.172-1.63.503-.775.623-.84 1.302-.84 1.312a.821.821 0 11-1.642-.08c.007-.142.106-1.425 1.452-2.507.698-.562 1.585-.854 2.636-.866.745-.01 1.444.117 1.918.34 1.418.672 2.198 1.79 2.198 3.146 0 1.982-1.325 2.872-2.494 3.658z"
     />
   ),
-});
+})
 
 export const HomeIcon = createIcon({
-  displayName: "HomeIcon",
-  viewBox: "0 0 24 24",
+  displayName: 'HomeIcon',
+  viewBox: '0 0 24 24',
   path: (
     <g>
       <path
@@ -292,11 +351,11 @@ export const HomeIcon = createIcon({
       />
     </g>
   ),
-});
+})
 
 export const InvisionLogo = createIcon({
-  displayName: "InvisionLogo",
-  viewBox: "0 0 24 24",
+  displayName: 'InvisionLogo',
+  viewBox: '0 0 24 24',
   path: (
     <g clipPath="url(#clip0)">
       <path
@@ -309,11 +368,11 @@ export const InvisionLogo = createIcon({
       />
     </g>
   ),
-});
+})
 
 export const JiraLogo = createIcon({
-  displayName: "JiraLogo",
-  viewBox: "0 0 24 24",
+  displayName: 'JiraLogo',
+  viewBox: '0 0 24 24',
   path: (
     <g clipPath="url(#clip0)">
       <path
@@ -330,11 +389,11 @@ export const JiraLogo = createIcon({
       />
     </g>
   ),
-});
+})
 
 export const MastercardIcon = createIcon({
-  displayName: "MastercardIcon",
-  viewBox: "0 0 24 24",
+  displayName: 'MastercardIcon',
+  viewBox: '0 0 24 24',
   path: (
     <svg
       width="24"
@@ -347,11 +406,11 @@ export const MastercardIcon = createIcon({
       <circle cx="14.3686" cy="7.49999" r="6.63158" fill="#F79E1B" />
     </svg>
   ),
-});
+})
 
 export const PayPalIcon = createIcon({
-  displayName: "PayPalIcon",
-  viewBox: "0 0 24 24",
+  displayName: 'PayPalIcon',
+  viewBox: '0 0 24 24',
   path: (
     <g>
       <path
@@ -364,22 +423,22 @@ export const PayPalIcon = createIcon({
       />
     </g>
   ),
-});
+})
 
 export const PersonIcon = createIcon({
-  displayName: "PersonIcon",
-  viewBox: "0 0 24 24",
+  displayName: 'PersonIcon',
+  viewBox: '0 0 24 24',
   path: (
     <path
       fill="currentColor"
       d="M14.618 3.338c-.855-.924-2.05-1.432-3.368-1.432-1.325 0-2.524.505-3.375 1.423-.86.928-1.28 2.188-1.181 3.55.195 2.686 2.239 4.87 4.556 4.87s4.358-2.184 4.556-4.87c.1-1.349-.322-2.607-1.188-3.541zM18.984 21.592H3.515a1.363 1.363 0 01-1.063-.489 1.552 1.552 0 01-.316-1.279c.371-2.058 1.529-3.786 3.348-5 1.616-1.076 3.664-1.67 5.766-1.67s4.15.594 5.765 1.67c1.82 1.214 2.977 2.942 3.348 5 .085.471-.03.937-.315 1.279a1.362 1.362 0 01-1.064.49z"
     />
   ),
-});
+})
 
 export const ProfileIcon = createIcon({
-  displayName: "ProfileIcon",
-  viewBox: "0 0 24 24",
+  displayName: 'ProfileIcon',
+  viewBox: '0 0 24 24',
   path: (
     <g>
       <path d="M0 0h24v24H0V0z" fill="transparent" />
@@ -389,11 +448,11 @@ export const ProfileIcon = createIcon({
       />
     </g>
   ),
-});
+})
 
 export const RocketIcon = createIcon({
-  displayName: "RocketIcon",
-  viewBox: "0 0 24 24",
+  displayName: 'RocketIcon',
+  viewBox: '0 0 24 24',
   path: (
     <g>
       <path
@@ -406,11 +465,11 @@ export const RocketIcon = createIcon({
       />
     </g>
   ),
-});
+})
 
 export const SettingsIcon = createIcon({
-  displayName: "SettingsIcon",
-  viewBox: "0 0 24 24",
+  displayName: 'SettingsIcon',
+  viewBox: '0 0 24 24',
   // path can also be an array of elements, if you have multiple paths, lines, shapes, etc.
   path: (
     <g>
@@ -421,11 +480,11 @@ export const SettingsIcon = createIcon({
       />
     </g>
   ),
-});
+})
 
 export const SlackLogo = createIcon({
-  displayName: "SlackLogo",
-  viewBox: "0 0 24 24",
+  displayName: 'SlackLogo',
+  viewBox: '0 0 24 24',
   path: (
     <g clipPath="url(#clip0)" fillRule="evenodd" clipRule="evenodd">
       <path
@@ -446,11 +505,11 @@ export const SlackLogo = createIcon({
       />
     </g>
   ),
-});
+})
 
 export const SpotifyLogo = createIcon({
-  displayName: "SpotifyLogo",
-  viewBox: "0 0 24 24",
+  displayName: 'SpotifyLogo',
+  viewBox: '0 0 24 24',
   path: (
     <g clipPath="url(#clip0)">
       <path
@@ -459,34 +518,34 @@ export const SpotifyLogo = createIcon({
       />
     </g>
   ),
-});
+})
 
 export const SupportIcon = createIcon({
   // Doesn't display the full icon without w and h being specified
-  displayName: "BuildIcon",
-  viewBox: "0 0 24 24",
+  displayName: 'BuildIcon',
+  viewBox: '0 0 24 24',
   path: (
     <path
       fill="currentColor"
       d="M20.885 5.547a.703.703 0 00-1.122-.176l-2.7 2.702a.708.708 0 01-.995 0l-1.167-1.169a.702.702 0 010-.994l2.689-2.69a.704.704 0 00-.21-1.138c-2.031-.908-4.566-.435-6.164 1.152-1.358 1.348-1.763 3.455-1.11 5.78a.698.698 0 01-.197.703L2.593 16.4a2.82 2.82 0 103.981 3.983l6.754-7.332a.699.699 0 01.693-.2 7.885 7.885 0 002.03.279c1.469 0 2.757-.475 3.686-1.39 1.72-1.695 1.983-4.57 1.148-6.192zM4.623 19.901a1.407 1.407 0 11-.305-2.797 1.407 1.407 0 01.305 2.797z"
     />
   ),
-});
+})
 
 export const StatsIcon = createIcon({
-  displayName: "StatsIcon",
-  viewBox: "0 0 24 24",
+  displayName: 'StatsIcon',
+  viewBox: '0 0 24 24',
   path: (
     <path
       fill="currentColor"
       d="M4.57 22.297H3.164a1.055 1.055 0 01-1.055-1.054v-6.328a1.055 1.055 0 011.055-1.055H4.57a1.055 1.055 0 011.055 1.055v6.328a1.055 1.055 0 01-1.055 1.054zM14.414 22.296h-1.406a1.055 1.055 0 01-1.055-1.055V10.695a1.055 1.055 0 011.055-1.055h1.406a1.055 1.055 0 011.055 1.055V21.24a1.055 1.055 0 01-1.055 1.055zM19.336 22.297H17.93a1.055 1.055 0 01-1.055-1.055V5.773A1.055 1.055 0 0117.93 4.72h1.406a1.055 1.055 0 011.055 1.054v15.47a1.055 1.055 0 01-1.055 1.054zM9.492 22.297H8.086a1.055 1.055 0 01-1.055-1.055V2.257a1.055 1.055 0 011.055-1.054h1.406a1.055 1.055 0 011.055 1.054v18.985a1.055 1.055 0 01-1.055 1.055z"
     />
   ),
-});
+})
 
 export const WalletIcon = createIcon({
-  displayName: "WalletIcon",
-  viewBox: "0 0 24 24",
+  displayName: 'WalletIcon',
+  viewBox: '0 0 24 24',
   path: (
     <g>
       <path
@@ -499,11 +558,11 @@ export const WalletIcon = createIcon({
       />
     </g>
   ),
-});
+})
 
 export const VisaIcon = createIcon({
-  displayName: "VisaIcon",
-  viewBox: "0 0 24 24",
+  displayName: 'VisaIcon',
+  viewBox: '0 0 24 24',
   path: (
     <svg
       width="26"
@@ -520,4 +579,4 @@ export const VisaIcon = createIcon({
       />
     </svg>
   ),
-});
+})

@@ -11,25 +11,28 @@ import {
   Icon,
 } from '@chakra-ui/react'
 import {
+  BancoLogo,
   CreativeTimLogo,
   IconBox,
   Separator,
   SidebarHelp,
 } from '@banco/components'
-import React from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
+import React, { useState } from 'react'
+import NextLink from 'next/link'
 
 // this function creates the links and collapses that appear in the sidebar (left menu)
 
 export const SidebarContent = ({ logoText, routes }) => {
   // to check for active links and opened collapses
-  let location = useLocation()
   // this is for the rest of the collapses
-  const [state, setState] = React.useState({})
+  const [state, setState] = useState({})
+  if (typeof window === 'undefined') {
+    return null
+  }
 
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName) => {
-    return location.pathname === routeName ? 'active' : ''
+    return window.location.pathname === routeName
   }
   const createLinks = (routes) => {
     // Chakra Color Mode
@@ -39,6 +42,7 @@ export const SidebarContent = ({ logoText, routes }) => {
     const inactiveColor = useColorModeValue('gray.400', 'gray.400')
 
     return routes.map((prop, key) => {
+      const active = activeRoute(prop.path)
       if (prop.redirect) {
         return null
       }
@@ -60,118 +64,68 @@ export const SidebarContent = ({ logoText, routes }) => {
               }}
               py="12px"
             >
-              {document.documentElement.dir === 'rtl'
-                ? prop.rtlName
-                : prop.name}
+              {prop.name}
             </Text>
             {createLinks(prop.views)}
           </div>
         )
       }
       return (
-        <NavLink to={prop.layout + prop.path} key={prop.name}>
-          {activeRoute(prop.layout + prop.path) === 'active' ? (
-            <Button
-              boxSize="initial"
-              justifyContent="flex-start"
-              alignItems="center"
-              bg={activeBg}
-              mb={{
-                xl: '12px',
-              }}
-              mx={{
-                xl: 'auto',
-              }}
-              ps={{
-                sm: '10px',
-                xl: '16px',
-              }}
-              py="12px"
-              borderRadius="15px"
-              _hover={{ hover: 'none' }}
-              w="100%"
-              _active={{
-                bg: 'inherit',
-                transform: 'none',
-                borderColor: 'transparent',
-              }}
-              _focus={{
-                boxShadow: 'none',
-              }}
-            >
-              <Flex>
-                {typeof prop.icon === 'string' ? (
-                  <Icon>{prop.icon}</Icon>
-                ) : (
-                  <IconBox
-                    bg="teal.300"
-                    color="white"
-                    h="30px"
-                    w="30px"
-                    me="12px"
-                  >
-                    {prop.icon}
-                  </IconBox>
-                )}
-                <Text color={activeColor} my="auto" fontSize="sm">
-                  {document.documentElement.dir === 'rtl'
-                    ? prop.rtlName
-                    : prop.name}
-                </Text>
-              </Flex>
-            </Button>
-          ) : (
-            <Button
-              boxSize="initial"
-              justifyContent="flex-start"
-              alignItems="center"
-              bg="transparent"
-              mb={{
-                xl: '12px',
-              }}
-              mx={{
-                xl: 'auto',
-              }}
-              py="12px"
-              ps={{
-                sm: '10px',
-                xl: '16px',
-              }}
-              borderRadius="15px"
-              _hover={undefined}
-              w="100%"
-              _active={{
-                bg: 'inherit',
-                transform: 'none',
-                borderColor: 'transparent',
-              }}
-              _focus={{
-                boxShadow: 'none',
-              }}
-            >
-              <Flex>
-                {typeof prop.icon === 'string' ? (
-                  <Icon>{prop.icon}</Icon>
-                ) : (
-                  <IconBox
-                    bg={inactiveBg}
-                    color="teal.300"
-                    h="30px"
-                    w="30px"
-                    me="12px"
-                  >
-                    {prop.icon}
-                  </IconBox>
-                )}
-                <Text color={inactiveColor} my="auto" fontSize="sm">
-                  {document.documentElement.dir === 'rtl'
-                    ? prop.rtlName
-                    : prop.name}
-                </Text>
-              </Flex>
-            </Button>
-          )}
-        </NavLink>
+        <NextLink href={prop.path} key={prop.name}>
+          <Button
+            boxSize="initial"
+            justifyContent="flex-start"
+            alignItems="center"
+            bg="transparent"
+            mb={{
+              xl: '12px',
+            }}
+            mx={{
+              xl: 'auto',
+            }}
+            py="12px"
+            ps={{
+              sm: '10px',
+              xl: '16px',
+            }}
+            border="none"
+            _hover={undefined}
+            w="100%"
+            _active={{
+              bg: 'inherit',
+              transform: 'none',
+              borderColor: 'transparent',
+            }}
+            _focus={{
+              boxShadow: 'none',
+            }}
+          >
+            <Flex>
+              {typeof prop.icon === 'string' ? (
+                <Icon>{prop.icon}</Icon>
+              ) : (
+                <IconBox
+                  color={active ? 'white' : 'black'}
+                  bg={active ? 'black' : 'white'}
+                  h="30px"
+                  w="30px"
+                  me="12px"
+                >
+                  {prop.icon}
+                </IconBox>
+              )}
+              <Text
+                color={active ? 'black' : 'gray.400'}
+                my="auto"
+                fontSize="sm"
+                fontFamily="Vesterbro"
+                fontWeight="500"
+              >
+                {prop.name}
+              </Text>
+            </Flex>
+          </Button>
+        </NextLink>
       )
     })
   }
@@ -182,18 +136,18 @@ export const SidebarContent = ({ logoText, routes }) => {
     <>
       <Box pt={'25px'} mb="12px">
         <Link
-          href={`${process.env.PUBLIC_URL}/#/`}
+          href={`/loans`}
           target="_blank"
           display="flex"
           lineHeight="100%"
-          mb="30px"
+          mb="10px"
           fontWeight="bold"
-          justifyContent="center"
+          justifyContent="flex-start"
           alignItems="center"
           fontSize="11px"
         >
-          <CreativeTimLogo w="32px" h="32px" me="10px" />
-          <Text fontSize="sm" mt="3px">
+          <BancoLogo w="48px" h="48px" me="10px" />
+          <Text fontSize="48px" fontFamily="Vesterbro">
             {logoText}
           </Text>
         </Link>
@@ -202,9 +156,6 @@ export const SidebarContent = ({ logoText, routes }) => {
       <Stack direction="column" mb="40px">
         <Box>{links}</Box>
       </Stack>
-      <SidebarHelp />
     </>
   )
 }
-
-export default SidebarContent

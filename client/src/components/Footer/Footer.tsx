@@ -27,74 +27,8 @@ export const Footer = (props) => {
         }}
         mb={{ base: '20px', xl: '0px' }}
       >
-        &copy; {1900 + new Date().getFullYear()},{' '}
-        <Text as="span">
-          {document.documentElement.dir === 'rtl'
-            ? ' مصنوع من ❤️ بواسطة'
-            : 'Made with ❤️ by '}
-        </Text>
-        <Link
-          // color={linkTeal}
-          color="teal.400"
-          href="https://www.creative-tim.com"
-          target="_blank"
-        >
-          {document.documentElement.dir === 'rtl'
-            ? ' توقيت الإبداعية'
-            : 'Creative Tim '}
-        </Link>
-        &
-        <Link
-          // color={linkTeal}
-          color="teal.400"
-          href="https://www.simmmple.com"
-          target="_blank"
-        >
-          {document.documentElement.dir === 'rtl' ? 'سيممبل ' : ' Simmmple'}
-        </Link>
-        {document.documentElement.dir === 'rtl'
-          ? 'للحصول على ويب أفضل'
-          : ' for a better web'}
+        &copy; {'Mercuri Labs'}
       </Text>
-      <List display="flex">
-        <ListItem
-          me={{
-            base: '20px',
-            md: '44px',
-          }}
-        >
-          <Link color="gray.400" href="https://www.creative-tim.com">
-            {document.documentElement.dir === 'rtl'
-              ? 'توقيت الإبداعية'
-              : 'Creative Tim'}
-          </Link>
-        </ListItem>
-        <ListItem
-          me={{
-            base: '20px',
-            md: '44px',
-          }}
-        >
-          <Link color="gray.400" href="https://www.simmmple.com">
-            {document.documentElement.dir === 'rtl' ? 'سيممبل' : 'Simmmple'}
-          </Link>
-        </ListItem>
-        <ListItem
-          me={{
-            base: '20px',
-            md: '44px',
-          }}
-        >
-          <Link color="gray.400" href="#blog">
-            {document.documentElement.dir === 'rtl' ? 'مدونة' : 'Blog'}
-          </Link>
-        </ListItem>
-        <ListItem>
-          <Link color="gray.400" href="#license">
-            {document.documentElement.dir === 'rtl' ? 'رخصة' : 'License'}
-          </Link>
-        </ListItem>
-      </List>
     </Flex>
   )
 }

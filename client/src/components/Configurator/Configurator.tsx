@@ -15,7 +15,6 @@ import {
   useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react'
-import GitHubButton from 'react-github-btn'
 import { Separator } from '@banco/components'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
@@ -57,7 +56,7 @@ export const Configurator = (props: Configurator) => {
       <Drawer
         isOpen={props.isOpen}
         onClose={props.onClose}
-        placement={document.documentElement.dir === 'rtl' ? 'left' : 'right'}
+        placement={'left'}
         finalFocusRef={settingsRef}
         blockScrollOnMount={false}
       >
@@ -118,19 +117,6 @@ export const Configurator = (props: Configurator) => {
                 <Text fontSize="md" fontWeight="600" mb="4px">
                   Navbar Fixed
                 </Text>
-                <Switch
-                  colorScheme="teal"
-                  isChecked={switched}
-                  onChange={(event) => {
-                    if (switched === true) {
-                      props.onSwitch(false)
-                      setSwitched(false)
-                    } else {
-                      props.onSwitch(true)
-                      setSwitched(true)
-                    }
-                  }}
-                />
               </Box>
               <Flex
                 justifyContent="space-between"
@@ -195,16 +181,7 @@ export const Configurator = (props: Configurator) => {
                   alignItems="center"
                   w="100%"
                   mb="16px"
-                >
-                  <GitHubButton
-                    href="https://github.com/creativetimofficial/purity-ui-dashboard"
-                    data-icon="octicon-star"
-                    data-show-count="true"
-                    aria-label="Star creativetimofficial/purity-ui-dashboard on GitHub"
-                  >
-                    Star
-                  </GitHubButton>
-                </Flex>
+                ></Flex>
                 <Box w="100%">
                   <Text mb="6px" textAlign="center">
                     Thank you for sharing!

@@ -24,11 +24,10 @@ import {
   IconBox,
 } from '@banco/components'
 import React from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
+import NextLink from 'next/link'
 
 export const SidebarResponsive = (props) => {
   // to check for active links and opened collapses
-  let location = useLocation()
   // this is for the rest of the collapses
   const [state, setState] = React.useState({})
   const mainPanel = React.useRef()
@@ -66,16 +65,14 @@ export const SidebarResponsive = (props) => {
               }}
               py="12px"
             >
-              {document.documentElement.dir === 'rtl'
-                ? prop.rtlName
-                : prop.name}
+              {prop.name}
             </Text>
             {createLinks(prop.views)}
           </div>
         )
       }
       return (
-        <NavLink to={prop.layout + prop.path} key={prop.name}>
+        <NextLink href={prop.layout + prop.path} key={prop.name}>
           {activeRoute(prop.layout + prop.path) === 'active' ? (
             <Button
               boxSize="initial"
@@ -120,9 +117,7 @@ export const SidebarResponsive = (props) => {
                   </IconBox>
                 )}
                 <Text color={activeColor} my="auto" fontSize="sm">
-                  {document.documentElement.dir === 'rtl'
-                    ? prop.rtlName
-                    : prop.name}
+                  {prop.name}
                 </Text>
               </Flex>
             </Button>
@@ -170,14 +165,12 @@ export const SidebarResponsive = (props) => {
                   </IconBox>
                 )}
                 <Text color={inactiveColor} my="auto" fontSize="sm">
-                  {document.documentElement.dir === 'rtl'
-                    ? prop.rtlName
-                    : prop.name}
+                  {prop.name}
                 </Text>
               </Flex>
             </Button>
           )}
-        </NavLink>
+        </NextLink>
       )
     })
   }
@@ -234,7 +227,7 @@ export const SidebarResponsive = (props) => {
       <Drawer
         isOpen={isOpen}
         onClose={onClose}
-        placement={document.documentElement.dir === 'rtl' ? 'right' : 'left'}
+        placement={'left'}
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />

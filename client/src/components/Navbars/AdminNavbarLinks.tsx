@@ -26,8 +26,9 @@ import {
 // Custom Components
 import PropTypes from 'prop-types'
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import NextLink from 'next/link'
 import routes from '@banco/routes'
+import { ReactChildren } from '@banco/types'
 
 interface AdminNavbarLinks extends ReactChildren {
   logoText: string
@@ -102,7 +103,7 @@ export const AdminNavbarLinks = (props: AdminNavbarLinks) => {
           borderRadius="inherit"
         />
       </InputGroup>
-      <NavLink to="/auth/signin">
+      <NextLink href="/auth/signin">
         <Button
           ms="0px"
           px="0px"
@@ -126,7 +127,7 @@ export const AdminNavbarLinks = (props: AdminNavbarLinks) => {
         >
           <Text display={{ sm: 'none', md: 'flex' }}>Sign In</Text>
         </Button>
-      </NavLink>
+      </NextLink>
       <SidebarResponsive
         logoText={props.logoText}
         secondary={props.secondary}

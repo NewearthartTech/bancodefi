@@ -15,11 +15,11 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
-import ReactDOM from "react-dom";
-import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { HashRouter, Route, Switch, Redirect } from 'react-router-dom'
 
-import { AuthLayout, AdminLayout, RTLLayout } from "@banco/layouts";
+import { AuthLayout, AdminLayout, RTLLayout } from '@banco/layouts'
 ReactDOM.render(
   <HashRouter>
     <Switch>
@@ -29,5 +29,5 @@ ReactDOM.render(
       <Redirect from={`/`} to="/admin/dashboard" />
     </Switch>
   </HashRouter>,
-  document.getElementById("root")
-);
+  document.getElementById('root'),
+)

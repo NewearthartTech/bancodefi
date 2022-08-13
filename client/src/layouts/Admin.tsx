@@ -121,12 +121,7 @@ export const AdminLayout = (props) => {
         </Portal>
         {getRoute() ? (
           <PanelContent>
-            <PanelContainer>
-              <Switch>
-                {getRoutes(routes)}
-                <Redirect from="/admin" to="/admin/dashboard" />
-              </Switch>
-            </PanelContainer>
+            <PanelContainer></PanelContainer>
           </PanelContent>
         ) : null}
         <Footer />

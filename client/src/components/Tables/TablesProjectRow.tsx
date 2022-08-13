@@ -63,5 +63,3 @@ export const TablesProjectRow = (props) => {
     </Tr>
   )
 }
-
-export default DashboardTableRow

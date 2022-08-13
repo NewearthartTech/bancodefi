@@ -31,6 +31,7 @@ export const AuthLayout = (props) => {
         }
       } else {
         if (
+          typeof window !== 'undefined' &&
           window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
         ) {
           return routes[i].name
@@ -49,6 +50,7 @@ export const AuthLayout = (props) => {
         }
       } else {
         if (
+          typeof window !== 'undefined' &&
           window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
         ) {
           if (routes[i].secondaryNavbar) {
@@ -81,7 +83,6 @@ export const AuthLayout = (props) => {
     })
   }
   const navRef = React.useRef()
-  document.documentElement.dir = 'ltr'
   return (
     <ChakraProvider theme={theme} resetCSS={false} w="100%">
       <Box ref={navRef} w="100%">
@@ -92,12 +93,7 @@ export const AuthLayout = (props) => {
           />
         </Portal>
         <Box w="100%">
-          <Box ref={wrapper} w="100%">
-            <Switch>
-              {getRoutes(routes)}
-              <Redirect from="/auth" to="/auth/login-page" />
-            </Switch>
-          </Box>
+          <Box ref={wrapper} w="100%"></Box>
         </Box>
         <Box px="24px" mx="auto" width="1044px" maxW="100%">
           <Footer />

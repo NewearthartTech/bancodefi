@@ -18,8 +18,8 @@ import {
 } from '@banco/components'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { NavLink } from 'react-router-dom'
 import routes from '@banco/routes'
+import NextLink from 'next/link'
 export const AuthNavbar = (props) => {
   const [open, setOpen] = React.useState(false)
   const handleDrawerToggle = () => {
@@ -87,7 +87,7 @@ export const AuthNavbar = (props) => {
   )
   var linksAuth = (
     <HStack display={{ sm: 'none', lg: 'flex' }}>
-      <NavLink to="/admin/dashboard">
+      <NextLink href="/admin/dashboard">
         <Button
           fontSize="sm"
           ms="0px"
@@ -99,8 +99,8 @@ export const AuthNavbar = (props) => {
         >
           <Text>Dashboard</Text>
         </Button>
-      </NavLink>
-      <NavLink to="/admin/profile">
+      </NextLink>
+      <NextLink href="/admin/profile">
         <Button
           fontSize="sm"
           ms="0px"
@@ -114,8 +114,8 @@ export const AuthNavbar = (props) => {
         >
           <Text>Profile</Text>
         </Button>
-      </NavLink>
-      <NavLink to="/auth/signup">
+      </NextLink>
+      <NextLink href="/auth/signup">
         <Button
           fontSize="sm"
           ms="0px"
@@ -129,8 +129,8 @@ export const AuthNavbar = (props) => {
         >
           <Text>Sign Up</Text>
         </Button>
-      </NavLink>
-      <NavLink to="/auth/signin">
+      </NextLink>
+      <NextLink href="/auth/signin">
         <Button
           fontSize="sm"
           ms="0px"
@@ -144,7 +144,7 @@ export const AuthNavbar = (props) => {
         >
           <Text>Sign In</Text>
         </Button>
-      </NavLink>
+      </NextLink>
     </HStack>
   )
   return (
