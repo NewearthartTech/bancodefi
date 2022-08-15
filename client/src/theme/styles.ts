@@ -12,6 +12,9 @@ export const globalStyles = {
     aquamarine: {
       400: '#00C2CB',
     },
+    tezosBlue: {
+      400: '#2c7df7',
+    },
   },
   styles: {
     global: (props) => ({
