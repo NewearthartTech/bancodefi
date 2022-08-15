@@ -16,9 +16,10 @@ import numeral from 'numeral'
 
 interface LoanRow {
   loan: Loan
+  key: string
 }
 
-export const LoanRow = ({ loan }: LoanRow) => {
+export const LoanRow = ({ loan, key }: LoanRow) => {
   const {
     loanID,
     loanRequester,
@@ -32,7 +33,7 @@ export const LoanRow = ({ loan }: LoanRow) => {
   console.log('loanid, rpfp', loanID, requesterPFP)
   const textColor = useColorModeValue('gray.700', 'white')
   return (
-    <Tr>
+    <Tr key={key}>
       <Td minWidth={{ sm: '125px' }} pl="0px">
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
           <Avatar

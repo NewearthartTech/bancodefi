@@ -12,13 +12,19 @@ export function SearchBar(props) {
   const { variant, children, ...rest } = props
   // Chakra Color Mode
   const mainTeal = useColorModeValue('teal.300', 'teal.300')
-  const searchIconColor = useColorModeValue('gray.700', 'gray.200')
+  let mainText = useColorModeValue('gray.700', 'gray.200')
+  let searchIcon = useColorModeValue('gray.700', 'gray.200')
   const inputBg = useColorModeValue('white', 'gray.800')
   return (
     <InputGroup
+      cursor="pointer"
       bg={inputBg}
       borderRadius="15px"
-      w="200px"
+      w={{
+        sm: '128px',
+        md: '200px',
+      }}
+      me={{ sm: 'auto', md: '20px' }}
       _focus={{
         borderColor: { mainTeal },
       }}
@@ -30,8 +36,9 @@ export function SearchBar(props) {
         children={
           <IconButton
             bg="inherit"
+            variant="transparent-with-icon"
             borderRadius="inherit"
-            _hover={undefined}
+            _hover="none"
             _active={{
               bg: 'inherit',
               transform: 'none',
@@ -40,14 +47,14 @@ export function SearchBar(props) {
             _focus={{
               boxShadow: 'none',
             }}
-            icon={<SearchIcon color={searchIconColor} w="15px" h="15px" />}
             aria-label={''}
+            icon={<SearchIcon color={searchIcon} w="15px" h="15px" />}
           ></IconButton>
         }
       />
       <Input
         fontSize="xs"
-        py="11px"
+        color={mainText}
         placeholder="Type here..."
         borderRadius="inherit"
       />

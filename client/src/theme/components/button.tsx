@@ -13,14 +13,9 @@ export const buttonStyles = {
           borderRadius: 'inherit',
           cursor: 'pointer',
           _hover: 'none',
-          _active: {
-            bg: 'transparent',
-            transform: 'none',
-            borderColor: 'transparent',
-          },
-          _focus: {
-            boxShadow: 'none',
-          },
+          transform: 'none',
+          borderColor: 'transparent',
+          boxShadow: 'none',
         },
         dark: {
           bg: 'black.100',

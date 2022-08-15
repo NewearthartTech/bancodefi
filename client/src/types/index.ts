@@ -21,4 +21,5 @@ export type Loan = {
   principal: number
   interestRate: number
   duration: number
+  bundled: boolean
 }
