@@ -15,6 +15,9 @@ export const globalStyles = {
     tezosBlue: {
       400: '#2c7df7',
     },
+    green: {
+      300: '#3BE8B0',
+    },
   },
   styles: {
     global: (props) => ({

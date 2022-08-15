@@ -72,54 +72,56 @@ const Apply = () => {
         </Heading>
       </Flex>
       <Flex>
-        <Card
-          p="30px"
-          w="300px"
-          h="300px"
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          <IconBox
-            color={'white'}
-            bg={'teal.400'}
-            h="90px"
-            w="90px"
-            borderRadius="50%"
-            me="12px"
+        <Button w="360px" h="360px" variant="transparent-with-icon">
+          <Card
+            p="30px"
+            w="300px"
+            h="300px"
+            alignItems="center"
+            justifyContent="space-between"
           >
-            <ProfileIcon2 w="38px" h="38px" />
-          </IconBox>
-          <Text fontWeight={700}>NFT Loans</Text>
-          <Text color="gray.400">ETH NFT Backed Loans</Text>
-          <Flex
-            width="100%"
-            bg="white"
-            backgroundImage=" linear-gradient(90deg, rgba(224, 225, 226, 0) 0%, #E0E1E2 49.52%, rgba(224, 225, 226, 0.15625) 99.04%);"
-            height="1px"
-          ></Flex>
-          <Flex>
             <IconBox
               color={'white'}
-              bg={'gray.100'}
-              h="30px"
-              w="30px"
+              bg={'teal.400'}
+              h="90px"
+              w="90px"
               borderRadius="50%"
               me="12px"
             >
-              <EthLogo w="20px" h="20px" />
+              <ProfileIcon2 w="38px" h="38px" />
             </IconBox>
-            <IconBox
-              color={'white'}
-              bg={'tezosBlue.400'}
-              h="30px"
-              w="30px"
-              borderRadius="50%"
-              me="12px"
-            >
-              <TezosLogo w="20px" h="20px" />
-            </IconBox>
-          </Flex>
-        </Card>
+            <Text fontWeight={700}>NFT Loans</Text>
+            <Text color="gray.400">ETH NFT Backed Loans</Text>
+            <Flex
+              width="100%"
+              bg="white"
+              backgroundImage=" linear-gradient(90deg, rgba(224, 225, 226, 0) 0%, #E0E1E2 49.52%, rgba(224, 225, 226, 0.15625) 99.04%);"
+              height="1px"
+            ></Flex>
+            <Flex>
+              <IconBox
+                color={'white'}
+                bg={'gray.100'}
+                h="30px"
+                w="30px"
+                borderRadius="50%"
+                me="12px"
+              >
+                <EthLogo w="20px" h="20px" />
+              </IconBox>
+              <IconBox
+                color={'white'}
+                bg={'tezosBlue.400'}
+                h="30px"
+                w="30px"
+                borderRadius="50%"
+                me="12px"
+              >
+                <TezosLogo w="20px" h="20px" />
+              </IconBox>
+            </Flex>
+          </Card>
+        </Button>
       </Flex>
     </Flex>
   )

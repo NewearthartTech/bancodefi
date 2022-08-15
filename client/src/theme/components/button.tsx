@@ -35,6 +35,43 @@ export const buttonStyles = {
             boxShadow: 'none',
           },
         },
+
+        green: {
+          bg: 'green.300',
+          color: 'black',
+          borderRadius: '10px',
+          fontWeight: 'normal',
+          padding: '0px 40px',
+          cursor: 'pointer',
+          _hover: 'none',
+          border: 'none',
+          _active: {
+            bg: 'transparent',
+            transform: 'none',
+            borderColor: 'transparent',
+          },
+          _focus: {
+            boxShadow: 'none',
+          },
+        },
+        aquamarine: {
+          bg: 'aquamarine.400',
+          color: 'white',
+          borderRadius: '10px',
+          fontWeight: 'normal',
+          padding: '0px 40px',
+          cursor: 'pointer',
+          _hover: 'none',
+          border: 'none',
+          _active: {
+            bg: 'transparent',
+            transform: 'none',
+            borderColor: 'transparent',
+          },
+          _focus: {
+            boxShadow: 'none',
+          },
+        },
         'with-shadow': {
           boxShadow: '0 0 2px 2px #efdfde',
         },

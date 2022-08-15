@@ -113,7 +113,7 @@ export const DefaultLayout = ({ children }: DefaultLayout) => {
         }}
       >
         <PanelContent>
-          <PanelContainer>{children}</PanelContainer>
+          <PanelContainer pt="0px">{children}</PanelContainer>
         </PanelContent>
 
         <Footer />
