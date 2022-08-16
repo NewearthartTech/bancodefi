@@ -19,6 +19,7 @@ import {
   Image,
 } from '@chakra-ui/react'
 // Custom components
+import { capitalize } from 'lodash'
 import {
   Card,
   CardHeader,
@@ -49,6 +50,13 @@ import { useState } from 'react'
 import { Loan } from 'src/types'
 import { Fonts } from '@banco/theme'
 import { ListModal } from '../components'
+import {
+  useAppDispatch,
+  useAppSelector,
+  actions,
+  store,
+  FormState,
+} from '../state'
 
 const headers: string[] = [
   'DEAL',
@@ -59,11 +67,18 @@ const headers: string[] = [
   '',
 ]
 
+const verifyNFT = (formState: FormState, dispatch) => {
+  dispatch(actions.setVerified(true))
+}
+
 const ApplyNew = () => {
+  const dispatch = useAppDispatch()
+  const formState = useAppSelector((state) => state.form)
   let mainText = useColorModeValue('gray.700', 'gray.200')
   const inputBg = useColorModeValue('white', 'gray.800')
   const mainTeal = useColorModeValue('teal.300', 'teal.300')
   const [isModalOpen, setIsModalOpen] = useState(false)
+  console.log(formState)
   return (
     <Flex direction={'column'}>
       <ListModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
@@ -120,6 +135,9 @@ const ApplyNew = () => {
                 placeholder="ERC721 Address"
                 borderRadius="inherit"
                 mr="4px"
+                onChange={(e) => {
+                  dispatch(actions.setERCAddress(e.target.value))
+                }}
               />
               <Input
                 fontSize="xs"
@@ -127,8 +145,18 @@ const ApplyNew = () => {
                 placeholder="Token ID"
                 borderRadius="inherit"
                 mr="4px"
+                onChange={(e) => {
+                  dispatch(actions.setTokenAddress(e.target.value))
+                }}
               />
-              <Button variant="green">Verify</Button>
+              <Button
+                variant="green"
+                onClick={() => {
+                  verifyNFT(formState, dispatch)
+                }}
+              >
+                Verify
+              </Button>
             </InputGroup>
           </Flex>
           <Flex
@@ -156,9 +184,13 @@ const ApplyNew = () => {
               <Input
                 fontSize="xs"
                 color={mainText}
-                placeholder="ERC721 Address"
+                placeholder="Loan Amount in XTZ"
                 borderRadius="inherit"
                 mr="4px"
+                type="number"
+                onChange={(e) => {
+                  dispatch(actions.setLoanAmount(e.target.value))
+                }}
               />
             </InputGroup>
           </Flex>
@@ -187,14 +219,25 @@ const ApplyNew = () => {
               <Input
                 fontSize="xs"
                 color={mainText}
-                placeholder="ERC721 Address"
+                placeholder="Duration"
                 borderRadius="inherit"
                 mr="4px"
+                type="number"
+                onChange={(e) => {
+                  dispatch(actions.setloanDuration(e.target.value))
+                }}
               />
-              <Select placeholder="Days" bg="gray.400" h="44px">
-                <option value="option1">Days</option>
-                <option value="option2">Months</option>
-                <option value="option3">Years</option>
+              <Select
+                placeholder={capitalize(formState.loanDurationWindow)}
+                bg="gray.400"
+                h="44px"
+                onChange={(e) => {
+                  dispatch(actions.setLoanDurationWindow(e.target.value))
+                }}
+              >
+                <option value="days">Days</option>
+                <option value="months">Months</option>
+                <option value="years">Years</option>
               </Select>
             </InputGroup>
           </Flex>
@@ -223,9 +266,13 @@ const ApplyNew = () => {
               <Input
                 fontSize="xs"
                 color={mainText}
-                placeholder="ERC721 Address"
+                placeholder="Interest Rate"
                 borderRadius="inherit"
                 mr="4px"
+                type="number"
+                onChange={(e) => {
+                  dispatch(actions.setInterestAmount(e.target.value))
+                }}
               />
             </InputGroup>
           </Flex>
@@ -282,12 +329,14 @@ export const ApplyNewPage = () => {
 
   const iconBoxInside = useColorModeValue('white', 'white')
   return (
-    <DefaultLayout>
-      <Fonts />
+    <Provider store={store}>
+      <DefaultLayout>
+        <Fonts />
 
-      <Flex flexDirection="column" pt={{ base: '120px', md: '75px' }}>
-        <ApplyNew />
-      </Flex>
-    </DefaultLayout>
+        <Flex flexDirection="column" pt={{ base: '120px', md: '75px' }}>
+          <ApplyNew />
+        </Flex>
+      </DefaultLayout>
+    </Provider>
   )
 }
