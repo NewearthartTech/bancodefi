@@ -37,7 +37,8 @@
       "@banco/variables/*": ["src/variables/*"],
       "@banco/views": ["src/views/index.ts"],
       "@banco/views/*": ["src/views/*"],
-      "@banco/types": ["src/types/index.ts"]
+      "@banco/types": ["src/types/index.ts"],
+      "@banco/utils": ["src/utils/index.ts"]
     }
   },
 

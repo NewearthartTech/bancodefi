@@ -65,7 +65,9 @@
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.9",
     "next-transpile-modules": "^9.0.0",
-    "prettier": "2.2.1"
+    "prettier": "2.2.1",
+    "@metamask/eslint-config": "^2.0.0",
+    "@metamask/onboarding": "^1.0.0"
   },
   "browserslist": {
     "production": [
