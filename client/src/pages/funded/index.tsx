@@ -132,7 +132,7 @@ const filterLoans = (loans: Loan[], filters: FilterState): Loan[] => {
   return newLoans
 }
 
-const Loans = () => {
+const Funded = () => {
   const textColor = useColorModeValue('gray.700', 'white')
   const dispatch = useAppDispatch()
   const bundled = useAppSelector((state) => state.filter.filterBundled)
@@ -212,7 +212,7 @@ const Loans = () => {
   )
 }
 
-export const LoanPage = () => {
+export const FundedPage = () => {
   // Chakra Color Mode
 
   const iconBoxInside = useColorModeValue('white', 'white')
@@ -220,7 +220,7 @@ export const LoanPage = () => {
     <Provider store={store}>
       <DefaultLayout>
         <Flex flexDirection="column" pt={{ base: '120px', md: '75px' }}>
-          <Loans />
+          <Funded />
         </Flex>
       </DefaultLayout>
     </Provider>

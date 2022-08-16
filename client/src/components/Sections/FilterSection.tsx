@@ -3,11 +3,11 @@ import { Flex, Button, Text } from '@chakra-ui/react'
 import { useState } from 'react'
 import { RangeSection, RangeSectionProps } from './RangeSection'
 import { SwitchSection, SwitchSectionProps } from './SwitchSection'
-import { useAppDispatch } from '../state'
 
 export interface FilterSection {
   name: string
   children: FilterSectionChild[]
+  dispatch: any
 }
 
 export type FilterSectionChild = {
@@ -45,9 +45,8 @@ const getChildSection = (filter: FilterSectionChild, dispatch) => {
   }
 }
 
-export const FilterSection = ({ name, children }: FilterSection) => {
+export const FilterSection = ({ name, children, dispatch }: FilterSection) => {
   const [expanded, setExpanded] = useState(false)
-  const dispatch = useAppDispatch()
 
   return (
     <Flex
