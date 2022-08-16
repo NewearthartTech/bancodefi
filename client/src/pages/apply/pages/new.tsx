@@ -48,6 +48,7 @@ import { SearchIcon } from '@chakra-ui/icons'
 import { useState } from 'react'
 import { Loan } from 'src/types'
 import { Fonts } from '@banco/theme'
+import { ListModal } from '../components'
 
 const headers: string[] = [
   'DEAL',
@@ -62,8 +63,10 @@ const ApplyNew = () => {
   let mainText = useColorModeValue('gray.700', 'gray.200')
   const inputBg = useColorModeValue('white', 'gray.800')
   const mainTeal = useColorModeValue('teal.300', 'teal.300')
+  const [isModalOpen, setIsModalOpen] = useState(false)
   return (
     <Flex direction={'column'}>
+      <ListModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       <Flex>
         <Heading mt="0px" fontFamily="Vesterbro">
           Borrow
@@ -226,7 +229,13 @@ const ApplyNew = () => {
               />
             </InputGroup>
           </Flex>
-          <Button width="100%" variant="aquamarine">
+          <Button
+            width="100%"
+            variant="aquamarine"
+            onClick={() => {
+              setIsModalOpen(true)
+            }}
+          >
             List Loan Request
           </Button>
         </Card>
