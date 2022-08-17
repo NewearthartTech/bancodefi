@@ -67,7 +67,9 @@
     "next-transpile-modules": "^9.0.0",
     "prettier": "2.2.1",
     "@metamask/eslint-config": "^2.0.0",
-    "@metamask/onboarding": "^1.0.0"
+    "@metamask/onboarding": "^1.0.0",
+    "@temple-wallet/dapp": "7.0.0",
+    "@taquito/taquito": "13.0.1"
   },
   "browserslist": {
     "production": [

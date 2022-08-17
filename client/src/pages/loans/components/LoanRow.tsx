@@ -30,7 +30,6 @@ export const LoanRow = ({ loan, key }: LoanRow) => {
     interestRate,
     duration,
   } = loan
-  console.log('loanid, rpfp', loanID, requesterPFP)
   const textColor = useColorModeValue('gray.700', 'white')
   return (
     <Tr key={key}>

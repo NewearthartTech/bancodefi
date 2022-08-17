@@ -89,7 +89,6 @@ const Apply = () => {
                 h="90px"
                 w="90px"
                 borderRadius="50%"
-                me="12px"
               >
                 <ProfileIcon2 w="38px" h="38px" />
               </IconBox>
