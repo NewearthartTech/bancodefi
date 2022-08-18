@@ -23,6 +23,7 @@ import { capitalize } from 'lodash'
 import {
   Card,
   CardHeader,
+  CreditRating,
   DashboardTableRow,
   EthLogo,
   IconBox,
@@ -286,7 +287,7 @@ const ApplyNew = () => {
             List Loan Request
           </Button>
         </Card>
-        <Flex flexDirection={'column'}>
+        <Flex flexDirection={'column'} w="520px">
           <Card w="520px" h="300px" mb="20px">
             <Flex alignItems="start" justifyContent={'flex-start'}>
               <Image src="/assets/img/blank-image.png" h="300px" w="300px" />
@@ -299,25 +300,7 @@ const ApplyNew = () => {
               </Flex>
             </Flex>
           </Card>
-          <Card w="520px" h="300px">
-            <Flex direction={'column'} alignItems="center">
-              <Text fontSize={32}>Your Credit Rating</Text>
-              <Flex>
-                <Text
-                  color="gray.400"
-                  fontSize={48}
-                  my="0px"
-                  fontFamily={'Vesterbro'}
-                >
-                  -
-                </Text>
-                <Text my="0px" fontFamily={'Vesterbro'} fontSize={48}>
-                  /100
-                </Text>
-              </Flex>
-              <Text color="gray.400">No Rating</Text>
-            </Flex>
-          </Card>
+          <CreditRating />
         </Flex>
       </Flex>
     </Flex>

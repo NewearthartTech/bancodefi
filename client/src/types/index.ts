@@ -12,6 +12,8 @@ declare type DeepPartial<T> = T extends object
     }
   : T
 
+export type LoanStatus = 'OPEN' | 'ACTIVE' | 'REPAID' | 'DEFAULTED'
+
 export type Loan = {
   loanID: string
   loanRequester: string
@@ -22,4 +24,6 @@ export type Loan = {
   interestRate: number
   duration: number
   bundled: boolean
+  status: LoanStatus
+  dueDate?: string
 }

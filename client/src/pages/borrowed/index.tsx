@@ -1,0 +1,154 @@
+import React from 'react'
+import { Provider } from 'react-redux'
+import {
+  Flex,
+  useColorModeValue,
+  Table,
+  Tbody,
+  Th,
+  Thead,
+  Tr,
+  Text,
+  Heading,
+  InputGroup,
+  InputLeftElement,
+  IconButton,
+  Input,
+  Button,
+} from '@chakra-ui/react'
+// Custom components
+import {
+  Card,
+  CardHeader,
+  DashboardTableRow,
+  IconBox,
+  RadioSelect,
+  SearchBar,
+  SwitchSelect,
+  TriangleIcon,
+  SwitchSection,
+  FilterSectionChild,
+  FilterSection,
+  SwitchSectionProps,
+  CreditRating,
+} from '@banco/components'
+import { IoCheckmarkDoneCircleSharp } from 'react-icons/io5'
+import { clone } from 'lodash'
+import { BorrowedRow } from './components'
+import { loanTableData } from '@banco/variables'
+import { DefaultLayout } from '@banco/layouts'
+import { SearchIcon } from '@chakra-ui/icons'
+import { useState } from 'react'
+import {
+  actions,
+  useAppDispatch,
+  useAppSelector,
+  store,
+  FILTER_SECTIONS,
+  FilterState,
+  Filter,
+  BooleanFilter,
+  RangeFilter,
+} from './state'
+import { Loan } from 'src/types'
+import { LoanActivity } from './components/LoanActivity'
+
+const headers: string[] = [
+  'DEAL',
+  'COLLATERAL',
+  'PRINCIPAL',
+  'INTEREST',
+  'STATUS',
+  'DUE DATE',
+]
+
+const data = loanTableData
+
+const Borrowed = () => {
+  const [currLoan, setCurrLoan] = useState<Loan>()
+  const textColor = useColorModeValue('gray.700', 'white')
+  const dispatch = useAppDispatch()
+  const filteredLoans = data
+
+  return (
+    <Flex direction={'column'}>
+      <Flex>
+        <Heading mt="0px" fontFamily="Vesterbro">
+          Lend
+        </Heading>
+        <Heading
+          ml="5px"
+          mt="0px"
+          fontFamily="Vesterbro"
+          color="aquamarine.400"
+        >
+          Tezos
+        </Heading>
+      </Flex>
+      <Flex>
+        <Card
+          p="16px"
+          overflowX={{ sm: 'scroll', xl: 'hidden' }}
+          w="70%"
+          mr="20px"
+        >
+          <Text>Your Loans</Text>
+          <Table variant="simple" color={textColor}>
+            <Thead>
+              <Tr my=".8rem" ps="0px">
+                {headers.map((caption, idx) => {
+                  return (
+                    <Th
+                      color="gray.400"
+                      key={idx}
+                      ps={idx === 0 ? '0px' : null}
+                    >
+                      {caption}
+                    </Th>
+                  )
+                })}
+              </Tr>
+            </Thead>
+            <Tbody>
+              {filteredLoans.map((row) => {
+                return (
+                  <BorrowedRow
+                    loan={row}
+                    key={row.loanID}
+                    setLoanData={setCurrLoan}
+                  />
+                )
+              })}
+            </Tbody>
+          </Table>
+        </Card>
+        <Flex w="30%" flexDirection={'column'} mr="20px">
+          <Card h="100%" mb="20px" w="100%">
+            <Text>Activity</Text>
+            {currLoan && <LoanActivity loan={currLoan} />}
+            {!currLoan && (
+              <Text color={'gray.400'}>Select a loan to view activity</Text>
+            )}
+          </Card>
+
+          <CreditRating />
+        </Flex>
+      </Flex>
+    </Flex>
+  )
+}
+
+export const BorrowedPage = () => {
+  // Chakra Color Mode
+
+  const iconBoxInside = useColorModeValue('white', 'white')
+  return (
+    <Provider store={store}>
+      <DefaultLayout>
+        <Flex flexDirection="column" pt={{ base: '120px', md: '75px' }}>
+          <Borrowed />
+        </Flex>
+      </DefaultLayout>
+    </Provider>
+  )
+}
