@@ -79,7 +79,6 @@ const ApplyNew = () => {
   const inputBg = useColorModeValue('white', 'gray.800')
   const mainTeal = useColorModeValue('teal.300', 'teal.300')
   const [isModalOpen, setIsModalOpen] = useState(false)
-  console.log(formState)
   return (
     <Flex direction={'column'}>
       <ListModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />

@@ -90,6 +90,21 @@ export const CloseIcon = createIcon({
     />
   ),
 })
+
+export const WalletIcon = createIcon({
+  displayName: 'WalletIcon',
+  viewBox: '0 0 24 24',
+  path: (
+    <>
+      <path d="M14 9H22V15H14V9Z" fill="#1B1B1B" />
+      <path
+        d="M20 3H5C3.346 3 2 4.346 2 6V18C2 19.654 3.346 21 5 21H20C21.103 21 22 20.103 22 19V17H14C12.897 17 12 16.103 12 15V9C12 7.897 12.897 7 14 7H22V5C22 3.897 21.103 3 20 3Z"
+        fill="#1B1B1B"
+      />
+    </>
+  ),
+})
+
 export const LoadingIcon = createIcon({
   displayName: ':LoadingIcon',
   viewBox: '0 0 496 496',
@@ -212,32 +227,32 @@ export const EthLogo = createIcon({
         <g>
           <polygon
             fill="#343434"
-            fill-rule="nonzero"
+            fillRule="nonzero"
             points="392.07,0 383.5,29.11 383.5,873.74 392.07,882.29 784.13,650.54 "
           />
           <polygon
             fill="#8C8C8C"
-            fill-rule="nonzero"
+            fillRule="nonzero"
             points="392.07,0 -0,650.54 392.07,882.29 392.07,472.33 "
           />
           <polygon
             fill="#3C3C3B"
-            fill-rule="nonzero"
+            fillRule="nonzero"
             points="392.07,956.52 387.24,962.41 387.24,1263.28 392.07,1277.38 784.37,724.89 "
           />
           <polygon
             fill="#8C8C8C"
-            fill-rule="nonzero"
+            fillRule="nonzero"
             points="392.07,1277.38 392.07,956.52 -0,724.89 "
           />
           <polygon
             fill="#141414"
-            fill-rule="nonzero"
+            fillRule="nonzero"
             points="392.07,882.29 784.13,650.54 392.07,472.33 "
           />
           <polygon
             fill="#393939"
-            fill-rule="nonzero"
+            fillRule="nonzero"
             points="0,650.54 392.07,882.29 392.07,472.33 "
           />
         </g>
@@ -309,7 +324,7 @@ export const TriangleIcon = createIcon({
   viewBox: '0 0 8 4',
   path: (
     <path
-      fill-rule="evenodd"
+      fillRule="evenodd"
       clip-rule="evenodd"
       d="M0.836523 1.0577C0.525593 0.741599 0.749572 0.207199 1.19302 0.207199H6.7787C7.2262 0.207199 7.4484 0.749799 7.1294 1.0636L4.2902 3.8564C4.0933 4.0501 3.7767 4.0475 3.5831 3.8506L0.836523 1.0577Z"
       fill="#currentColor"
@@ -735,22 +750,22 @@ export const StatsIcon = createIcon({
   ),
 })
 
-export const WalletIcon = createIcon({
-  displayName: 'WalletIcon',
-  viewBox: '0 0 24 24',
-  path: (
-    <g>
-      <path
-        fill="currentColor"
-        d="M4.447 4.818h14.062c.164 0 .328.01.491.031a2.9 2.9 0 00-3.406-2.441L4.03 4.382h-.013a2.9 2.9 0 00-1.805 1.149 3.848 3.848 0 012.236-.713zM18.51 5.875H4.446a2.816 2.816 0 00-2.813 2.812v8.438a2.816 2.816 0 002.813 2.812h14.062a2.815 2.815 0 002.813-2.812V8.687a2.815 2.815 0 00-2.813-2.812zm-2.088 8.437a1.406 1.406 0 110-2.811 1.406 1.406 0 010 2.811z"
-      />
-      <path
-        fill="currentColor"
-        d="M1.656 11.651V7.28c0-.952.528-2.549 2.358-2.895 1.553-.291 3.091-.291 3.091-.291s1.011.703.176.703-.813 1.077 0 1.077 0 1.032 0 1.032L4.007 10.62l-2.35 1.032z"
-      />
-    </g>
-  ),
-})
+// export const WalletIcon = createIcon({
+//   displayName: 'WalletIcon',
+//   viewBox: '0 0 24 24',
+//   path: (
+//     <g>
+//       <path
+//         fill="currentColor"
+//         d="M4.447 4.818h14.062c.164 0 .328.01.491.031a2.9 2.9 0 00-3.406-2.441L4.03 4.382h-.013a2.9 2.9 0 00-1.805 1.149 3.848 3.848 0 012.236-.713zM18.51 5.875H4.446a2.816 2.816 0 00-2.813 2.812v8.438a2.816 2.816 0 002.813 2.812h14.062a2.815 2.815 0 002.813-2.812V8.687a2.815 2.815 0 00-2.813-2.812zm-2.088 8.437a1.406 1.406 0 110-2.811 1.406 1.406 0 010 2.811z"
+//       />
+//       <path
+//         fill="currentColor"
+//         d="M1.656 11.651V7.28c0-.952.528-2.549 2.358-2.895 1.553-.291 3.091-.291 3.091-.291s1.011.703.176.703-.813 1.077 0 1.077 0 1.032 0 1.032L4.007 10.62l-2.35 1.032z"
+//       />
+//     </g>
+//   ),
+// })
 
 export const VisaIcon = createIcon({
   displayName: 'VisaIcon',

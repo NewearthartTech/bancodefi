@@ -7,6 +7,7 @@ import {
   AdminNavbar,
   Sidebar,
   FixedPlugin,
+  Header,
 } from '@banco/components'
 // Layout components
 import React, { useState } from 'react'
@@ -113,7 +114,10 @@ export const DefaultLayout = ({ children }: DefaultLayout) => {
         }}
       >
         <PanelContent>
-          <PanelContainer pt="0px">{children}</PanelContainer>
+          <PanelContainer pt="0px">
+            <Header />
+            {children}
+          </PanelContainer>
         </PanelContent>
 
         <Footer />

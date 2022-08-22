@@ -137,8 +137,6 @@ const Loans = () => {
   const dispatch = useAppDispatch()
   const bundled = useAppSelector((state) => state.filter.filterBundled)
   const filterState = useAppSelector((state) => state.filter)
-  console.log(filterState)
-  console.log('bundled', bundled)
   const filteredLoans = filterLoans(data, filterState)
 
   return (
