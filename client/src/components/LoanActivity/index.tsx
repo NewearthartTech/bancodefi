@@ -1,14 +1,23 @@
 import { Loan } from '@banco/types/'
-import { Avatar, Flex, Text, useColorModeValue } from '@chakra-ui/react'
+import {
+  Avatar,
+  Button,
+  Flex,
+  FlexProps,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react'
 
 interface LoanActivityRow {
   info: string
   date: string
 }
 
-interface LoanActivityProps {
+interface LoanActivityProps extends FlexProps {
   loan: Loan
 }
+
+const repayLoan = (loan: Loan) => {}
 
 const getLoanActivityByID = (loan: string): LoanActivityRow[] => {
   return [
@@ -19,13 +28,13 @@ const getLoanActivityByID = (loan: string): LoanActivityRow[] => {
   ]
 }
 
-export const LoanActivity = ({ loan }: LoanActivityProps) => {
+export const LoanActivity = ({ loan, ...props }: LoanActivityProps) => {
   const { loanID, loanRequester, requesterPFP } = loan
   const loanActivity = getLoanActivityByID(loanID)
 
   const textColor = useColorModeValue('gray.700', 'white')
   return (
-    <Flex flexDirection={'column'}>
+    <Flex flexDirection={'column'} {...props}>
       <Flex
         align="center"
         py=".8rem"
@@ -61,6 +70,15 @@ export const LoanActivity = ({ loan }: LoanActivityProps) => {
             By: {loanRequester}
           </Text>
         </Flex>
+        <Button
+          variant="dark"
+          onClick={() => {
+            repayLoan(loan)
+          }}
+          ml="auto"
+        >
+          Repay Loan
+        </Button>
       </Flex>
 
       {loanActivity.map((activity) => {

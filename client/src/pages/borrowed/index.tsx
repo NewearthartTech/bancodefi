@@ -34,7 +34,7 @@ import {
 } from '@banco/components'
 import { IoCheckmarkDoneCircleSharp } from 'react-icons/io5'
 import { clone } from 'lodash'
-import { BorrowedRow } from './components'
+import { FundBorrowRow, LoanActivity } from '@banco/components'
 import { loanTableData } from '@banco/variables'
 import { DefaultLayout } from '@banco/layouts'
 import { SearchIcon } from '@chakra-ui/icons'
@@ -51,7 +51,6 @@ import {
   RangeFilter,
 } from './state'
 import { Loan } from 'src/types'
-import { LoanActivity } from './components/LoanActivity'
 
 const headers: string[] = [
   'DEAL',
@@ -112,7 +111,7 @@ const Borrowed = () => {
             <Tbody>
               {filteredLoans.map((row) => {
                 return (
-                  <BorrowedRow
+                  <FundBorrowRow
                     loan={row}
                     key={row.loanID}
                     setLoanData={setCurrLoan}

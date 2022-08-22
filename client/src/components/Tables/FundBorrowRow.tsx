@@ -56,7 +56,7 @@ const getDueDateText = (loan: Loan) => {
   }
 }
 
-export const BorrowedRow = ({ loan, key, setLoanData }: LoanRow) => {
+export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
   const {
     loanID,
     loanRequester,
@@ -73,7 +73,14 @@ export const BorrowedRow = ({ loan, key, setLoanData }: LoanRow) => {
   const dueDateText = getDueDateText(loan).split(' ')
 
   return (
-    <Tr key={key} onClick={() => setLoanData(loan)}>
+    <Tr
+      key={key}
+      onClick={() => setLoanData(loan)}
+      _hover={{
+        cursor: 'pointer',
+        bg: 'gray.100',
+      }}
+    >
       <Td minWidth={{ sm: '125px' }} pl="0px">
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
           <Avatar
