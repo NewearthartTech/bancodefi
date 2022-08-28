@@ -1,7 +1,10 @@
 name: Deploy to Testnet
-on: [push]
+on: 
+  push:
+      branches:
+        - cicd
 jobs:
-  Explore-GitHub-Actions:
+  Deploy-to-DO:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
