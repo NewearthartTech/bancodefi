@@ -173,7 +173,8 @@ const ApplyNew = () => {
 
                     const { account: requesterEvmAddress } = await evmConnect()
 
-                    if(tokenOwner != requesterEvmAddress)
+                    
+                    if(tokenOwner.toLowerCase() != requesterEvmAddress.toLowerCase())
                       throw new Error("You don't own this ")
                     
     
@@ -333,14 +334,14 @@ const ApplyNew = () => {
                   requesterEvmAddress,
                 })
 
-                debugger
-
-                throw new Error('test error')
+                
+                
               } catch (error: any) {
                 //todo: Show connection error here
                 console.error(`failed to save ${error}`)
+                setIsModalOpen(true)
               }
-              setIsModalOpen(true)
+              
             }}
           >
             List Loan Request
