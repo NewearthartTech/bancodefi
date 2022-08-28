@@ -17,10 +17,13 @@
     "@reduxjs/toolkit": "^1.8.1",
     "apexcharts": "^3.27.3",
     "classnames": "2.3.1",
+    "constate": "^3.3.2",
     "dayjs": "1.11.5",
+    "ethers": "^5.7.0",
     "framer-motion": "^4.1.17",
     "match-sorter": "6.3.0",
     "moment": "2.29.1",
+    "next": "10.0.0",
     "node-sass": "7.0.1",
     "nouislider": "15.0.0",
     "numeral": "2.0.6",
@@ -32,15 +35,15 @@
     "react-dom": "16.14.0",
     "react-icons": "^4.2.0",
     "react-jvectormap": "0.0.16",
+    "react-redux": "^8.0.1",
     "react-router-dom": "5.2.1",
     "react-scripts": "5.0.0",
     "react-swipeable-views": "0.14.0",
     "react-table": "7.7.0",
-    "react-redux": "^8.0.1",
     "react-tagsinput": "3.19.0",
+    "sha3": "^2.1.4",
     "stylis": "^4.0.13",
-    "stylis-plugin-rtl": "^2.1.1",
-    "next": "10.0.0"
+    "stylis-plugin-rtl": "^2.1.1"
   },
   "resolutions": {
     "react-error-overlay": "6.0.9"
@@ -52,25 +55,27 @@
     "build": "mv ./lib/config/env.ts ./lib/config/bckp.ts && mv ./lib/config/prod.ts ./lib/config/env.ts && next build && next export && mv ./lib/config/env.ts ./lib/config/prod.ts && mv ./lib/config/bckp.ts ./lib/config/env.ts",
     "build-test": "next build && next export",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generateTypes:localhost": "openapi-generator-cli generate -i http://localhost:5012/swagger/index.html -o /src/generated_server -g typescript-axios"
   },
   "devDependencies": {
-    "@types/react-dom": "18.0.6",
-    "@types/react": "16.14.0",
-    "@types/react-router-dom": "5.3.3",
     "@babel/core": "7.14.0",
-    "typescript": "4.7.4",
     "@babel/plugin-transform-react-jsx-source": "^7.14.5",
+    "@metamask/eslint-config": "^2.0.0",
+    "@metamask/onboarding": "^1.0.0",
+    "@openapitools/openapi-generator-cli": "^2.5.1",
+    "@taquito/taquito": "12.0.0",
+    "@temple-wallet/dapp": "7.0.0",
+    "@types/react": "16.14.0",
+    "@types/react-dom": "18.0.6",
+    "@types/react-router-dom": "5.3.3",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-prettier": "3.4.0",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.9",
     "next-transpile-modules": "^9.0.0",
     "prettier": "2.2.1",
-    "@metamask/eslint-config": "^2.0.0",
-    "@metamask/onboarding": "^1.0.0",
-    "@temple-wallet/dapp": "7.0.0",
-    "@taquito/taquito": "12.0.0"
+    "typescript": "4.7.4"
   },
   "browserslist": {
     "production": [

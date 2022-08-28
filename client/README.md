@@ -268,3 +268,18 @@ Facebook: <https://www.facebook.com/simmmple.web>
 Dribbble: <https://dribbble.com/simmmple>
 
 Instagram: <https://www.instagram.com/simmmple.web>
+
+
+## generate swagger types
+docker run --rm -v $(pwd):/out openapitools/openapi-generator-cli generate  -i http://host.docker.internal:5012/swagger/v2/swagger.yaml -o /out/src/generated_server -g typescript-axios
+
+## copy EVM types
+cp -r ../evmApp/typechain-types/ ./src/evm_types
+
+## To run with local Server
+cp .env.template .env.local
+docker-compose -f ../docker-compose.yml up -d
+yarn dev
+
+browse to http://localhost:5012/swagger/index.html to verify server is working
+

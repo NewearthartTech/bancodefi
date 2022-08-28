@@ -2,6 +2,7 @@
 /* -------------------------------------------------------------------------- */
 
 import { createSlice } from '@reduxjs/toolkit'
+import { ALoan } from 'src/generated_server'
 
 // Types
 /* -------------------------------------------------------------------------- */
@@ -16,14 +17,14 @@ export type ActiveOverlay =
 
 export type LoanDurationWindow = 'days' | 'months' | 'years'
 
-export interface FormState {
-  nftVerified: boolean
-  ERCaddress: string
+export type FormState = ALoan & {
+  /*nftVerified: boolean
+  erCaddress: string
   tokenAddress: string
   loanAmount: number
   loanDuration: number
   loanDurationWindow: LoanDurationWindow
-  interestAmount: number
+  interestAmount: number*/
 }
 
 export type FilterType = 'boolean' | 'range'
@@ -40,12 +41,14 @@ export interface Filter {
 
 const initialState: FormState = {
   nftVerified: false,
-  ERCaddress: '',
+  erCaddress: '',
   tokenAddress: '',
   loanAmount: 0,
   loanDuration: 0,
   loanDurationWindow: 'days',
   interestAmount: 0,
+  requesterEvmAddress:"",
+  requesterTzAddress:""
 }
 
 // Slice
@@ -59,7 +62,7 @@ export const { reducer, actions } = createSlice({
       state.nftVerified = action.payload
     },
     setERCAddress(state, action: { payload: string }) {
-      state.ERCaddress = action.payload
+      state.erCaddress = action.payload
     },
 
     setTokenAddress(state, action: { payload: string }) {

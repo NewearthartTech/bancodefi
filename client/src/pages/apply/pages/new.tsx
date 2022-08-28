@@ -58,6 +58,10 @@ import {
   store,
   FormState,
 } from '../state'
+import { LoansApi, ALoan } from '../../../generated_server'
+import { useConnect as useTzConnect } from '../../../web3/tzUtils'
+import { useConnectCalls as useEvmConnect } from '../../../web3/evmUtils'
+import {AssetFaucet__factory} from "../../../evm_types"
 
 const headers: string[] = [
   'DEAL',
@@ -69,7 +73,8 @@ const headers: string[] = [
 ]
 
 const verifyNFT = (formState: FormState, dispatch) => {
-  dispatch(actions.setVerified(true))
+    dispatch(actions.setVerified(true))
+  
 }
 
 const ApplyNew = () => {
@@ -79,6 +84,8 @@ const ApplyNew = () => {
   const inputBg = useColorModeValue('white', 'gray.800')
   const mainTeal = useColorModeValue('teal.300', 'teal.300')
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const tzConnect = useTzConnect()
+  const { connect: evmConnect, readOnlyWeb3: evmRO } = useEvmConnect()
   return (
     <Flex direction={'column'}>
       <ListModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
@@ -151,8 +158,33 @@ const ApplyNew = () => {
               />
               <Button
                 variant="green"
-                onClick={() => {
-                  verifyNFT(formState, dispatch)
+                onClick={async () => {
+
+                  try {
+
+                    if(!formState.erCaddress || !formState.tokenAddress)
+                      throw new Error("token adddress and Id are required")
+
+                    const web3ro = await evmRO();
+
+                    const ctx = AssetFaucet__factory.connect(formState.erCaddress, web3ro);
+
+                    const tokenOwner = await  ctx.ownerOf(formState.tokenAddress)
+
+                    const { account: requesterEvmAddress } = await evmConnect()
+
+                    if(tokenOwner != requesterEvmAddress)
+                      throw new Error("You don't own this ")
+                    
+    
+                    verifyNFT(formState, dispatch)
+                  } catch (error: any) {
+                    //todo: Show connection error here
+                    console.error(`failed to save ${error}`)
+                  }
+
+                  
+                  
                 }}
               >
                 Verify
@@ -279,7 +311,35 @@ const ApplyNew = () => {
           <Button
             width="100%"
             variant="aquamarine"
-            onClick={() => {
+            onClick={async () => {
+              try {
+                console.log(JSON.stringify(formState))
+
+                const { accountPkh: requesterTzAddress } = await tzConnect()
+                const { account: requesterEvmAddress } = await evmConnect()
+
+                console.log(
+                  `tz account ${requesterTzAddress}, evmAddress ${requesterEvmAddress}`,
+                )
+
+                const api = new LoansApi(
+                  undefined,
+                  process.env.NEXT_PUBLIC_SERVER_URL,
+                )
+
+                const done = await api.apiLoansApplyPost({
+                  ...formState,
+                  requesterTzAddress,
+                  requesterEvmAddress,
+                })
+
+                debugger
+
+                throw new Error('test error')
+              } catch (error: any) {
+                //todo: Show connection error here
+                console.error(`failed to save ${error}`)
+              }
               setIsModalOpen(true)
             }}
           >

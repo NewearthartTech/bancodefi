@@ -6,6 +6,8 @@ services:
     image: mongo:3.6
     entrypoint: [ "/usr/bin/mongod", "--smallfiles", "--bind_ip_all"]
 
+  server:
+    image: newearthart/bancoserver:1.0
     ports:
-      - 27017:27017
+      - 5012:80
 

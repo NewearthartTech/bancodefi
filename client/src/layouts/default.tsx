@@ -20,6 +20,8 @@ import MainPanel from '../components/Layout/MainPanel'
 import PanelContainer from '../components/Layout/PanelContainer'
 import PanelContent from '../components/Layout/PanelContent'
 import { Fonts } from '@banco/theme'
+import { TzAppProvider } from '../web3/tzUtils'
+import { EvmProvider } from '../web3/evmUtils'
 
 interface DefaultLayout extends ReactChildren {}
 
@@ -101,27 +103,31 @@ export const DefaultLayout = ({ children }: DefaultLayout) => {
   // Chakra Color Mode
   return (
     <ChakraProvider theme={theme} resetCSS={false}>
-      <Fonts />
-      <Sidebar
-        routes={routes}
-        logoText={'Banco'}
-        display="none"
-        sidebarVariant={sidebarVariant}
-      />
-      <MainPanel
-        w={{
-          base: 'calc(100% - 295px)',
-        }}
-      >
-        <PanelContent>
-          <PanelContainer pt="0px">
-            <Header />
-            {children}
-          </PanelContainer>
-        </PanelContent>
+      <TzAppProvider appName="banco">
+        <EvmProvider>
+          <Fonts />
+          <Sidebar
+            routes={routes}
+            logoText={'Banco'}
+            display="none"
+            sidebarVariant={sidebarVariant}
+          />
+          <MainPanel
+            w={{
+              base: 'calc(100% - 295px)',
+            }}
+          >
+            <PanelContent>
+              <PanelContainer pt="0px">
+                <Header />
+                {children}
+              </PanelContainer>
+            </PanelContent>
 
-        <Footer />
-      </MainPanel>
+            <Footer />
+          </MainPanel>
+        </EvmProvider>
+      </TzAppProvider>
     </ChakraProvider>
   )
 }
