@@ -105,6 +105,20 @@ export const WalletIcon = createIcon({
   ),
 })
 
+export const MetaMaskIcon = createIcon({
+  displayName: 'MetaMaskIcon',
+  viewBox: '0 0 24 24',
+  path: (
+    <>
+      <path d="M14 9H22V15H14V9Z" fill="#1B1B1B" />
+      <path
+        d="M20 3H5C3.346 3 2 4.346 2 6V18C2 19.654 3.346 21 5 21H20C21.103 21 22 20.103 22 19V17H14C12.897 17 12 16.103 12 15V9C12 7.897 12.897 7 14 7H22V5C22 3.897 21.103 3 20 3Z"
+        fill="#1B1B1B"
+      />
+    </>
+  ),
+})
+
 export const LoadingIcon = createIcon({
   displayName: ':LoadingIcon',
   viewBox: '0 0 496 496',
