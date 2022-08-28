@@ -2,7 +2,7 @@
 declare type SetState<T> =
   | React.Dispatch<React.SetStateAction<T>>
   | ((x: T) => void)
-declare interface ReactChildren {
+export interface ReactChildren {
   children?: React.ReactNode
 }
 
