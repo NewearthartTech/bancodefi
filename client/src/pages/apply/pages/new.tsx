@@ -61,7 +61,7 @@ import {
 import { LoansApi, ALoan } from '../../../generated_server'
 import { useConnect as useTzConnect } from '../../../web3/tzUtils'
 import { useConnectCalls as useEvmConnect } from '../../../web3/evmUtils'
-import {AssetFaucet__factory} from "../../../evm_types"
+import { AssetFaucet__factory } from '../../../evm_types'
 
 const headers: string[] = [
   'DEAL',
@@ -73,8 +73,7 @@ const headers: string[] = [
 ]
 
 const verifyNFT = (formState: FormState, dispatch) => {
-    dispatch(actions.setVerified(true))
-  
+  dispatch(actions.setVerified(true))
 }
 
 const ApplyNew = () => {
@@ -159,33 +158,32 @@ const ApplyNew = () => {
               <Button
                 variant="green"
                 onClick={async () => {
-
                   try {
+                    if (!formState.erCaddress || !formState.tokenAddress)
+                      throw new Error('token adddress and Id are required')
 
-                    if(!formState.erCaddress || !formState.tokenAddress)
-                      throw new Error("token adddress and Id are required")
+                    const web3ro = await evmRO()
 
-                    const web3ro = await evmRO();
+                    const ctx = AssetFaucet__factory.connect(
+                      formState.erCaddress,
+                      web3ro,
+                    )
 
-                    const ctx = AssetFaucet__factory.connect(formState.erCaddress, web3ro);
-
-                    const tokenOwner = await  ctx.ownerOf(formState.tokenAddress)
+                    const tokenOwner = await ctx.ownerOf(formState.tokenAddress)
 
                     const { account: requesterEvmAddress } = await evmConnect()
 
-                    
-                    if(tokenOwner.toLowerCase() != requesterEvmAddress.toLowerCase())
+                    if (
+                      tokenOwner.toLowerCase() !=
+                      requesterEvmAddress.toLowerCase()
+                    )
                       throw new Error("You don't own this ")
-                    
-    
+
                     verifyNFT(formState, dispatch)
                   } catch (error: any) {
                     //todo: Show connection error here
                     console.error(`failed to save ${error}`)
                   }
-
-                  
-                  
                 }}
               >
                 Verify
@@ -333,15 +331,11 @@ const ApplyNew = () => {
                   requesterTzAddress,
                   requesterEvmAddress,
                 })
-
-                
-                
               } catch (error: any) {
                 //todo: Show connection error here
                 console.error(`failed to save ${error}`)
                 setIsModalOpen(true)
               }
-              
             }}
           >
             List Loan Request
