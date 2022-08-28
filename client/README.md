@@ -276,3 +276,10 @@ docker run --rm -v $(pwd):/out openapitools/openapi-generator-cli generate  -i h
 ## copy EVM types
 cp -r ../evmApp/typechain-types/ ./src/evm_types
 
+## To run with local Server
+cp .env.template .env.local
+docker-compose -f ../docker-compose.yml up -d
+yarn dev
+
+browse to http://localhost:5012/swagger/index.html to verify server is working
+
