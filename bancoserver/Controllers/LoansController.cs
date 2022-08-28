@@ -20,12 +20,21 @@ public class LoansController : ControllerBase
         _db = db;
     }
 
-    [HttpGet("listLoans")]
-    public async Task<ALoan[]> List()
+    [HttpGet("byId/{loanId}")]
+    public async Task<ALoan> List(string loanId)
     {
         var loanCollection = _db.getCollection<ALoan>();
 
-        var loans = await  loanCollection.Find(l => true).Limit(50).ToListAsync();
+        return await loanCollection.Find(l => l.id == loanId).SingleAsync();
+        
+    }
+
+    [HttpGet("listLoans/{status}")]
+    public async Task<ALoan[]> List(LoanStatus status)
+    {
+        var loanCollection = _db.getCollection<ALoan>();
+
+        var loans = await  loanCollection.Find(l => l.LoanStatus == status).Limit(50).ToListAsync();
 
         return loans.ToArray();
     }
