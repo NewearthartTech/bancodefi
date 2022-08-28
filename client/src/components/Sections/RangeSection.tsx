@@ -15,6 +15,7 @@ export const RangeSection = ({
   setValue,
   ...props
 }: RangeSectionProps) => {
+  console.log('min, max', min, max)
   return (
     <Flex
       mt="20px"

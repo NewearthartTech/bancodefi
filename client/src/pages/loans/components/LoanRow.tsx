@@ -17,10 +17,9 @@ import { getShortenedWalletAddress } from 'src/utils'
 
 interface LoanRow {
   loan: Loan
-  key: string
 }
 
-export const LoanRow = ({ loan, key }: LoanRow) => {
+export const LoanRow = ({ loan }: LoanRow) => {
   const {
     id,
     requesterTzAddress,
@@ -32,7 +31,7 @@ export const LoanRow = ({ loan, key }: LoanRow) => {
   } = loan
   const textColor = useColorModeValue('gray.700', 'white')
   return (
-    <Tr key={key}>
+    <Tr key={id}>
       <Td minWidth={{ sm: '125px' }} pl="0px">
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
           {/* <Avatar
