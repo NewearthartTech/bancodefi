@@ -2,6 +2,7 @@
 /* -------------------------------------------------------------------------- */
 
 import { createSlice } from '@reduxjs/toolkit'
+import { FilterSection } from '@banco/components'
 
 // Types
 /* -------------------------------------------------------------------------- */
@@ -25,6 +26,7 @@ export interface FilterState {
   durationRange: number[]
   durationMin: number
   durationMax: number
+  filterSections: FilterSection[]
 }
 
 export type FilterType = 'boolean' | 'range'
@@ -50,6 +52,7 @@ const initialState: FilterState = {
   durationRange: [0, 100000],
   durationMin: 10,
   durationMax: 100,
+  filterSections: [],
 }
 
 // Slice
@@ -65,16 +68,40 @@ export const { reducer, actions } = createSlice({
     setPrincipalAmount(state, action: { payload: number[] }) {
       state.principalAmountRange = action.payload
     },
+
+    setPrincipalAmountMax(state, action: { payload: number }) {
+      state.principalAmountMax = action.payload
+    },
+
+    setPrincipalAmountMin(state, action: { payload: number }) {
+      state.principalAmountMin = action.payload
+    },
     setInterest(state, action: { payload: number[] }) {
       state.interestRange = action.payload
+    },
+    setInterestAmountMax(state, action: { payload: number }) {
+      state.interestMax = action.payload
+    },
+
+    setInterestAmountMin(state, action: { payload: number }) {
+      state.interestMin = action.payload
     },
     setDuration(state, action: { payload: number[] }) {
       state.durationRange = action.payload
     },
+
+    setDurationMax(state, action: { payload: number }) {
+      state.durationMax = action.payload
+    },
+
+    setDurationMin(state, action: { payload: number }) {
+      state.durationMin = action.payload
+    },
+    setFilterSections(state, action: { payload: FilterSection[] }) {
+      state.filterSections = action.payload
+    },
   },
 })
-
-import { FilterSection } from '@banco/components'
 
 export const FILTER_SECTIONS: FilterSection[] = [
   {
@@ -84,10 +111,10 @@ export const FILTER_SECTIONS: FilterSection[] = [
         type: 'range',
         props: {
           name: 'amount',
-          value: initialState.principalAmountRange,
+          getValue: (state: FilterState) => state.principalAmountRange,
           setValue: actions.setPrincipalAmount,
-          min: initialState.principalAmountMin,
-          max: initialState.principalAmountMax,
+          getMin: (state: FilterState) => state.principalAmountMin,
+          getMax: (state: FilterState) => state.principalAmountMax,
         },
       },
     ],
@@ -99,10 +126,11 @@ export const FILTER_SECTIONS: FilterSection[] = [
         type: 'range',
         props: {
           name: 'amount',
-          value: initialState.interestRange,
+
+          getValue: (state: FilterState) => state.interestRange,
           setValue: actions.setInterest,
-          min: initialState.interestMin,
-          max: initialState.interestMax,
+          getMin: (state: FilterState) => state.interestMin,
+          getMax: (state: FilterState) => state.interestMax,
         },
       },
     ],
@@ -114,10 +142,10 @@ export const FILTER_SECTIONS: FilterSection[] = [
         type: 'range',
         props: {
           name: 'amount',
-          value: initialState.durationRange,
+          getValue: (state: FilterState) => state.durationRange,
           setValue: actions.setDuration,
-          min: initialState.durationMin,
-          max: initialState.durationMax,
+          getMin: (state: FilterState) => state.durationMin,
+          getMax: (state: FilterState) => state.durationMax,
         },
       },
     ],

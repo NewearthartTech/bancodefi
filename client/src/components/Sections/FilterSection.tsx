@@ -1,4 +1,5 @@
 import { IconBox, RangeSelect, TriangleIcon } from '@banco/components'
+import { FilterState } from '@banco/pages/loans/state'
 import { Flex, Button, Text } from '@chakra-ui/react'
 import { useState } from 'react'
 import { RangeSection, RangeSectionProps } from './RangeSection'
@@ -8,6 +9,7 @@ export interface FilterSection {
   name: string
   children: FilterSectionChild[]
   dispatch?: any
+  filterState?: FilterState
 }
 
 export type FilterSectionChild = {
@@ -15,11 +17,21 @@ export type FilterSectionChild = {
   props: FilterSectionChildProps
 }
 
+type RangeSectionPropsCreator = Pick<RangeSectionProps, 'name' | 'setValue'> & {
+  getValue: (state: FilterState) => number[]
+  getMin: (state: FilterState) => number
+  getMax: (state: FilterState) => number
+}
+
 export type FilterSectionChildProps =
   | Pick<SwitchSectionProps, 'name' | 'selected' | 'setSelected'>
-  | Pick<RangeSectionProps, 'name' | 'min' | 'max' | 'value' | 'setValue'>
+  | RangeSectionPropsCreator
 
-const getChildSection = (filter: FilterSectionChild, dispatch) => {
+const getChildSection = (
+  filterState: FilterState,
+  filter: FilterSectionChild,
+  dispatch,
+) => {
   const { type, props } = filter
   switch (type) {
     case 'switch':
@@ -30,22 +42,35 @@ const getChildSection = (filter: FilterSectionChild, dispatch) => {
           {...(props as SwitchSectionProps)}
           setSelected={boolAction}
           border="none"
+          key={filter.props.name}
         />
       )
     case 'range':
-      const rangeAction = (val: number[]) =>
-        dispatch((props as RangeSectionProps).setValue(val))
+      const creatorProps = props as RangeSectionPropsCreator
+      const rangeProps: RangeSectionProps = {
+        min: creatorProps.getMin(filterState),
+        max: creatorProps.getMax(filterState),
+        value: creatorProps.getValue(filterState),
+        ...creatorProps,
+      }
+      const rangeAction = (val: number[]) => dispatch(rangeProps.setValue(val))
       return (
         <RangeSection
-          {...(props as RangeSectionProps)}
+          {...rangeProps}
           setValue={rangeAction}
           border="none"
+          key={filter.props.name}
         />
       )
   }
 }
 
-export const FilterSection = ({ name, children, dispatch }: FilterSection) => {
+export const FilterSection = ({
+  filterState,
+  name,
+  children,
+  dispatch,
+}: FilterSection) => {
   const [expanded, setExpanded] = useState(false)
 
   return (
@@ -107,7 +132,9 @@ export const FilterSection = ({ name, children, dispatch }: FilterSection) => {
       </Button>
       {expanded && (
         <Flex flexDirection="column">
-          {children.map((child) => getChildSection(child, dispatch))}
+          {children.map((child) =>
+            getChildSection(filterState, child, dispatch),
+          )}
         </Flex>
       )}
     </Flex>

@@ -1,3 +1,5 @@
+import { ALoan } from 'src/generated_server'
+
 // global.d.ts
 declare type SetState<T> =
   | React.Dispatch<React.SetStateAction<T>>
@@ -14,16 +16,4 @@ declare type DeepPartial<T> = T extends object
 
 export type LoanStatus = 'OPEN' | 'ACTIVE' | 'REPAID' | 'DEFAULTED'
 
-export type Loan = {
-  loanID: string
-  loanRequester: string
-  requesterPFP: string
-  collateralID: string
-  collectionName: string
-  principal: number
-  interestRate: number
-  duration: number
-  bundled: boolean
-  status: LoanStatus
-  dueDate?: string
-}
+export type Loan = ALoan & {}

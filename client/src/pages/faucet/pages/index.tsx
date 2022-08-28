@@ -32,6 +32,10 @@ import {
   TriangleIcon,
 } from '@banco/components'
 import { DefaultLayout } from '@banco/layouts'
+import { SearchIcon } from '@chakra-ui/icons'
+import { useState } from 'react'
+import { Loan } from 'src/types'
+import Link from 'next/link'
 
 const headers: string[] = [
   'DEAL',
@@ -43,8 +47,6 @@ const headers: string[] = [
 ]
 
 const mintEthTokens = () => {}
-
-const mintTezosTokens = () => {}
 
 type FaucetVariant = 'ETH' | 'Tezos'
 
@@ -88,14 +90,20 @@ const FaucetButton = ({ variant, ERCAddress }: FaucetButtonProps) => {
         backgroundImage=" linear-gradient(90deg, rgba(224, 225, 226, 0) 0%, #E0E1E2 49.52%, rgba(224, 225, 226, 0.15625) 99.04%);"
         height="1px"
       ></Flex>
-      <Button
-        variant="dark"
-        onClick={() => {
-          variant === 'ETH' ? mintEthTokens() : mintTezosTokens()
-        }}
+      <Link
+        href={
+          variant === 'ETH'
+            ? 'https://faucet.ghostnet.teztnets.xyz/'
+            : 'https://faucet.ghostnet.teztnets.xyz/'
+        }
+        passHref
       >
-        {variant === 'ETH' ? 'Mint ETH NFT Tokens' : 'Mint XTZ Tokens'}
-      </Button>
+        <a target="_blank">
+          <Button variant="dark">
+            {variant === 'ETH' ? 'Mint ETH NFT Tokens' : 'Mint XTZ Tokens'}
+          </Button>
+        </a>
+      </Link>
     </Card>
   )
 }
