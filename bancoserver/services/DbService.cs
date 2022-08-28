@@ -13,7 +13,7 @@ public interface IDbService
 public class MongoConfig
 {
     public string connectionString { get; set; } = "mongodb://mongodb?connect=direct";
-    public string dbName { get; set; } = "colourbox";
+    public string dbName { get; set; } = "bancoserver";
 }
 
 public class DbService : IDbService
