@@ -32,6 +32,8 @@ var app = builder.Build();
     });
 }
 
+app.UseDeveloperExceptionPage();
+
 app.UseCors(c =>
 {
     c.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();

@@ -170,6 +170,72 @@ export const LoansApiAxiosParamCreator = function (configuration?: Configuration
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {string} loanId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiLoansByIdLoanIdGet: async (loanId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'loanId' is not null or undefined
+            assertParamExists('apiLoansByIdLoanIdGet', 'loanId', loanId)
+            const localVarPath = `/api/Loans/byId/{loanId}`
+                .replace(`{${"loanId"}}`, encodeURIComponent(String(loanId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {LoanStatus} status 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiLoansListLoansStatusGet: async (status: LoanStatus, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'status' is not null or undefined
+            assertParamExists('apiLoansListLoansStatusGet', 'status', status)
+            const localVarPath = `/api/Loans/listLoans/{status}`
+                .replace(`{${"status"}}`, encodeURIComponent(String(status)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -188,6 +254,26 @@ export const LoansApiFp = function(configuration?: Configuration) {
          */
         async apiLoansApplyPost(aLoan?: ALoan, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ALoan>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiLoansApplyPost(aLoan, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {string} loanId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiLoansByIdLoanIdGet(loanId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ALoan>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiLoansByIdLoanIdGet(loanId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {LoanStatus} status 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiLoansListLoansStatusGet(status: LoanStatus, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ALoan>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiLoansListLoansStatusGet(status, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -209,6 +295,24 @@ export const LoansApiFactory = function (configuration?: Configuration, basePath
         apiLoansApplyPost(aLoan?: ALoan, options?: any): AxiosPromise<ALoan> {
             return localVarFp.apiLoansApplyPost(aLoan, options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @param {string} loanId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiLoansByIdLoanIdGet(loanId: string, options?: any): AxiosPromise<ALoan> {
+            return localVarFp.apiLoansByIdLoanIdGet(loanId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {LoanStatus} status 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiLoansListLoansStatusGet(status: LoanStatus, options?: any): AxiosPromise<Array<ALoan>> {
+            return localVarFp.apiLoansListLoansStatusGet(status, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -228,6 +332,28 @@ export class LoansApi extends BaseAPI {
      */
     public apiLoansApplyPost(aLoan?: ALoan, options?: AxiosRequestConfig) {
         return LoansApiFp(this.configuration).apiLoansApplyPost(aLoan, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} loanId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LoansApi
+     */
+    public apiLoansByIdLoanIdGet(loanId: string, options?: AxiosRequestConfig) {
+        return LoansApiFp(this.configuration).apiLoansByIdLoanIdGet(loanId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {LoanStatus} status 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LoansApi
+     */
+    public apiLoansListLoansStatusGet(status: LoanStatus, options?: AxiosRequestConfig) {
+        return LoansApiFp(this.configuration).apiLoansListLoansStatusGet(status, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
