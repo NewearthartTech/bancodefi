@@ -2,7 +2,7 @@ version: '2'
 
 services:
 
-  mongo:
+  mongodb:
     image: mongo:3.6
     entrypoint: [ "/usr/bin/mongod", "--smallfiles", "--bind_ip_all"]
 
