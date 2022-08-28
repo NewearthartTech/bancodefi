@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Provider } from 'react-redux'
 import {
   Flex,
@@ -38,7 +38,7 @@ import {
 import { DefaultLayout } from '@banco/layouts'
 import { useState } from 'react'
 import { Fonts } from '@banco/theme'
-import { ListModal } from '../components'
+import { ListModal, ModalState } from '../components'
 import {
   useAppDispatch,
   useAppSelector,
@@ -92,11 +92,44 @@ const ApplyNew = () => {
   const inputBg = useColorModeValue('white', 'gray.800')
   const mainTeal = useColorModeValue('teal.300', 'teal.300')
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalState, setModalState] = useState<ModalState>('processing')
+  const [modalError, setModalError] = useState('')
+  const [ethereumAccountConnected, setEthereumAccountConnected] = useState(
+    false,
+  )
+  const [tezosAccountConnected, setTezosAccountConnected] = useState(false)
+  useEffect(() => {
+    const checkTezosConnection = async () => {
+      try {
+        await tzConnect()
+        setTezosAccountConnected(true)
+      } catch (error) {
+        setTezosAccountConnected(false)
+      }
+    }
+
+    const checkEthereumConnection = async () => {
+      try {
+        await evmConnect()
+        setEthereumAccountConnected(true)
+      } catch (error) {
+        setEthereumAccountConnected(false)
+      }
+    }
+    checkTezosConnection()
+    checkEthereumConnection()
+  })
+
   const tzConnect = useTzConnect()
   const { connect: evmConnect, readOnlyWeb3: evmRO } = useEvmConnect()
   return (
     <Flex direction={'column'}>
-      <ListModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <ListModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        loadingState={modalState}
+        modalError={modalError}
+      />
       <Flex>
         <Heading mt="0px" fontFamily="Vesterbro">
           Borrow
@@ -331,8 +364,16 @@ const ApplyNew = () => {
           <Button
             width="100%"
             variant="aquamarine"
+            disabled={!(ethereumAccountConnected && tezosAccountConnected)}
+            background={
+              !(ethereumAccountConnected && tezosAccountConnected)
+                ? 'red.400'
+                : 'aquamarine.400'
+            }
             onClick={async () => {
               try {
+                setIsModalOpen(true)
+
                 console.log(JSON.stringify(formState))
 
                 const { accountPkh: requesterTzAddress } = await tzConnect()
@@ -352,14 +393,18 @@ const ApplyNew = () => {
                   requesterTzAddress,
                   requesterEvmAddress,
                 })
+                setModalState('success')
               } catch (error: any) {
                 //todo: Show connection error here
                 console.error(`failed to save ${error}`)
-                setIsModalOpen(true)
+                setModalState('error')
+                setModalError(`${error?.message || error}`)
               }
             }}
           >
-            List Loan Request
+            {!(ethereumAccountConnected && tezosAccountConnected)
+              ? 'Please Connect Your Wallets'
+              : 'List Loan Request'}
           </Button>
         </Card>
         <Flex flexDirection={'column'} w="520px">

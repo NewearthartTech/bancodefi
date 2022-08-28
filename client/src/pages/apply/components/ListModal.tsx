@@ -20,11 +20,13 @@ import {
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 
-type ModalState = 'processing' | 'success' | 'error'
+export type ModalState = 'processing' | 'success' | 'error'
 
 interface ListModalProps {
   isOpen: boolean
   onClose: () => void
+  loadingState: ModalState
+  modalError?: string
 }
 
 const getModalContent = (state: ModalState, error?: string) => {
@@ -57,9 +59,14 @@ const getModalContent = (state: ModalState, error?: string) => {
       )
     case 'error':
       return (
-        <Flex direction={'column'} alignItems="center" pb="40px">
-          <Text fontFamily={'Vesterbro'} fontSize="64px">
-            Loan Listed
+        <Flex
+          direction={'column'}
+          alignItems="center"
+          pb="40px"
+          justifyContent={'center'}
+        >
+          <Text fontFamily={'Vesterbro'} fontSize="64px" textAlign={'center'}>
+            Listing Failed
           </Text>
           <IconBox
             color="white"
@@ -70,6 +77,7 @@ const getModalContent = (state: ModalState, error?: string) => {
           >
             <CloseIcon w="200px" h="200px" />
           </IconBox>
+          <Text color="red.400">{error}</Text>
           <Button
             variant={'dark'}
             mt="20px"
@@ -85,9 +93,13 @@ const getModalContent = (state: ModalState, error?: string) => {
   }
 }
 
-export const ListModal = ({ isOpen, onClose }: ListModalProps) => {
-  const loadingState: ModalState = 'error'
-  const modalContent = getModalContent(loadingState, 'yas;dlfkg')
+export const ListModal = ({
+  isOpen,
+  onClose,
+  loadingState,
+  modalError,
+}: ListModalProps) => {
+  const modalContent = getModalContent(loadingState, modalError)
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
