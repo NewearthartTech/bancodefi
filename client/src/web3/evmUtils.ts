@@ -2,11 +2,23 @@ import { ethers } from 'ethers'
 import { useMemo, useRef, useState } from 'react'
 import { ChainConfigs, InjectedWeb3 } from './injectedWeb3'
 import constate from 'constate'
+import { Network, Alchemy } from 'alchemy-sdk'
+
+const settings = {
+  apiKey: process.env.REACT_APP_ALCHEMY_API_KEY,
+  network: Network.ETH_RINKEBY,
+}
+
+const alchemy = new Alchemy(settings)
+
+export function getAlchemy() {
+  return alchemy
+}
 
 export const [EvmProvider, useConnectCalls] = constate(
-    useWeb3,
-    (v) => v.connectCtx
-  )
+  useWeb3,
+  (v) => v.connectCtx,
+)
 
 function useWeb3() {
   const [chainConfigs, setChainConfigs] = useState<ChainConfigs>()
@@ -65,9 +77,7 @@ function useWeb3() {
     //return new ROContractCalls(web3, chainConfigs) as IROContractCalls
   }
 
-  const connect = async (props?: {
-    chainId?: string
-  }) => {
+  const connect = async (props?: { chainId?: string }) => {
     const { chainId } = props || {}
 
     try {
@@ -79,9 +89,12 @@ function useWeb3() {
         console.log('web3 : connecting using injected')
         const caller = new InjectedWeb3()
 
-        const {web3, account} = await caller.connect(chainConfigs, chainId||"4");
+        const { web3, account } = await caller.connect(
+          chainConfigs,
+          chainId || '4',
+        )
 
-        return {web3, account};
+        return { web3, account }
 
         /*
         return new SignedContractCalls(
