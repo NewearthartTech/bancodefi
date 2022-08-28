@@ -5,6 +5,7 @@ import { getShortenedWalletAddress } from 'src/utils'
 import { TempleWallet } from '@temple-wallet/dapp'
 import { TezosToolkit } from '@taquito/taquito'
 import { Card, MetaMaskIcon } from '@banco/components'
+import NextLink from 'next/link'
 
 export const Header = () => {
   const [isMetamaskInstalled, setIsMetamaskInstalled] = useState<boolean>(false)
@@ -152,6 +153,9 @@ export const Header = () => {
       position="relative"
       zIndex={10}
     >
+      <NextLink href={'https://mercuri.gitbook.io/banco-litepaper/'} passHref>
+        <Button variant="transparent-with-icon">Litepaper</Button>
+      </NextLink>
       <WalletIcon w="30px" h="30px" mr="20px" />
       <Button
         onClick={() => {
