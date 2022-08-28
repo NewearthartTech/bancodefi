@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using bancoserver.services;
+using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
 
 namespace bancoserver.Controllers;
 
@@ -7,25 +9,40 @@ namespace bancoserver.Controllers;
 public class LoansController : ControllerBase
 {
 
-    private readonly ILogger<LoansController> _logger;
+    readonly ILogger<LoansController> _logger;
+    readonly IDbService _db;
 
-    public LoansController(ILogger<LoansController> logger)
+    public LoansController(
+        IDbService db,
+        ILogger<LoansController> logger)
     {
         _logger = logger;
+        _db = db;
     }
 
-    [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<WeatherForecast> Get()
+    [HttpGet("listLoans")]
+    public async Task<ALoan[]> List()
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = DateTime.Now.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        })
-        .ToArray();
+        var loanCollection = _db.getCollection<ALoan>();
+
+        var loans = await  loanCollection.Find(l => true).Limit(50).ToListAsync();
+
+        return loans.ToArray();
+    }
+
+    [HttpPost("apply")]
+    public async Task<ALoan> Apply([FromBody] ALoan loan)
+    {
+        var loanCollection = _db.getCollection<ALoan>();
+
+        if (!string.IsNullOrWhiteSpace(loan.id))
+            throw new NotImplementedException();
+
+        await loanCollection.InsertOneAsync(loan);
+
+        return loan;
     }
 }
 
-public class ALoad
+
 

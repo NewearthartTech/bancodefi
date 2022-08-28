@@ -40,7 +40,7 @@ public class ALoan
     public long LoanDuration { get; set; }
 
     [Required]
-    public LoanDurationWindow   LoanDurationWindow { get; set; }
+    public LoanDurationWindow LoanDurationWindow { get; set; }
 
 
     /// <summary>
@@ -48,9 +48,34 @@ public class ALoan
     /// </summary>
     [Required]
     public float InterestAmount { get; set; }
+
+
+    public LoanStatus LoanStatus {get;set;}
+
+    [Required]
+    public string RequesterTzAddress { get; set; } = "";
+
+    [Required]
+    public string RequesterEvmAddress { get; set; } = "";
 }
 
+[Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+[System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
 public enum LoanDurationWindow { days, months, years}
+
+[Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+[System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+public enum LoanStatus {
+    state_created = 0,
+    state_bobFunded = 1,
+    state_movedToEscrow = 2,
+    state_refundToBob = 3,
+    state_refundToAlex = 4,
+    state_returned = 5,
+    state_defaulted = 6,
+    state_released = 7,
+    state_fortified = 8,
+}
 
 
 

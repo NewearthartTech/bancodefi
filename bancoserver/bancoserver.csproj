@@ -14,10 +14,6 @@
 
   <ItemGroup>
     <None Remove="MongoDB.Driver" />
-    <None Remove="services\" />
     <None Remove="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="services\" />
   </ItemGroup>
 </Project>
