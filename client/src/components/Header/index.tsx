@@ -1,10 +1,10 @@
-import { Button, Flex, Text } from '@chakra-ui/react'
+import { Button, Flex, Text, Image } from '@chakra-ui/react'
 import { WalletIcon } from '../Icons'
 import { useEffect, useState } from 'react'
 import { getShortenedWalletAddress } from 'src/utils'
 import { TempleWallet } from '@temple-wallet/dapp'
 import { TezosToolkit } from '@taquito/taquito'
-import { Card } from '@banco/components'
+import { Card, MetaMaskIcon } from '@banco/components'
 
 export const Header = () => {
   const [isMetamaskInstalled, setIsMetamaskInstalled] = useState<boolean>(false)
@@ -94,8 +94,9 @@ export const Header = () => {
             </Button>
           )}
           {ethereumAccount && (
-            <Flex>
-              <Text mb="10px">
+            <Flex width="200px" justifyContent={'center'} alignItems="center">
+              <MetaMaskIcon w="24px" h="24px" mr="10px" />
+              <Text color="gray.400" mb="10px">
                 {getShortenedWalletAddress(ethereumAccount)}
               </Text>
             </Flex>
@@ -123,7 +124,18 @@ export const Header = () => {
             </Button>
           )}
           {tezosAccount && (
-            <Text>{getShortenedWalletAddress(tezosAccountAddress)}</Text>
+            <Flex width="200px" justifyContent={'center'} alignItems="center">
+              <Image
+                src="/assets/img/templewallet.jpeg"
+                width="24px"
+                height={'24px'}
+                mr="10px"
+              ></Image>
+
+              <Text color="gray.400">
+                {getShortenedWalletAddress(tezosAccountAddress)}
+              </Text>
+            </Flex>
           )}
         </Card>
       </Flex>
@@ -145,6 +157,7 @@ export const Header = () => {
         onClick={() => {
           setShowWallets(true)
         }}
+        variant="transparent-with-icon"
       >
         Wallets
       </Button>
