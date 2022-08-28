@@ -62,6 +62,7 @@ import { LoansApi, ALoan } from '../../../generated_server'
 import { useConnect as useTzConnect } from '../../../web3/tzUtils'
 import { useConnectCalls as useEvmConnect } from '../../../web3/evmUtils'
 import { AssetFaucet__factory } from '../../../evm_types'
+import { getShortenedWalletAddress } from '@banco/utils'
 
 const headers: string[] = [
   'DEAL',
@@ -76,8 +77,28 @@ const verifyNFT = (formState: FormState, dispatch) => {
   dispatch(actions.setVerified(true))
 }
 
+type VerifiedStatus = 'unverified' | 'verifying' | 'errored' | 'verified'
+
+const getVerifyingContext = (status: VerifiedStatus) => {
+  switch (status) {
+    case 'unverified':
+      return 'Verify'
+    case 'verifying':
+      return 'Verifying'
+    case 'errored':
+      return 'Error'
+    case 'verified':
+      return 'Verified'
+  }
+}
+
 const ApplyNew = () => {
   const dispatch = useAppDispatch()
+  const [verificationStatus, setVerificationStatus] = useState<VerifiedStatus>(
+    'unverified',
+  )
+  const [verificationError, setVerificationError] = useState('')
+  const [ownerAddress, setOwnerAddress] = useState('')
   const formState = useAppSelector((state) => state.form)
   let mainText = useColorModeValue('gray.700', 'gray.200')
   const inputBg = useColorModeValue('white', 'gray.800')
@@ -157,8 +178,11 @@ const ApplyNew = () => {
               />
               <Button
                 variant="green"
+                backgroundColor={verificationError ? 'red' : undefined}
                 onClick={async () => {
                   try {
+                    setVerificationStatus('verifying')
+
                     if (!formState.erCaddress || !formState.tokenAddress)
                       throw new Error('token adddress and Id are required')
 
@@ -178,17 +202,24 @@ const ApplyNew = () => {
                       requesterEvmAddress.toLowerCase()
                     )
                       throw new Error("You don't own this ")
+                    setVerificationStatus('verified')
+                    setOwnerAddress(tokenOwner)
 
                     verifyNFT(formState, dispatch)
                   } catch (error: any) {
                     //todo: Show connection error here
                     console.error(`failed to save ${error}`)
+                    setVerificationStatus('errored')
+                    setVerificationError(`${error}`)
                   }
                 }}
               >
-                Verify
+                {getVerifyingContext(verificationStatus)}
               </Button>
             </InputGroup>
+            {verificationError !== '' && (
+              <Text color="red">{verificationError}</Text>
+            )}
           </Flex>
           <Flex
             alignItems={'start'}
@@ -350,7 +381,11 @@ const ApplyNew = () => {
                   NFT Name
                 </Text>
                 <Text my="0px">Collection Name</Text>
-                <Text mt="0px">Owner Address</Text>
+                <Text mt="0px">
+                  {ownerAddress
+                    ? getShortenedWalletAddress(ownerAddress)
+                    : 'Owner Address'}
+                </Text>
               </Flex>
             </Flex>
           </Card>
