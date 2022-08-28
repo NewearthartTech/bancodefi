@@ -21,27 +21,6 @@ export const Profile = () => {
 
   return (
     <Flex direction="column">
-      <Header
-        backgroundHeader={ProfileBgImage}
-        backgroundProfile={bgProfile}
-        avatarImage={avatar4}
-        name={'Esthera Jackson'}
-        email={'esthera@simmmple.com'}
-        tabs={[
-          {
-            name: 'OVERVIEW',
-            icon: <FaCube w="100%" h="100%" />,
-          },
-          {
-            name: 'TEAMS',
-            icon: <IoDocumentsSharp w="100%" h="100%" />,
-          },
-          {
-            name: 'PROJECTS',
-            icon: <FaPenFancy w="100%" h="100%" />,
-          },
-        ]}
-      />
       <Grid templateColumns={{ sm: '1fr', xl: 'repeat(3, 1fr)' }} gap="22px">
         <PlatformSettings
           title={'Platform Settings'}

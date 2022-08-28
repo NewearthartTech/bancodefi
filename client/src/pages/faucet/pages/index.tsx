@@ -31,18 +31,6 @@ import {
   TezosLogo,
   TriangleIcon,
 } from '@banco/components'
-import NextLink from 'next/link'
-
-import { IoCheckmarkDoneCircleSharp } from 'react-icons/io5'
-import { clone } from 'lodash'
-import {
-  FilterSection,
-  FilterSectionChild,
-  LoanRow,
-  SwitchSection,
-  SwitchSectionProps,
-} from './components'
-import { loanTableData } from '@banco/variables'
 import { DefaultLayout } from '@banco/layouts'
 import { SearchIcon } from '@chakra-ui/icons'
 import { useState } from 'react'

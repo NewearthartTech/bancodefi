@@ -35,20 +35,8 @@ import {
   TezosLogo,
   TriangleIcon,
 } from '@banco/components'
-import { IoCheckmarkDoneCircleSharp } from 'react-icons/io5'
-import { clone } from 'lodash'
-import {
-  FilterSection,
-  FilterSectionChild,
-  LoanRow,
-  SwitchSection,
-  SwitchSectionProps,
-} from './components'
-import { loanTableData } from '@banco/variables'
 import { DefaultLayout } from '@banco/layouts'
-import { SearchIcon } from '@chakra-ui/icons'
 import { useState } from 'react'
-import { Loan } from 'src/types'
 import { Fonts } from '@banco/theme'
 import { ListModal } from '../components'
 import {
@@ -142,7 +130,7 @@ const ApplyNew = () => {
                 borderRadius="inherit"
                 mr="4px"
                 onChange={(e) => {
-                  dispatch(actions.setERCAddress(e.target.value))
+                  dispatch(actions.setERCAddress((e as any).target.value))
                 }}
               />
               <Input
@@ -152,7 +140,7 @@ const ApplyNew = () => {
                 borderRadius="inherit"
                 mr="4px"
                 onChange={(e) => {
-                  dispatch(actions.setTokenAddress(e.target.value))
+                  dispatch(actions.setTokenAddress((e as any).target.value))
                 }}
               />
               <Button
@@ -220,7 +208,7 @@ const ApplyNew = () => {
                 mr="4px"
                 type="number"
                 onChange={(e) => {
-                  dispatch(actions.setLoanAmount(e.target.value))
+                  dispatch(actions.setLoanAmount((e as any).target.value))
                 }}
               />
             </InputGroup>
@@ -255,7 +243,7 @@ const ApplyNew = () => {
                 mr="4px"
                 type="number"
                 onChange={(e) => {
-                  dispatch(actions.setloanDuration(e.target.value))
+                  dispatch(actions.setloanDuration((e as any).target.value))
                 }}
               />
               <Select
@@ -263,7 +251,9 @@ const ApplyNew = () => {
                 bg="gray.400"
                 h="44px"
                 onChange={(e) => {
-                  dispatch(actions.setLoanDurationWindow(e.target.value))
+                  dispatch(
+                    actions.setLoanDurationWindow((e as any).target.value),
+                  )
                 }}
               >
                 <option value="days">Days</option>
@@ -302,7 +292,7 @@ const ApplyNew = () => {
                 mr="4px"
                 type="number"
                 onChange={(e) => {
-                  dispatch(actions.setInterestAmount(e.target.value))
+                  dispatch(actions.setInterestAmount((e as any).target.value))
                 }}
               />
             </InputGroup>
