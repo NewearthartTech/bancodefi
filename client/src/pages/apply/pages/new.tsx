@@ -35,20 +35,8 @@ import {
   TezosLogo,
   TriangleIcon,
 } from '@banco/components'
-import { IoCheckmarkDoneCircleSharp } from 'react-icons/io5'
-import { clone } from 'lodash'
-import {
-  FilterSection,
-  FilterSectionChild,
-  LoanRow,
-  SwitchSection,
-  SwitchSectionProps,
-} from './components'
-import { loanTableData } from '@banco/variables'
 import { DefaultLayout } from '@banco/layouts'
-import { SearchIcon } from '@chakra-ui/icons'
 import { useState } from 'react'
-import { Loan } from 'src/types'
 import { Fonts } from '@banco/theme'
 import { ListModal } from '../components'
 import {
@@ -61,7 +49,7 @@ import {
 import { LoansApi, ALoan } from '../../../generated_server'
 import { useConnect as useTzConnect } from '../../../web3/tzUtils'
 import { useConnectCalls as useEvmConnect } from '../../../web3/evmUtils'
-import {AssetFaucet__factory} from "../../../evm_types"
+import { AssetFaucet__factory } from '../../../evm_types'
 
 const headers: string[] = [
   'DEAL',
@@ -73,8 +61,7 @@ const headers: string[] = [
 ]
 
 const verifyNFT = (formState: FormState, dispatch) => {
-    dispatch(actions.setVerified(true))
-  
+  dispatch(actions.setVerified(true))
 }
 
 const ApplyNew = () => {
@@ -143,7 +130,7 @@ const ApplyNew = () => {
                 borderRadius="inherit"
                 mr="4px"
                 onChange={(e) => {
-                  dispatch(actions.setERCAddress(e.target.value))
+                  dispatch(actions.setERCAddress((e as any).target.value))
                 }}
               />
               <Input
@@ -153,39 +140,38 @@ const ApplyNew = () => {
                 borderRadius="inherit"
                 mr="4px"
                 onChange={(e) => {
-                  dispatch(actions.setTokenAddress(e.target.value))
+                  dispatch(actions.setTokenAddress((e as any).target.value))
                 }}
               />
               <Button
                 variant="green"
                 onClick={async () => {
-
                   try {
+                    if (!formState.erCaddress || !formState.tokenAddress)
+                      throw new Error('token adddress and Id are required')
 
-                    if(!formState.erCaddress || !formState.tokenAddress)
-                      throw new Error("token adddress and Id are required")
+                    const web3ro = await evmRO()
 
-                    const web3ro = await evmRO();
+                    const ctx = AssetFaucet__factory.connect(
+                      formState.erCaddress,
+                      web3ro,
+                    )
 
-                    const ctx = AssetFaucet__factory.connect(formState.erCaddress, web3ro);
-
-                    const tokenOwner = await  ctx.ownerOf(formState.tokenAddress)
+                    const tokenOwner = await ctx.ownerOf(formState.tokenAddress)
 
                     const { account: requesterEvmAddress } = await evmConnect()
 
-                    
-                    if(tokenOwner.toLowerCase() != requesterEvmAddress.toLowerCase())
+                    if (
+                      tokenOwner.toLowerCase() !=
+                      requesterEvmAddress.toLowerCase()
+                    )
                       throw new Error("You don't own this ")
-                    
-    
+
                     verifyNFT(formState, dispatch)
                   } catch (error: any) {
                     //todo: Show connection error here
                     console.error(`failed to save ${error}`)
                   }
-
-                  
-                  
                 }}
               >
                 Verify
@@ -222,7 +208,7 @@ const ApplyNew = () => {
                 mr="4px"
                 type="number"
                 onChange={(e) => {
-                  dispatch(actions.setLoanAmount(e.target.value))
+                  dispatch(actions.setLoanAmount((e as any).target.value))
                 }}
               />
             </InputGroup>
@@ -257,7 +243,7 @@ const ApplyNew = () => {
                 mr="4px"
                 type="number"
                 onChange={(e) => {
-                  dispatch(actions.setloanDuration(e.target.value))
+                  dispatch(actions.setloanDuration((e as any).target.value))
                 }}
               />
               <Select
@@ -265,7 +251,9 @@ const ApplyNew = () => {
                 bg="gray.400"
                 h="44px"
                 onChange={(e) => {
-                  dispatch(actions.setLoanDurationWindow(e.target.value))
+                  dispatch(
+                    actions.setLoanDurationWindow((e as any).target.value),
+                  )
                 }}
               >
                 <option value="days">Days</option>
@@ -304,7 +292,7 @@ const ApplyNew = () => {
                 mr="4px"
                 type="number"
                 onChange={(e) => {
-                  dispatch(actions.setInterestAmount(e.target.value))
+                  dispatch(actions.setInterestAmount((e as any).target.value))
                 }}
               />
             </InputGroup>
@@ -333,15 +321,11 @@ const ApplyNew = () => {
                   requesterTzAddress,
                   requesterEvmAddress,
                 })
-
-                
-                
               } catch (error: any) {
                 //todo: Show connection error here
                 console.error(`failed to save ${error}`)
                 setIsModalOpen(true)
               }
-              
             }}
           >
             List Loan Request

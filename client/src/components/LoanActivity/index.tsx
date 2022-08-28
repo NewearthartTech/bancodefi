@@ -1,4 +1,4 @@
-import { Loan } from '@banco/types/'
+import { Loan } from 'src/types/'
 import {
   Avatar,
   Button,

@@ -74,7 +74,7 @@ export const { reducer, actions } = createSlice({
   },
 })
 
-import { FilterSection } from '../components'
+import { FilterSection } from '@banco/components'
 
 export const FILTER_SECTIONS: FilterSection[] = [
   {

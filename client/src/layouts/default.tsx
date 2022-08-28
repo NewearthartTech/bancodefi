@@ -4,7 +4,6 @@ import {
   RtlProvider,
   Configurator,
   Footer,
-  AdminNavbar,
   Sidebar,
   FixedPlugin,
   Header,
@@ -22,6 +21,7 @@ import PanelContent from '../components/Layout/PanelContent'
 import { Fonts } from '@banco/theme'
 import { TzAppProvider } from '../web3/tzUtils'
 import { EvmProvider } from '../web3/evmUtils'
+import { ReactChildren } from '@banco/types'
 
 interface DefaultLayout extends ReactChildren {}
 

@@ -38,7 +38,7 @@ export function SearchBar(props) {
             bg="inherit"
             variant="transparent-with-icon"
             borderRadius="inherit"
-            _hover="none"
+            _hover={undefined}
             _active={{
               bg: 'inherit',
               transform: 'none',

@@ -1,3 +1,5 @@
+import { ApexOptions } from 'apexcharts'
+
 export const barChartData = [
   {
     name: 'Sales',
@@ -5,7 +7,7 @@ export const barChartData = [
   },
 ]
 
-export const barChartOptions: ApexCharts.ApexOptions = {
+export const barChartOptions: ApexOptions = {
   chart: {
     toolbar: {
       show: false,
@@ -87,7 +89,7 @@ export const lineChartData = [
   },
 ]
 
-export const lineChartOptions: ApexCharts.ApexOptions = {
+export const lineChartOptions: ApexOptions = {
   chart: {
     toolbar: {
       show: false,

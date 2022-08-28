@@ -7,7 +7,7 @@ import { SwitchSection, SwitchSectionProps } from './SwitchSection'
 export interface FilterSection {
   name: string
   children: FilterSectionChild[]
-  dispatch: any
+  dispatch?: any
 }
 
 export type FilterSectionChild = {
