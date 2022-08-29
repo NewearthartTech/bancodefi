@@ -52,6 +52,7 @@ import {
 import { Loan } from 'src/types'
 import { LoansApi } from 'src/generated_server'
 import { getDaysFromDuration } from '@banco/utils'
+import { FundModal } from './components/FundModal'
 
 const headers: string[] = [
   'DEAL',
@@ -152,6 +153,8 @@ const Loans = () => {
   const dispatch = useAppDispatch()
   const filterState = useAppSelector((state) => state.filter)
   const [rawLoans, setRawLoans] = useState<Loan[]>([])
+  const [currentLoan, setCurrentLoan] = useState<Loan>(null)
+  const [showFundModal, setShowFundModal] = useState(false)
   const filteredLoans = useMemo(() => filterLoans(rawLoans, filterState), [
     rawLoans,
     filterState,
@@ -219,6 +222,13 @@ const Loans = () => {
 
   return (
     <Flex direction={'column'}>
+      <FundModal
+        isOpen={showFundModal}
+        onClose={() => {
+          setShowFundModal(false)
+        }}
+        loan={currentLoan}
+      />
       <Flex>
         <Heading mt="0px" fontFamily="Vesterbro">
           Lend
@@ -263,7 +273,14 @@ const Loans = () => {
             </Thead>
             <Tbody>
               {filteredLoans.map((row) => {
-                return <LoanRow loan={row} />
+                return (
+                  <LoanRow
+                    loan={row}
+                    key={row.id}
+                    setCurrentLoan={setCurrentLoan}
+                    setShowModal={setShowFundModal}
+                  />
+                )
               })}
             </Tbody>
           </Table>
