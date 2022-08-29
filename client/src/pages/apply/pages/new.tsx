@@ -17,6 +17,7 @@ import {
   Button,
   Select,
   Image,
+  Spinner,
 } from '@chakra-ui/react'
 // Custom components
 import { capitalize } from 'lodash'
@@ -48,9 +49,14 @@ import {
 } from '../state'
 import { LoansApi, ALoan } from '../../../generated_server'
 import { useConnect as useTzConnect } from '../../../web3/tzUtils'
-import { useConnectCalls as useEvmConnect } from '../../../web3/evmUtils'
+import {
+  useConnectCalls as useEvmConnect,
+  getAlchemy,
+} from '../../../web3/evmUtils'
 import { AssetFaucet__factory } from '../../../evm_types'
 import { getShortenedWalletAddress } from '@banco/utils'
+import { IAsyncResult } from 'src/utils/asyncUtils'
+import { Nft } from 'alchemy-sdk'
 
 const headers: string[] = [
   'DEAL',
@@ -78,6 +84,87 @@ const getVerifyingContext = (status: VerifiedStatus) => {
     case 'verified':
       return 'Verified'
   }
+}
+
+interface NftInfo {
+  ownerAddress: string
+  formState: FormState
+}
+
+const NftInfo = ({ ownerAddress, formState }: NftInfo) => {
+  const { connect: evmConnect } = useEvmConnect()
+  const [nft, setNft] = useState<IAsyncResult<Nft>>()
+  useEffect(() => {
+    async function checkNft() {
+      if (!formState.nftVerified) return
+      try {
+        setNft({ isLoading: true })
+
+        const { account } = await evmConnect()
+
+        const data = await getAlchemy().nft.getNftMetadata(
+          '0x5180db8F5c931aaE63c74266b211F580155ecac8',
+          '1590',
+          // formState.erCaddress,
+          // formState.tokenAddress,
+        )
+
+        setNft({ result: data })
+      } catch (error: any) {
+        setNft({ error })
+      }
+    }
+    checkNft()
+  }, [formState])
+  console.log(nft)
+
+  const loadingInfo = nft?.isLoading && (
+    <Flex>
+      <Text>Loading</Text>
+      <Spinner />
+    </Flex>
+  )
+
+  const errorInfo = nft?.error && (
+    <Flex>
+      <Text>Error: </Text>
+      <Text>{nft.error}</Text>
+    </Flex>
+  )
+
+  const nftName = nft?.result && (
+    <Text>{nft.result.title !== '' ? nft.result.title : 'Test NFT'}</Text>
+  )
+  const nftDescription = nft?.result && (
+    <Text>
+      {nft.result.description !== ''
+        ? nft.result.description
+        : 'This is just a test NFT'}
+    </Text>
+  )
+  const nftSRC =
+    nft?.result?.media?.length > 0
+      ? nft.result?.media[0]?.thumbnail
+      : '/assets/img/blank-image.png'
+
+  return (
+    <Card w="520px" h="300px" mb="20px">
+      <Flex alignItems="start" justifyContent={'flex-start'}>
+        <Image src={nftSRC} h="300px" w="300px" />
+        <Flex ml="20px" direction="column">
+          <Text mt="0px" mb="10px" fontWeight={600} fontSize="24px">
+            NFT Name
+          </Text>
+          {nftName}
+          {loadingInfo}
+          {errorInfo}
+          <Text my="0px">Description</Text>
+          {loadingInfo}
+          {nftDescription}
+        </Flex>
+      </Flex>
+    </Card>
+  )
 }
 
 const ApplyNew = () => {
@@ -402,22 +489,7 @@ const ApplyNew = () => {
           </Button>
         </Card>
         <Flex flexDirection={'column'} w="520px">
-          <Card w="520px" h="300px" mb="20px">
-            <Flex alignItems="start" justifyContent={'flex-start'}>
-              <Image src="/assets/img/blank-image.png" h="300px" w="300px" />
-              <Flex ml="20px" direction="column">
-                <Text mt="0px" mb="10px" fontWeight={600} fontSize="24px">
-                  NFT Name
-                </Text>
-                <Text my="0px">Collection Name</Text>
-                <Text mt="0px">
-                  {ownerAddress
-                    ? getShortenedWalletAddress(ownerAddress)
-                    : 'Owner Address'}
-                </Text>
-              </Flex>
-            </Flex>
-          </Card>
+          <NftInfo ownerAddress={ownerAddress} formState={formState} />
           <CreditRating />
         </Flex>
       </Flex>
