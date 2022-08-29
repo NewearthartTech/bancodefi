@@ -374,14 +374,8 @@ const ApplyNew = () => {
               try {
                 setIsModalOpen(true)
 
-                console.log(JSON.stringify(formState))
-
                 const { accountPkh: requesterTzAddress } = await tzConnect()
                 const { account: requesterEvmAddress } = await evmConnect()
-
-                console.log(
-                  `tz account ${requesterTzAddress}, evmAddress ${requesterEvmAddress}`,
-                )
 
                 const api = new LoansApi(
                   undefined,

@@ -41,7 +41,7 @@ var dashRoutes = [
       },
       {
         path: '/borrowed',
-        name: 'Loans Borrowed',
+        name: 'Loans Requested',
         icon: <HandIcon color="inherit" />,
         component: SignIn,
         layout: '/auth',

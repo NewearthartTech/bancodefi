@@ -163,7 +163,7 @@ const Faucet = () => {
           checkMyBalance()
         }
       } catch (err) {
-        console.log(err)
+        console.error(err)
       }
     }
     checkBalance()

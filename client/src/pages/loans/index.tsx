@@ -105,7 +105,6 @@ const applyFilter = (
 
 const filterLoans = (loans: Loan[], filters: FilterState): Loan[] => {
   const { principalAmountRange, interestRange, durationRange } = filters
-  console.log('filtering', loans)
   let newLoans = clone(loans)
   newLoans = applyFilter(
     newLoans,
@@ -118,7 +117,6 @@ const filterLoans = (loans: Loan[], filters: FilterState): Loan[] => {
     },
     (loan) => loan.loanAmount,
   )
-  console.log('after principal', newLoans)
   newLoans = applyFilter(
     newLoans,
     {
@@ -130,7 +128,6 @@ const filterLoans = (loans: Loan[], filters: FilterState): Loan[] => {
     },
     (loan) => loan.interestAmount,
   )
-  console.log('after interest', newLoans)
 
   newLoans = applyFilter(
     newLoans,
@@ -143,7 +140,6 @@ const filterLoans = (loans: Loan[], filters: FilterState): Loan[] => {
     },
     (loan) => getDaysFromDuration(loan.loanDurationWindow, loan.loanDuration),
   )
-  console.log('after duration', newLoans)
 
   return newLoans
 }
@@ -160,7 +156,6 @@ const Loans = () => {
     filterState,
   ])
   const [filterSections, setFilterSections] = useState<React.ReactChild[]>([])
-  console.log(filterState)
 
   useEffect(() => {
     dispatch(actions.setFilterSections(FILTER_SECTIONS))
