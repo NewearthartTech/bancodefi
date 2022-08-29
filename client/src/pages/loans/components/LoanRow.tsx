@@ -33,7 +33,7 @@ export const LoanRow = ({ loan, setCurrentLoan, setShowModal }: LoanRow) => {
   } = loan
   const textColor = useColorModeValue('gray.700', 'white')
   return (
-    <Tr key={id}>
+    <Tr key={id} overflowX="scroll">
       <Td minWidth={{ sm: '125px' }} pl="0px">
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
           {/* <Avatar
