@@ -155,6 +155,20 @@ const Faucet = () => {
     }
   }
 
+  useEffect(() => {
+    const checkBalance = async () => {
+      try {
+        const { account } = await evmConnect()
+        if (account) {
+          checkMyBalance()
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    checkBalance()
+  }, [])
+
   return (
     <Flex direction={'column'}>
       <Flex>
