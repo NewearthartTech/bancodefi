@@ -156,6 +156,9 @@ export const Header = () => {
       <NextLink href={'https://mercuri.gitbook.io/banco-litepaper/'} passHref>
         <Button variant="transparent-with-icon">Litepaper</Button>
       </NextLink>
+      <NextLink href={'/faucet'} passHref>
+        <Button variant="transparent-with-icon">Faucet</Button>
+      </NextLink>
       <WalletIcon w="30px" h="30px" mr="20px" />
       <Button
         onClick={() => {
