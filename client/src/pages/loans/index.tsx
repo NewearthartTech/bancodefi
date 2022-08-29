@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Provider } from 'react-redux'
 import {
   Flex,
@@ -37,7 +37,7 @@ import { LoanRow } from './components'
 import { loanTableData } from '@banco/variables'
 import { DefaultLayout } from '@banco/layouts'
 import { SearchIcon } from '@chakra-ui/icons'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   actions,
   useAppDispatch,
@@ -50,6 +50,8 @@ import {
   RangeFilter,
 } from './state'
 import { Loan } from 'src/types'
+import { LoansApi } from 'src/generated_server'
+import { getDaysFromDuration } from '@banco/utils'
 
 const headers: string[] = [
   'DEAL',
@@ -60,7 +62,24 @@ const headers: string[] = [
   '',
 ]
 
-const data = loanTableData
+const applyMinMax = (
+  loans: Loan[],
+  attributeAccessor: (loan: Loan) => number,
+  setMin: (min: number) => void,
+  setMax: (max: number) => void,
+  setRange: ([min, max]: number[]) => void,
+  dispatch: any,
+) => {
+  const minVal = loans.reduce((prevMin, currLoan) => {
+    return Math.min(prevMin, attributeAccessor(currLoan))
+  }, attributeAccessor(loans[0]))
+  const maxVal = loans.reduce((prevMax, currLoan) => {
+    return Math.max(prevMax, attributeAccessor(currLoan))
+  }, attributeAccessor(loans[0]))
+  dispatch(setMin(minVal))
+  dispatch(setMax(maxVal))
+  dispatch(setRange([minVal, maxVal]))
+}
 
 const applyFilter = (
   loans: Loan[],
@@ -84,18 +103,9 @@ const applyFilter = (
 }
 
 const filterLoans = (loans: Loan[], filters: FilterState): Loan[] => {
-  const {
-    filterBundled,
-    principalAmountRange,
-    interestRange,
-    durationRange,
-  } = filters
+  const { principalAmountRange, interestRange, durationRange } = filters
+  console.log('filtering', loans)
   let newLoans = clone(loans)
-  newLoans = applyFilter(
-    newLoans,
-    { filterType: 'boolean', filterInfo: { enabled: filterBundled } },
-    (loan) => loan.bundled,
-  )
   newLoans = applyFilter(
     newLoans,
     {
@@ -105,8 +115,9 @@ const filterLoans = (loans: Loan[], filters: FilterState): Loan[] => {
         max: principalAmountRange[1],
       },
     },
-    (loan) => loan.principal,
+    (loan) => loan.loanAmount,
   )
+  console.log('after principal', newLoans)
   newLoans = applyFilter(
     newLoans,
     {
@@ -116,8 +127,10 @@ const filterLoans = (loans: Loan[], filters: FilterState): Loan[] => {
         max: interestRange[1],
       },
     },
-    (loan) => loan.interestRate,
+    (loan) => loan.interestAmount,
   )
+  console.log('after interest', newLoans)
+
   newLoans = applyFilter(
     newLoans,
     {
@@ -127,17 +140,82 @@ const filterLoans = (loans: Loan[], filters: FilterState): Loan[] => {
         max: durationRange[1],
       },
     },
-    (loan) => loan.duration,
+    (loan) => getDaysFromDuration(loan.loanDurationWindow, loan.loanDuration),
   )
+  console.log('after duration', newLoans)
+
   return newLoans
 }
 
 const Loans = () => {
   const textColor = useColorModeValue('gray.700', 'white')
   const dispatch = useAppDispatch()
-  const bundled = useAppSelector((state) => state.filter.filterBundled)
   const filterState = useAppSelector((state) => state.filter)
-  const filteredLoans = filterLoans(data, filterState)
+  const [rawLoans, setRawLoans] = useState<Loan[]>([])
+  const filteredLoans = useMemo(() => filterLoans(rawLoans, filterState), [
+    rawLoans,
+    filterState,
+  ])
+  const [filterSections, setFilterSections] = useState<React.ReactChild[]>([])
+  console.log(filterState)
+
+  useEffect(() => {
+    dispatch(actions.setFilterSections(FILTER_SECTIONS))
+  }, [])
+
+  useEffect(() => {
+    const getLoans = async () => {
+      const api = new LoansApi(undefined, process.env.NEXT_PUBLIC_SERVER_URL)
+      const { data: rawLoans } = await api.apiLoansListLoansStatusGet(
+        'state_created',
+      )
+      applyMinMax(
+        rawLoans,
+        (loan) => loan.loanAmount,
+        actions.setPrincipalAmountMin,
+        actions.setPrincipalAmountMax,
+        actions.setPrincipalAmount,
+        dispatch,
+      )
+
+      applyMinMax(
+        rawLoans,
+        (loan) => loan.interestAmount,
+        actions.setInterestAmountMin,
+        actions.setInterestAmountMax,
+        actions.setInterest,
+        dispatch,
+      )
+
+      applyMinMax(
+        rawLoans,
+        (loan) =>
+          getDaysFromDuration(loan.loanDurationWindow, loan.loanDuration),
+        actions.setDurationMin,
+        actions.setDurationMax,
+        actions.setDuration,
+        dispatch,
+      )
+
+      setRawLoans(rawLoans)
+    }
+    getLoans()
+  }, [])
+
+  useEffect(() => {
+    const sections = filterState.filterSections.map((section, index) => {
+      return (
+        <FilterSection
+          name={section.name}
+          children={section.children}
+          dispatch={dispatch}
+          key={index}
+          filterState={filterState}
+        ></FilterSection>
+      )
+    })
+    setFilterSections(sections)
+  }, [filterState])
 
   return (
     <Flex direction={'column'}>
@@ -163,28 +241,13 @@ const Loans = () => {
         >
           <Text>Filter</Text>
           <SearchBar />
-          <SwitchSection
-            name="BUNDLED"
-            selected={bundled}
-            setSelected={() => {
-              dispatch(actions.setBundled(!bundled))
-            }}
-          />
-          {FILTER_SECTIONS.map((section) => {
-            return (
-              <FilterSection
-                name={section.name}
-                children={section.children}
-                dispatch={dispatch}
-              ></FilterSection>
-            )
-          })}
+          {filterSections}
         </Card>
         <Card p="16px" overflowX={{ sm: 'scroll', xl: 'hidden' }}>
           <Text>Loan Requests</Text>
           <Table variant="simple" color={textColor}>
             <Thead>
-              <Tr my=".8rem" ps="0px">
+              <Tr my=".8rem" ps="0px" key="header">
                 {headers.map((caption, idx) => {
                   return (
                     <Th
@@ -200,7 +263,7 @@ const Loans = () => {
             </Thead>
             <Tbody>
               {filteredLoans.map((row) => {
-                return <LoanRow loan={row} key={row.loanID} />
+                return <LoanRow loan={row} />
               })}
             </Tbody>
           </Table>

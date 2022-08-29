@@ -453,7 +453,7 @@ export const TriangleIcon = createIcon({
   path: (
     <path
       fillRule="evenodd"
-      clip-rule="evenodd"
+      clipRule="evenodd"
       d="M0.836523 1.0577C0.525593 0.741599 0.749572 0.207199 1.19302 0.207199H6.7787C7.2262 0.207199 7.4484 0.749799 7.1294 1.0636L4.2902 3.8564C4.0933 4.0501 3.7767 4.0475 3.5831 3.8506L0.836523 1.0577Z"
       fill="#currentColor"
     />
