@@ -266,7 +266,7 @@ const Loans = () => {
                 })}
               </Tr>
             </Thead>
-            <Tbody>
+            <Tbody overflowY={'scroll'}>
               {filteredLoans.map((row) => {
                 return (
                   <LoanRow
