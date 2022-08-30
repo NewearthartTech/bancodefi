@@ -20,6 +20,7 @@
     "classnames": "2.3.1",
     "constate": "^3.3.2",
     "dayjs": "1.11.5",
+    "eth-sig-util": "^3.0.1",
     "ethers": "^5.7.0",
     "framer-motion": "^4.1.17",
     "match-sorter": "6.3.0",
@@ -44,7 +45,8 @@
     "react-tagsinput": "3.19.0",
     "sha3": "^2.1.4",
     "stylis": "^4.0.13",
-    "stylis-plugin-rtl": "^2.1.1"
+    "stylis-plugin-rtl": "^2.1.1",
+    "uuid": "^8.3.2"
   },
   "resolutions": {
     "react-error-overlay": "6.0.9"
@@ -54,7 +56,7 @@
     "dev-fresh": "rm -rf .next && yarn && yarn dev",
     "stage": "mv ./lib/config/env.ts ./lib/config/bckp.ts && mv ./lib/config/stage.ts ./lib/config/env.ts && next build && next export && mv ./lib/config/env.ts ./lib/config/stage.ts && mv ./lib/config/bckp.ts ./lib/config/env.ts",
     "build-whatever": "mv ./lib/config/env.ts ./lib/config/bckp.ts && mv ./lib/config/prod.ts ./lib/config/env.ts && next build && next export && mv ./lib/config/env.ts ./lib/config/prod.ts && mv ./lib/config/bckp.ts ./lib/config/env.ts",
-    "build":"next build",
+    "build": "next build",
     "build-test": "next build && next export",
     "start": "next start",
     "lint": "next lint",

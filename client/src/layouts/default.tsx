@@ -22,6 +22,7 @@ import { Fonts } from '@banco/theme'
 import { TzAppProvider } from '../web3/tzUtils'
 import { EvmProvider } from '../web3/evmUtils'
 import { ReactChildren } from '@banco/types'
+import { LoanApiProvider } from '../web3/loanApis'
 
 interface DefaultLayout extends ReactChildren {}
 
@@ -105,27 +106,29 @@ export const DefaultLayout = ({ children }: DefaultLayout) => {
     <ChakraProvider theme={theme} resetCSS={false}>
       <TzAppProvider appName="banco">
         <EvmProvider>
-          <Fonts />
-          <Sidebar
-            routes={routes}
-            logoText={'Banco'}
-            display="none"
-            sidebarVariant={sidebarVariant}
-          />
-          <MainPanel
-            w={{
-              base: 'calc(100% - 295px)',
-            }}
-          >
-            <PanelContent>
-              <PanelContainer pt="0px">
-                <Header />
-                {children}
-              </PanelContainer>
-            </PanelContent>
+          <LoanApiProvider>
+            <Fonts />
+            <Sidebar
+              routes={routes}
+              logoText={'Banco'}
+              display="none"
+              sidebarVariant={sidebarVariant}
+            />
+            <MainPanel
+              w={{
+                base: 'calc(100% - 295px)',
+              }}
+            >
+              <PanelContent>
+                <PanelContainer pt="0px">
+                  <Header />
+                  {children}
+                </PanelContainer>
+              </PanelContent>
 
-            <Footer />
-          </MainPanel>
+              <Footer />
+            </MainPanel>
+          </LoanApiProvider>
         </EvmProvider>
       </TzAppProvider>
     </ChakraProvider>
