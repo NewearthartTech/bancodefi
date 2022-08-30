@@ -54,7 +54,8 @@ export const Header = () => {
 
   //Does the User have an Ethereum wallet/account?
   const connectTempleWallet = async (): Promise<void> => {
-    await wallet.connect('mainnet')
+    // @ts-ignore
+    await wallet.connect('ghostnet')
     const tezos = wallet.toTezos()
     setTezosAccount(tezos)
   }

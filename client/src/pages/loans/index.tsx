@@ -52,6 +52,7 @@ import {
 import { Loan } from 'src/types'
 import { LoansApi } from 'src/generated_server'
 import { getDaysFromDuration } from '@banco/utils'
+import { FundModal } from './components/FundModal'
 
 const headers: string[] = [
   'DEAL',
@@ -104,7 +105,6 @@ const applyFilter = (
 
 const filterLoans = (loans: Loan[], filters: FilterState): Loan[] => {
   const { principalAmountRange, interestRange, durationRange } = filters
-  console.log('filtering', loans)
   let newLoans = clone(loans)
   newLoans = applyFilter(
     newLoans,
@@ -117,7 +117,6 @@ const filterLoans = (loans: Loan[], filters: FilterState): Loan[] => {
     },
     (loan) => loan.loanAmount,
   )
-  console.log('after principal', newLoans)
   newLoans = applyFilter(
     newLoans,
     {
@@ -129,7 +128,6 @@ const filterLoans = (loans: Loan[], filters: FilterState): Loan[] => {
     },
     (loan) => loan.interestAmount,
   )
-  console.log('after interest', newLoans)
 
   newLoans = applyFilter(
     newLoans,
@@ -142,7 +140,6 @@ const filterLoans = (loans: Loan[], filters: FilterState): Loan[] => {
     },
     (loan) => getDaysFromDuration(loan.loanDurationWindow, loan.loanDuration),
   )
-  console.log('after duration', newLoans)
 
   return newLoans
 }
@@ -152,12 +149,13 @@ const Loans = () => {
   const dispatch = useAppDispatch()
   const filterState = useAppSelector((state) => state.filter)
   const [rawLoans, setRawLoans] = useState<Loan[]>([])
+  const [currentLoan, setCurrentLoan] = useState<Loan>(null)
+  const [showFundModal, setShowFundModal] = useState(false)
   const filteredLoans = useMemo(() => filterLoans(rawLoans, filterState), [
     rawLoans,
     filterState,
   ])
   const [filterSections, setFilterSections] = useState<React.ReactChild[]>([])
-  console.log(filterState)
 
   useEffect(() => {
     dispatch(actions.setFilterSections(FILTER_SECTIONS))
@@ -219,6 +217,13 @@ const Loans = () => {
 
   return (
     <Flex direction={'column'}>
+      <FundModal
+        isOpen={showFundModal}
+        onClose={() => {
+          setShowFundModal(false)
+        }}
+        loan={currentLoan}
+      />
       <Flex>
         <Heading mt="0px" fontFamily="Vesterbro">
           Lend
@@ -261,9 +266,16 @@ const Loans = () => {
                 })}
               </Tr>
             </Thead>
-            <Tbody>
+            <Tbody overflowY={'scroll'}>
               {filteredLoans.map((row) => {
-                return <LoanRow loan={row} />
+                return (
+                  <LoanRow
+                    loan={row}
+                    key={row.id}
+                    setCurrentLoan={setCurrentLoan}
+                    setShowModal={setShowFundModal}
+                  />
+                )
               })}
             </Tbody>
           </Table>

@@ -17,9 +17,11 @@ import { getShortenedWalletAddress } from 'src/utils'
 
 interface LoanRow {
   loan: Loan
+  setCurrentLoan: (loan: Loan) => void
+  setShowModal: (show: boolean) => void
 }
 
-export const LoanRow = ({ loan }: LoanRow) => {
+export const LoanRow = ({ loan, setCurrentLoan, setShowModal }: LoanRow) => {
   const {
     id,
     requesterTzAddress,
@@ -31,7 +33,7 @@ export const LoanRow = ({ loan }: LoanRow) => {
   } = loan
   const textColor = useColorModeValue('gray.700', 'white')
   return (
-    <Tr key={id}>
+    <Tr key={id} overflowX="scroll">
       <Td minWidth={{ sm: '125px' }} pl="0px">
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
           {/* <Avatar
@@ -102,7 +104,7 @@ export const LoanRow = ({ loan }: LoanRow) => {
             fontWeight="bold"
             minWidth="100%"
           >
-            USD
+            XTZ
           </Text>
         </Flex>
       </Td>
@@ -115,7 +117,7 @@ export const LoanRow = ({ loan }: LoanRow) => {
             minWidth="100%"
             my="0px"
           >
-            {numeral(interestAmount).format('0.00')}
+            {numeral(interestAmount).format('0.00')}%
           </Text>
           <Text
             my="0px"
@@ -151,7 +153,15 @@ export const LoanRow = ({ loan }: LoanRow) => {
         </Flex>
       </Td>
       <Td>
-        <Button variant={'dark'}>Fund</Button>
+        <Button
+          variant={'dark'}
+          onClick={() => {
+            setCurrentLoan(loan)
+            setShowModal(true)
+          }}
+        >
+          Fund
+        </Button>
       </Td>
     </Tr>
   )

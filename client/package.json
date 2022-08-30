@@ -54,7 +54,7 @@
     "dev-fresh": "rm -rf .next && yarn && yarn dev",
     "stage": "mv ./lib/config/env.ts ./lib/config/bckp.ts && mv ./lib/config/stage.ts ./lib/config/env.ts && next build && next export && mv ./lib/config/env.ts ./lib/config/stage.ts && mv ./lib/config/bckp.ts ./lib/config/env.ts",
     "build-whatever": "mv ./lib/config/env.ts ./lib/config/bckp.ts && mv ./lib/config/prod.ts ./lib/config/env.ts && next build && next export && mv ./lib/config/env.ts ./lib/config/prod.ts && mv ./lib/config/bckp.ts ./lib/config/env.ts",
-    "build":"next build",
+    "build": "next build",
     "build-test": "next build && next export",
     "start": "next start",
     "lint": "next lint",

@@ -32,7 +32,8 @@ export const SidebarContent = ({ logoText, routes }) => {
 
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName) => {
-    return window.location.pathname === routeName
+    if (routeName === '/loans' && window.location.pathname === '/') return true
+    return window.location.pathname.includes(routeName)
   }
   const createLinks = (routes) => {
     // Chakra Color Mode
