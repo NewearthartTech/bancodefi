@@ -125,7 +125,7 @@ const Funded = () => {
                 })}
               </Tr>
             </Thead>
-            <Tbody>
+            <Tbody overflowY={'scroll'} maxH="600px">
               {filteredLoans.map((row) => {
                 return (
                   <FundBorrowRow
