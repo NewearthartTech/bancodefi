@@ -289,6 +289,10 @@ function useLoanLogic() {
     () => ({
       applyForLoan,
       ensureNftIsValid,
+      getCollateral,
+      repayLoan,
+      releaseCollateral,
+      fundLoan
     }),
     [],
   )
