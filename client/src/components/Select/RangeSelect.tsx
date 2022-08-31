@@ -31,7 +31,7 @@ export const RangeSelect = ({
         }}
       >
         <RangeSliderTrack>
-          <RangeSliderFilledTrack />
+          <RangeSliderFilledTrack bg="aquamarine.400" />
         </RangeSliderTrack>
         <RangeSliderThumb index={0} />
         <RangeSliderThumb index={1} />
