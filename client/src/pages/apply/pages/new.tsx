@@ -56,7 +56,9 @@ import {
 import { AssetFaucet__factory } from '../../../evm_types'
 import { getShortenedWalletAddress } from '@banco/utils'
 import { IAsyncResult } from 'src/utils/asyncUtils'
-import { Nft } from 'alchemy-sdk'
+import { Nft, OwnedNft } from 'alchemy-sdk'
+import { useConnect as useTzConnect } from 'src/web3/tzUtils'
+import { OwnedNfts } from '@banco/pages/faucet/components'
 
 const headers: string[] = [
   'DEAL',
@@ -91,7 +93,7 @@ interface NftInfo {
   formState: FormState
 }
 
-const NftInfo = ({ ownerAddress, formState }: NftInfo) => {
+const NftInfo = ({ formState }: NftInfo) => {
   const { connect: evmConnect } = useEvmConnect()
   const [nft, setNft] = useState<IAsyncResult<Nft>>()
   useEffect(() => {
@@ -172,6 +174,9 @@ const ApplyNew = () => {
   const [verificationStatus, setVerificationStatus] = useState<VerifiedStatus>(
     'unverified',
   )
+  const [checkBalance, setCheckbalance] = useState<IAsyncResult<OwnedNft[]>>()
+  const { connect: evmConnect } = useEvmConnect()
+
   const [verificationError, setVerificationError] = useState('')
   const [ownerAddress, setOwnerAddress] = useState('')
   const formState = useAppSelector((state) => state.form)
@@ -185,12 +190,45 @@ const ApplyNew = () => {
     false,
   )
   const [tezosAccountConnected, setTezosAccountConnected] = useState(false)
+
+  async function checkMyBalance() {
+    try {
+      setCheckbalance({ isLoading: true })
+
+      const { account } = await evmConnect()
+
+      const { ownedNfts } = await getAlchemy().nft.getNftsForOwner(account, {
+        contractAddresses: [process.env.NEXT_PUBLIC_AssetFaucet_address],
+      })
+
+      setCheckbalance({ result: ownedNfts })
+    } catch (error: any) {
+      setCheckbalance({ error })
+    }
+  }
+
+  useEffect(() => {
+    const checkBalance = async () => {
+      try {
+        const { account } = await evmConnect()
+        if (account) {
+          checkMyBalance()
+        }
+      } catch (err) {
+        console.error(err)
+      }
+    }
+    checkBalance()
+  }, [])
+
   useEffect(() => {
     const checkTezosConnection = async () => {
       try {
-        await tzConnect()
+        // await tzConnect()
         setTezosAccountConnected(true)
       } catch (error) {
+        console.error(error)
+
         setTezosAccountConnected(false)
       }
     }
@@ -200,6 +238,7 @@ const ApplyNew = () => {
         await evmConnect()
         setEthereumAccountConnected(true)
       } catch (error) {
+        console.error(error)
         setEthereumAccountConnected(false)
       }
     }
@@ -207,8 +246,8 @@ const ApplyNew = () => {
     checkEthereumConnection()
   })
 
-  const {ensureNftIsValid, applyForLoan} = useLoanCalls()
-  
+  const { ensureNftIsValid, applyForLoan } = useLoanCalls()
+
   return (
     <Flex direction={'column'}>
       <ListModal
@@ -294,7 +333,7 @@ const ApplyNew = () => {
                     setVerificationStatus('verified')
 
                     //await ensureNftIsValid({
-                        //todo: update the  to get tokenOwner
+                    //todo: update the  to get tokenOwner
                     //setOwnerAddress(tokenOwner)
 
                     verifyNFT(formState, dispatch)
@@ -445,7 +484,7 @@ const ApplyNew = () => {
               try {
                 setIsModalOpen(true)
 
-                const done = await applyForLoan(formState);
+                const done = await applyForLoan(formState)
 
                 setModalState('success')
               } catch (error: any) {
@@ -462,7 +501,9 @@ const ApplyNew = () => {
           </Button>
         </Card>
         <Flex flexDirection={'column'} w="520px">
-          <NftInfo ownerAddress={ownerAddress} formState={formState} />
+          <OwnedNfts checkBalance={checkBalance} />
+          <Flex height="20px" />
+          {/* <NftInfo ownerAddress={ownerAddress} formState={formState} /> */}
           <CreditRating />
         </Flex>
       </Flex>

@@ -42,6 +42,7 @@ import { useConnectCalls as useEvmConnect, getAlchemy } from 'src/web3/evmUtils'
 import { AssetFaucet__factory } from 'src/evm_types'
 import { IAsyncResult, ShowError } from 'src/utils/asyncUtils'
 import { OwnedNft } from 'alchemy-sdk'
+import { OwnedNfts } from '../components'
 
 const headers: string[] = [
   'DEAL',
@@ -207,22 +208,7 @@ const Faucet = () => {
           mintNFT={mintNFT}
           setMintNFT={setMintNFT}
         />
-        <Card width="500px">
-          <h2>Owned NFTs</h2>
-
-          {checkBalance?.isLoading && <Spinner />}
-
-          {checkBalance?.error && <ShowError error={checkBalance.error} />}
-
-          {(checkBalance?.result || []).map((nft, i) => (
-            <div key={i}>
-              <span style={{ marginRight: '1rem' }}>
-                {nft.contract.address}
-              </span>
-              :<span style={{ marginLeft: '1rem' }}>{nft.tokenId}</span>
-            </div>
-          ))}
-        </Card>
+        <OwnedNfts checkBalance={checkBalance} />
       </Flex>
     </Flex>
   )

@@ -180,7 +180,7 @@ export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
 
       <Td>
         <Text color={statusColor} fontWeight={700}>
-          {status}
+          {loanStatus}
         </Text>
       </Td>
       <Td>
