@@ -155,7 +155,7 @@ function useDApp(props: { appName: string }) {
                 const tzRet = await loadtezos();
 
                 const tzLoanDetails = async (contractId:string)=>{
-                    debugger;
+                    
                     const byContractId = char2Bytes(contractId);
                     const loanContract = await tzRet.tezos.wallet.at(process.env.NEXT_PUBLIC_TzApp_address);
                     const loanStorage:any = await loanContract.storage(); 
@@ -176,7 +176,7 @@ function useDApp(props: { appName: string }) {
 
 
             } catch (err: any) {
-                debugger;
+                
                 console.error(`Failed to connect NEInvokedWallet: ${err?.message}`);
                 throw new Error(err?.message || (err?.toString()) || 'failed to connect to wallet');
                 //return ({error:err});
