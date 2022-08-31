@@ -1,4 +1,4 @@
-import { Loan, LoanStatus } from 'src/types'
+import { Loan } from 'src/types'
 import {
   Avatar,
   AvatarGroup,
@@ -14,6 +14,7 @@ import {
 import React from 'react'
 import numeral from 'numeral'
 import dayjs from 'dayjs'
+import { LoanStatus } from 'src/generated_server'
 
 interface LoanRow {
   loan: Loan
@@ -23,23 +24,25 @@ interface LoanRow {
 
 const getStatusColor = (state: LoanStatus) => {
   switch (state) {
-    case 'ACTIVE':
+    case 'state_movedToEscrow':
       return 'yellow.400'
-    case 'DEFAULTED':
+    case 'state_defaulted':
       return 'red.400'
-    case 'REPAID':
+    case 'state_returned':
       return 'green.300'
-    case 'OPEN':
+    case 'state_created':
       return 'tezosBlue.400'
+    default:
+      return 'gray.400'
   }
 }
 
 const getDueDateText = (loan: Loan) => {
-  if (loan.status === 'OPEN') {
+  if (loan.loanStatus === 'state_created') {
     return '---'
   } else {
     const nowTime = dayjs()
-    const dueTime = dayjs(loan.dueDate)
+    const dueTime = dayjs(loan.loanDuration)
     const dayDiff = dueTime.diff(nowTime, 'days')
     if (dayDiff > 0) {
       return `${dayDiff} Day${dayDiff > 1 ? 's' : ''}`
@@ -58,18 +61,15 @@ const getDueDateText = (loan: Loan) => {
 
 export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
   const {
-    loanID,
-    loanRequester,
-    requesterPFP,
-    collateralID,
-    collectionName,
-    principal,
-    interestRate,
-    status,
+    id,
+    requesterTzAddress,
+    erCaddress,
+    loanAmount,
+    interestAmount,
+    loanStatus,
   } = loan
   const textColor = useColorModeValue('gray.700', 'white')
-  const statusColor = getStatusColor(status)
-  const showDueDate = status === 'OPEN'
+  const statusColor = getStatusColor(loanStatus)
   const dueDateText = getDueDateText(loan).split(' ')
 
   return (
@@ -83,12 +83,12 @@ export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
     >
       <Td minWidth={{ sm: '125px' }} pl="0px">
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-          <Avatar
+          {/* <Avatar
             name="Ryan Florence"
             _hover={{ zIndex: '3', cursor: 'pointer' }}
             key={requesterPFP}
             src={requesterPFP}
-          />
+          /> */}
           <Flex flexDirection="column" pl="10px">
             <Text
               fontSize="md"
@@ -97,7 +97,7 @@ export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
               minWidth="100%"
               my="0px"
             >
-              Loan ID: {loanID}
+              Loan ID: {id}
             </Text>
             <Text
               my="0px"
@@ -106,7 +106,7 @@ export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
               fontWeight="bold"
               minWidth="100%"
             >
-              By: {loanRequester}
+              By: {requesterTzAddress}
             </Text>
           </Flex>
         </Flex>
@@ -120,9 +120,9 @@ export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
             minWidth="100%"
             my="0px"
           >
-            {collateralID}
+            {erCaddress}
           </Text>
-          <Text
+          {/* <Text
             my="0px"
             fontSize="md"
             color={'gray.400'}
@@ -130,7 +130,7 @@ export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
             minWidth="100%"
           >
             {collectionName}
-          </Text>
+          </Text> */}
         </Flex>
       </Td>
       <Td>
@@ -142,7 +142,7 @@ export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
             minWidth="100%"
             my="0px"
           >
-            {numeral(principal).format('0,0')}
+            {numeral(loanAmount).format('0,0')}
           </Text>
           <Text
             my="0px"
@@ -151,7 +151,7 @@ export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
             fontWeight="bold"
             minWidth="100%"
           >
-            USD
+            XTZ
           </Text>
         </Flex>
       </Td>
@@ -164,7 +164,7 @@ export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
             minWidth="100%"
             my="0px"
           >
-            {numeral(interestRate).format('0.00')}
+            {numeral(interestAmount).format('0.00')}
           </Text>
           <Text
             my="0px"

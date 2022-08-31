@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Provider } from 'react-redux'
 import {
   Flex,
@@ -17,6 +17,7 @@ import {
   Button,
   Select,
   Image,
+  Spinner,
 } from '@chakra-ui/react'
 // Custom components
 import { capitalize } from 'lodash'
@@ -38,7 +39,7 @@ import {
 import { DefaultLayout } from '@banco/layouts'
 import { useState } from 'react'
 import { Fonts } from '@banco/theme'
-import { ListModal } from '../components'
+import { ListModal, ModalState } from '../components'
 import {
   useAppDispatch,
   useAppSelector,
@@ -46,8 +47,16 @@ import {
   store,
   FormState,
 } from '../state'
-import {useLoanCalls} from "../../../web3/loanApis"
-
+import { LoansApi, ALoan } from '../../../generated_server'
+import { useConnect as useTzConnect } from '../../../web3/tzUtils'
+import {
+  useConnectCalls as useEvmConnect,
+  getAlchemy,
+} from '../../../web3/evmUtils'
+import { AssetFaucet__factory } from '../../../evm_types'
+import { getShortenedWalletAddress } from '@banco/utils'
+import { IAsyncResult } from 'src/utils/asyncUtils'
+import { Nft } from 'alchemy-sdk'
 
 const headers: string[] = [
   'DEAL',
@@ -62,17 +71,152 @@ const verifyNFT = (formState: FormState, dispatch) => {
   dispatch(actions.setVerified(true))
 }
 
+type VerifiedStatus = 'unverified' | 'verifying' | 'errored' | 'verified'
+
+const getVerifyingContext = (status: VerifiedStatus) => {
+  switch (status) {
+    case 'unverified':
+      return 'Verify'
+    case 'verifying':
+      return 'Verifying'
+    case 'errored':
+      return 'Error'
+    case 'verified':
+      return 'Verified'
+  }
+}
+
+interface NftInfo {
+  ownerAddress: string
+  formState: FormState
+}
+
+const NftInfo = ({ ownerAddress, formState }: NftInfo) => {
+  const { connect: evmConnect } = useEvmConnect()
+  const [nft, setNft] = useState<IAsyncResult<Nft>>()
+  useEffect(() => {
+    async function checkNft() {
+      if (!formState.nftVerified) return
+      try {
+        setNft({ isLoading: true })
+
+        const { account } = await evmConnect()
+
+        const data = await getAlchemy().nft.getNftMetadata(
+          '0x5180db8F5c931aaE63c74266b211F580155ecac8',
+          '1590',
+          // formState.erCaddress,
+          // formState.tokenAddress,
+        )
+
+        setNft({ result: data })
+      } catch (error: any) {
+        setNft({ error })
+      }
+    }
+    checkNft()
+  }, [formState])
+  console.log(nft)
+
+  const loadingInfo = nft?.isLoading && (
+    <Flex>
+      <Text>Loading</Text>
+      <Spinner />
+    </Flex>
+  )
+
+  const errorInfo = nft?.error && (
+    <Flex>
+      <Text>Error: </Text>
+      <Text>{nft.error}</Text>
+    </Flex>
+  )
+
+  const nftName = nft?.result && (
+    <Text>{nft.result.title !== '' ? nft.result.title : 'Test NFT'}</Text>
+  )
+  const nftDescription = nft?.result && (
+    <Text>
+      {nft.result.description !== ''
+        ? nft.result.description
+        : 'This is just a test NFT'}
+    </Text>
+  )
+  const nftSRC =
+    nft?.result?.media?.length > 0
+      ? nft.result?.media[0]?.thumbnail
+      : '/assets/img/blank-image.png'
+
+  return (
+    <Card w="520px" h="300px" mb="20px">
+      <Flex alignItems="start" justifyContent={'flex-start'}>
+        <Image src={nftSRC} h="300px" w="300px" />
+        <Flex ml="20px" direction="column">
+          <Text mt="0px" mb="10px" fontWeight={600} fontSize="24px">
+            NFT Name
+          </Text>
+          {nftName}
+          {loadingInfo}
+          {errorInfo}
+          <Text my="0px">Description</Text>
+          {loadingInfo}
+          {nftDescription}
+        </Flex>
+      </Flex>
+    </Card>
+  )
+}
+
 const ApplyNew = () => {
   const dispatch = useAppDispatch()
+  const [verificationStatus, setVerificationStatus] = useState<VerifiedStatus>(
+    'unverified',
+  )
+  const [verificationError, setVerificationError] = useState('')
+  const [ownerAddress, setOwnerAddress] = useState('')
   const formState = useAppSelector((state) => state.form)
   let mainText = useColorModeValue('gray.700', 'gray.200')
   const inputBg = useColorModeValue('white', 'gray.800')
   const mainTeal = useColorModeValue('teal.300', 'teal.300')
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const {applyForLoan, ensureNftIsValid} = useLoanCalls();
+  const [modalState, setModalState] = useState<ModalState>('processing')
+  const [modalError, setModalError] = useState('')
+  const [ethereumAccountConnected, setEthereumAccountConnected] = useState(
+    false,
+  )
+  const [tezosAccountConnected, setTezosAccountConnected] = useState(false)
+  useEffect(() => {
+    const checkTezosConnection = async () => {
+      try {
+        await tzConnect()
+        setTezosAccountConnected(true)
+      } catch (error) {
+        setTezosAccountConnected(false)
+      }
+    }
+
+    const checkEthereumConnection = async () => {
+      try {
+        await evmConnect()
+        setEthereumAccountConnected(true)
+      } catch (error) {
+        setEthereumAccountConnected(false)
+      }
+    }
+    checkTezosConnection()
+    checkEthereumConnection()
+  })
+
+  const tzConnect = useTzConnect()
+  const { connect: evmConnect, readOnlyWeb3: evmRO } = useEvmConnect()
   return (
     <Flex direction={'column'}>
-      <ListModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <ListModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        loadingState={modalState}
+        modalError={modalError}
+      />
       <Flex>
         <Heading mt="0px" fontFamily="Vesterbro">
           Borrow
@@ -142,24 +286,48 @@ const ApplyNew = () => {
               />
               <Button
                 variant="green"
+                backgroundColor={verificationError ? 'red' : undefined}
                 onClick={async () => {
                   try {
+                    setVerificationStatus('verifying')
 
-                    await ensureNftIsValid({
-                      erCaddress:formState.erCaddress,
-                      tokenId:formState.tokenAddress
-                    })
+                    if (!formState.erCaddress || !formState.tokenAddress)
+                      throw new Error('token adddress and Id are required')
+
+                    const web3ro = await evmRO()
+
+                    const ctx = AssetFaucet__factory.connect(
+                      formState.erCaddress,
+                      web3ro,
+                    )
+
+                    const tokenOwner = await ctx.ownerOf(formState.tokenAddress)
+
+                    const { account: requesterEvmAddress } = await evmConnect()
+
+                    if (
+                      tokenOwner.toLowerCase() !=
+                      requesterEvmAddress.toLowerCase()
+                    )
+                      throw new Error("You don't own this ")
+                    setVerificationStatus('verified')
+                    setOwnerAddress(tokenOwner)
 
                     verifyNFT(formState, dispatch)
                   } catch (error: any) {
                     //todo: Show connection error here
                     console.error(`failed to save ${error}`)
+                    setVerificationStatus('errored')
+                    setVerificationError(`${error}`)
                   }
                 }}
               >
-                Verify
+                {getVerifyingContext(verificationStatus)}
               </Button>
             </InputGroup>
+            {verificationError !== '' && (
+              <Text color="red">{verificationError}</Text>
+            )}
           </Flex>
           <Flex
             alignItems={'start'}
@@ -283,34 +451,45 @@ const ApplyNew = () => {
           <Button
             width="100%"
             variant="aquamarine"
+            disabled={!(ethereumAccountConnected && tezosAccountConnected)}
+            background={
+              !(ethereumAccountConnected && tezosAccountConnected)
+                ? 'red.400'
+                : 'aquamarine.400'
+            }
             onClick={async () => {
               try {
-                console.log(JSON.stringify(formState))
-                const done = await applyForLoan(formState);
+                setIsModalOpen(true)
 
+                const { accountPkh: requesterTzAddress } = await tzConnect()
+                const { account: requesterEvmAddress } = await evmConnect()
+
+                const api = new LoansApi(
+                  undefined,
+                  process.env.NEXT_PUBLIC_SERVER_URL,
+                )
+
+                const done = await api.apiLoansApplyPost({
+                  ...formState,
+                  requesterTzAddress,
+                  requesterEvmAddress,
+                })
+                setModalState('success')
               } catch (error: any) {
                 //todo: Show connection error here
                 console.error(`failed to save ${error}`)
-                setIsModalOpen(true)
+                setModalState('error')
+                setModalError(`${error?.message || error}`)
               }
             }}
           >
-            List Loan Request
+            {!(ethereumAccountConnected && tezosAccountConnected)
+              ? 'Please Connect Your Wallets'
+              : 'List Loan Request'}
           </Button>
         </Card>
         <Flex flexDirection={'column'} w="520px">
-          <Card w="520px" h="300px" mb="20px">
-            <Flex alignItems="start" justifyContent={'flex-start'}>
-              <Image src="/assets/img/blank-image.png" h="300px" w="300px" />
-              <Flex ml="20px" direction="column">
-                <Text mt="0px" mb="10px" fontWeight={600} fontSize="24px">
-                  NFT Name
-                </Text>
-                <Text my="0px">Collection Name</Text>
-                <Text mt="0px">Owner Address</Text>
-              </Flex>
-            </Flex>
-          </Card>
+          <NftInfo ownerAddress={ownerAddress} formState={formState} />
           <CreditRating />
         </Flex>
       </Flex>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Provider } from 'react-redux'
 import {
   Flex,
@@ -15,6 +15,7 @@ import {
   IconButton,
   Input,
   Button,
+  Spinner,
 } from '@chakra-ui/react'
 // Custom components
 import {
@@ -32,6 +33,15 @@ import {
   TriangleIcon,
 } from '@banco/components'
 import { DefaultLayout } from '@banco/layouts'
+import { SearchIcon } from '@chakra-ui/icons'
+import { useState } from 'react'
+import { Loan } from 'src/types'
+import Link from 'next/link'
+
+import { useConnectCalls as useEvmConnect, getAlchemy } from 'src/web3/evmUtils'
+import { AssetFaucet__factory } from 'src/evm_types'
+import { IAsyncResult, ShowError } from 'src/utils/asyncUtils'
+import { OwnedNft } from 'alchemy-sdk'
 
 const headers: string[] = [
   'DEAL',
@@ -44,16 +54,23 @@ const headers: string[] = [
 
 const mintEthTokens = () => {}
 
-const mintTezosTokens = () => {}
-
 type FaucetVariant = 'ETH' | 'Tezos'
 
 interface FaucetButtonProps {
   variant: FaucetVariant
-  ERCAddress: string
+  checkMyBalance: () => void
+  mintNFT: IAsyncResult<string>
+  setMintNFT: React.Dispatch<React.SetStateAction<IAsyncResult<string>>>
 }
 
-const FaucetButton = ({ variant, ERCAddress }: FaucetButtonProps) => {
+const FaucetButton = ({
+  variant,
+  checkMyBalance,
+  mintNFT,
+  setMintNFT,
+}: FaucetButtonProps) => {
+  const { connect: evmConnect } = useEvmConnect()
+
   return (
     <Card
       p="30px"
@@ -79,9 +96,6 @@ const FaucetButton = ({ variant, ERCAddress }: FaucetButtonProps) => {
       <Text fontWeight={700} fontSize="18px">
         {variant === 'ETH' ? 'ERC721 Test Tokens' : 'FA.1 Test Tokens'}
       </Text>
-      <Text color="gray.400" fontSize={'12px'} my="0px">
-        {ERCAddress}
-      </Text>
       <Flex
         width="100%"
         bg="white"
@@ -90,17 +104,71 @@ const FaucetButton = ({ variant, ERCAddress }: FaucetButtonProps) => {
       ></Flex>
       <Button
         variant="dark"
-        onClick={() => {
-          variant === 'ETH' ? mintEthTokens() : mintTezosTokens()
+        disabled={mintNFT?.isLoading}
+        onClick={async () => {
+          try {
+            setMintNFT({ isLoading: true })
+
+            const { web3 } = await evmConnect()
+
+            const asset = AssetFaucet__factory.connect(
+              process.env.NEXT_PUBLIC_AssetFaucet_address,
+              web3.getSigner(),
+            )
+
+            const tx = await asset.giveMe()
+
+            checkMyBalance()
+
+            setMintNFT({ result: `your NFT is minted using tx: ${tx.hash}` })
+          } catch (error: any) {
+            setMintNFT({ error })
+          }
         }}
       >
-        {variant === 'ETH' ? 'Mint ETH NFT Tokens' : 'Mint XTZ Tokens'}
+        Give me a TEST NFT
       </Button>
     </Card>
   )
 }
 
 const Faucet = () => {
+  const [checkBalance, setCheckbalance] = useState<IAsyncResult<OwnedNft[]>>()
+
+  const [mintNFT, setMintNFT] = useState<IAsyncResult<string>>()
+
+  const { connect: evmConnect } = useEvmConnect()
+
+  async function checkMyBalance() {
+    try {
+      setCheckbalance({ isLoading: true })
+
+      const { account } = await evmConnect()
+
+      const { ownedNfts } = await getAlchemy().nft.getNftsForOwner(account, {
+        contractAddresses: [process.env.NEXT_PUBLIC_AssetFaucet_address],
+      })
+
+      setCheckbalance({ result: ownedNfts })
+    } catch (error: any) {
+      setCheckbalance({ error })
+    }
+  }
+
+  useEffect(() => {
+    const checkBalance = async () => {
+      try {
+        const { account } = await evmConnect()
+        if (account) {
+          checkMyBalance()
+        }
+      } catch (err) {
+        console.error(err)
+      }
+    }
+    checkBalance()
+  }, [])
+
   return (
     <Flex direction={'column'}>
       <Flex>
@@ -116,15 +184,45 @@ const Faucet = () => {
           Test Tokens
         </Heading>
       </Flex>
+      {mintNFT && (
+        <Card mb="16px">
+          {mintNFT?.isLoading && <Spinner />}
+
+          {mintNFT?.error && <ShowError error={mintNFT.error} />}
+
+          {mintNFT?.result && (
+            <>
+              <h3>{mintNFT?.result}</h3>
+              <small>
+                Contract Address: {process.env.NEXT_PUBLIC_AssetFaucet_address}
+              </small>
+            </>
+          )}
+        </Card>
+      )}
       <Flex>
         <FaucetButton
           variant="ETH"
-          ERCAddress="0x4f3b397423a83f7db2fdbe7a98fd34f0ea2c748a"
+          checkMyBalance={checkMyBalance}
+          mintNFT={mintNFT}
+          setMintNFT={setMintNFT}
         />
-        <FaucetButton
-          variant="Tezos"
-          ERCAddress="0x4f3b397423a83f7db2fdbe7a98fd34f0ea2c748a"
-        />
+        <Card width="500px">
+          <h2>Owned NFTs</h2>
+
+          {checkBalance?.isLoading && <Spinner />}
+
+          {checkBalance?.error && <ShowError error={checkBalance.error} />}
+
+          {(checkBalance?.result || []).map((nft, i) => (
+            <div key={i}>
+              <span style={{ marginRight: '1rem' }}>
+                {nft.contract.address}
+              </span>
+              :<span style={{ marginLeft: '1rem' }}>{nft.tokenId}</span>
+            </div>
+          ))}
+        </Card>
       </Flex>
     </Flex>
   )

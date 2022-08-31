@@ -13,34 +13,35 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 import numeral from 'numeral'
+import { getShortenedWalletAddress } from 'src/utils'
 
 interface LoanRow {
   loan: Loan
-  key: string
+  setCurrentLoan: (loan: Loan) => void
+  setShowModal: (show: boolean) => void
 }
 
-export const LoanRow = ({ loan, key }: LoanRow) => {
+export const LoanRow = ({ loan, setCurrentLoan, setShowModal }: LoanRow) => {
   const {
-    loanID,
-    loanRequester,
-    requesterPFP,
-    collateralID,
-    collectionName,
-    principal,
-    interestRate,
-    duration,
+    id,
+    requesterTzAddress,
+    erCaddress,
+    loanAmount,
+    interestAmount,
+    loanDuration,
+    loanDurationWindow,
   } = loan
   const textColor = useColorModeValue('gray.700', 'white')
   return (
-    <Tr key={key}>
+    <Tr key={id} overflowX="scroll">
       <Td minWidth={{ sm: '125px' }} pl="0px">
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-          <Avatar
+          {/* <Avatar
             name="Ryan Florence"
             _hover={{ zIndex: '3', cursor: 'pointer' }}
             key={requesterPFP}
             src={requesterPFP}
-          />
+          /> */}
           <Flex flexDirection="column" pl="10px">
             <Text
               fontSize="md"
@@ -49,7 +50,7 @@ export const LoanRow = ({ loan, key }: LoanRow) => {
               minWidth="100%"
               my="0px"
             >
-              Loan ID: {loanID}
+              Loan ID: {id}
             </Text>
             <Text
               my="0px"
@@ -58,7 +59,7 @@ export const LoanRow = ({ loan, key }: LoanRow) => {
               fontWeight="bold"
               minWidth="100%"
             >
-              By: {loanRequester}
+              By: {getShortenedWalletAddress(requesterTzAddress)}
             </Text>
           </Flex>
         </Flex>
@@ -72,9 +73,9 @@ export const LoanRow = ({ loan, key }: LoanRow) => {
             minWidth="100%"
             my="0px"
           >
-            {collateralID}
+            {getShortenedWalletAddress(erCaddress)}
           </Text>
-          <Text
+          {/* <Text
             my="0px"
             fontSize="md"
             color={'gray.400'}
@@ -82,7 +83,7 @@ export const LoanRow = ({ loan, key }: LoanRow) => {
             minWidth="100%"
           >
             {collectionName}
-          </Text>
+          </Text> */}
         </Flex>
       </Td>
       <Td>
@@ -94,7 +95,7 @@ export const LoanRow = ({ loan, key }: LoanRow) => {
             minWidth="100%"
             my="0px"
           >
-            {numeral(principal).format('0,0')}
+            {numeral(loanAmount).format('0,0')}
           </Text>
           <Text
             my="0px"
@@ -103,7 +104,7 @@ export const LoanRow = ({ loan, key }: LoanRow) => {
             fontWeight="bold"
             minWidth="100%"
           >
-            USD
+            XTZ
           </Text>
         </Flex>
       </Td>
@@ -116,7 +117,7 @@ export const LoanRow = ({ loan, key }: LoanRow) => {
             minWidth="100%"
             my="0px"
           >
-            {numeral(interestRate).format('0.00')}
+            {numeral(interestAmount).format('0.00')}%
           </Text>
           <Text
             my="0px"
@@ -138,7 +139,7 @@ export const LoanRow = ({ loan, key }: LoanRow) => {
             minWidth="100%"
             my="0px"
           >
-            {duration}
+            {loanDuration}
           </Text>
           <Text
             my="0px"
@@ -147,12 +148,20 @@ export const LoanRow = ({ loan, key }: LoanRow) => {
             fontWeight="bold"
             minWidth="100%"
           >
-            DAYS
+            {loanDurationWindow}
           </Text>
         </Flex>
       </Td>
       <Td>
-        <Button variant={'dark'}>Fund</Button>
+        <Button
+          variant={'dark'}
+          onClick={() => {
+            setCurrentLoan(loan)
+            setShowModal(true)
+          }}
+        >
+          Fund
+        </Button>
       </Td>
     </Tr>
   )
