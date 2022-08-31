@@ -474,7 +474,7 @@ const ApplyNew = () => {
           <Button
             width="100%"
             variant="aquamarine"
-            disabled={!(ethereumAccountConnected && tezosAccountConnected)}
+            //disabled={!(ethereumAccountConnected && tezosAccountConnected)}
             background={
               !(ethereumAccountConnected && tezosAccountConnected)
                 ? 'red.400'
@@ -495,7 +495,7 @@ const ApplyNew = () => {
               }
             }}
           >
-            {!(ethereumAccountConnected && tezosAccountConnected)
+            {false /*|| !(ethereumAccountConnected && tezosAccountConnected)*/
               ? 'Please Connect Your Wallets'
               : 'List Loan Request'}
           </Button>

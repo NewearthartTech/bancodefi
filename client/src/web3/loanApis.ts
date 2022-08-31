@@ -163,7 +163,7 @@ function useLoanLogic() {
         break
     }
 
-    const loanEnds = currentTimeInSec + 3600 * 24 * loanDays
+    const loanEndsSolidityTime = currentTimeInSec + 3600 * 24 * loanDays
 
     const secret1 = evmPackedSecret(uuidv4())
 
@@ -172,17 +172,45 @@ function useLoanLogic() {
     const returnLogs: string[] = []
 
     if (!exists.tokenId.isZero()) {
-      console.log('loan has been requested')
+      console.log('loan has been requested on asset side')
       returnLogs.push(`loan has already been requested on the asset side`)
     } else {
       const ecrypted = await encrypter(requesterEvmAddress, secret1)
+
+      const asset = AssetFaucet__factory.connect(
+        loan.erCaddress,
+        web3.getSigner(),
+      )
+
+      const approvedFor = await asset.getApproved(loan.tokenAddress)
+
+      if (
+        approvedFor.toLocaleLowerCase() !=
+        process.env.NEXT_PUBLIC_EvmApp_address
+      ) {
+        const apprTx = await asset.approve(
+          process.env.NEXT_PUBLIC_EvmApp_address,
+          loan.tokenAddress,
+        )
+        console.log(`approved with ${apprTx.hash}`)
+        await apprTx.wait()
+        returnLogs.push(`got conformation for approved with ${apprTx.hash}`)
+        console.log(`got conformation for approved with ${apprTx.hash}`)
+      } else {
+        console.log('our contract is already approved')
+        returnLogs.push('our contract is already approved')
+      }
+
+      // lets connect again
+      const evmHash = await evmSecrethash(secret1)
+
       const tx = await assetSide.askForLoan(
         loan.erCaddress,
         loan.tokenAddress,
         requesterEvmAddress,
-        evmSecrethash(secret1),
+        evmHash,
         ecrypted,
-        loanEnds,
+        loanEndsSolidityTime,
       )
 
       returnLogs.push(`loan requested on the asset side : ${tx.hash}`)
@@ -191,19 +219,33 @@ function useLoanLogic() {
     const byContractId = char2Bytes(loanId)
     const hash1 = tzSecrethash(secret1)
 
-    const opn = await cashSide.methods
-      .askForLoan(
-        byContractId,
-        hash1,
-        loan.loanAmount * 1000, //in mutez
-        loan.interestAmount * 1000, //in mutez
-        addDays(loanEnds),
-      )
-      .send()
+    const cashSideStorage: any = await cashSide.storage()
 
-    const results = await opn.confirmation()
+    const existing = cashSideStorage.get(byContractId)
 
-    returnLogs.push(`loan requested on the cash side : ${opn.opHash}`)
+    if (existing) {
+      console.log('we have already asked for loan on cash side')
+      returnLogs.push('we have already asked for loan on cash side')
+    } else {
+      const amountMuTez = Number.parseFloat(loan.loanAmount.toString()) * 1000
+      const interestMuTez =
+        Number.parseFloat(loan.interestAmount.toString()) * 1000
+
+      const opn = await cashSide.methods
+        .askForLoan(
+          byContractId,
+          amountMuTez, //in mutez
+          interestMuTez, //in mutez
+          loanDays,
+          hash1,
+        )
+        .send()
+
+      const results = await opn.confirmation()
+
+      returnLogs.push(`loan requested on the cash side : ${opn.opHash}`)
+      console.log(`loan requested on the cash side : ${opn.opHash}`)
+    }
 
     await api.apiLoansUpdatePost({
       ...loan,

@@ -22,6 +22,9 @@ interface LoanRow {
   setLoanData: (loan: Loan) => void
 }
 
+//dee:todo // what is status here
+const status = "unknown"
+
 const getStatusColor = (state: LoanStatus) => {
   switch (state) {
     case 'state_movedToEscrow':

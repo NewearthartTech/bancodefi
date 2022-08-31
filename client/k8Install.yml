@@ -71,7 +71,7 @@ spec:
 
         containers:
         -   name: banco-server
-            image: newearthart/bancoserver:1.7
+            image: newearthart/bancoserver:1.8
 
             env:
             -   name: mongo__connectionString
