@@ -125,14 +125,16 @@ const Funded = () => {
                 })}
               </Tr>
             </Thead>
-            <Tbody overflowY={'scroll'} maxH="600px">
+          </Table>
+
+          <Table variant="simple" color={textColor}>
+            <Tbody>
               {filteredLoans.map((row) => {
                 return (
                   <FundBorrowRow
                     loan={row}
                     key={row.id}
                     setLoanData={setCurrLoan}
-                    selected={currLoan === row}
                   />
                 )
               })}

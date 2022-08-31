@@ -266,19 +266,23 @@ const Loans = () => {
                 })}
               </Tr>
             </Thead>
-            <Tbody overflowY={'scroll'} maxH="600px">
-              {filteredLoans.map((row) => {
-                return (
-                  <LoanRow
-                    loan={row}
-                    key={row.id}
-                    setCurrentLoan={setCurrentLoan}
-                    setShowModal={setShowFundModal}
-                  />
-                )
-              })}
-            </Tbody>
           </Table>
+          <Flex>
+            <Table variant="simple" color={textColor}>
+              <Tbody overflowY={'scroll'}>
+                {filteredLoans.map((row) => {
+                  return (
+                    <LoanRow
+                      loan={row}
+                      key={row.id}
+                      setCurrentLoan={setCurrentLoan}
+                      setShowModal={setShowFundModal}
+                    />
+                  )
+                })}
+              </Tbody>
+            </Table>
+          </Flex>
         </Card>
       </Flex>
     </Flex>
