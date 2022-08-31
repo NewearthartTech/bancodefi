@@ -14,6 +14,7 @@ import {
 import React from 'react'
 import numeral from 'numeral'
 import { getShortenedWalletAddress } from 'src/utils'
+import { capitalize } from 'lodash'
 
 interface LoanRow {
   loan: Loan
@@ -148,7 +149,7 @@ export const LoanRow = ({ loan, setCurrentLoan, setShowModal }: LoanRow) => {
             fontWeight="bold"
             minWidth="100%"
           >
-            {loanDurationWindow}
+            {capitalize(loanDurationWindow)}
           </Text>
         </Flex>
       </Td>
