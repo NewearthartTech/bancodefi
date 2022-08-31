@@ -178,7 +178,7 @@ function useLoanLogic() {
     const returnLogs: string[] = []
 
     if (!exists.tokenId.isZero()) {
-      console.log('loan has been requested')
+      console.log('loan has been requested on asset side')
       returnLogs.push(`loan has already been requested on the asset side`)
     } else {
       
@@ -197,9 +197,11 @@ function useLoanLogic() {
         const apprTx = await asset.approve(process.env.NEXT_PUBLIC_EvmApp_address,loan.tokenAddress)
         console.log(`approved with ${apprTx.hash}`);
         await apprTx.wait();
+        returnLogs.push(`got conformation for approved with ${apprTx.hash}`)
         console.log(`got conformation for approved with ${apprTx.hash}`);
       }else{
         console.log("our contract is already approved");
+        returnLogs.push("our contract is already approved");
       }
   
 
@@ -221,25 +223,36 @@ function useLoanLogic() {
     const byContractId = char2Bytes(loanId)
     const hash1 = tzSecrethash(secret1)
 
+    const cashSideStorage:any = await  cashSide.storage();
+
+    const existing = cashSideStorage.get(byContractId);
+
+    if(existing){
+      console.log("we have already asked for loan on cash side");
+      returnLogs.push("we have already asked for loan on cash side");
+    }else{
     
-    const amountMuTez = Number.parseFloat( loan.loanAmount.toString()) * 1000;
-    const interestMuTez = Number.parseFloat(loan.interestAmount.toString()) * 1000;
-
-
-    const opn = await cashSide.methods
-      .askForLoan(
-        byContractId,
-        amountMuTez, //in mutez
-        interestMuTez, //in mutez
-        loanDays,
-        hash1
-      )
-      .send()
-
-      
-    const results = await opn.confirmation()
-
-    returnLogs.push(`loan requested on the cash side : ${opn.opHash}`)
+      const amountMuTez = Number.parseFloat( loan.loanAmount.toString()) * 1000;
+      const interestMuTez = Number.parseFloat(loan.interestAmount.toString()) * 1000;
+  
+  
+      const opn = await cashSide.methods
+        .askForLoan(
+          byContractId,
+          amountMuTez, //in mutez
+          interestMuTez, //in mutez
+          loanDays,
+          hash1
+        )
+        .send()
+  
+        
+      const results = await opn.confirmation()
+  
+      returnLogs.push(`loan requested on the cash side : ${opn.opHash}`)
+      console.log(`loan requested on the cash side : ${opn.opHash}`)
+    }
+    
 
     await api.apiLoansUpdatePost({
       ...loan,
