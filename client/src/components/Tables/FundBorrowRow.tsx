@@ -26,18 +26,27 @@ interface LoanRow {
 //dee:todo // what is status here
 const status = 'unknown'
 
-const getStatusColor = (state: LoanStatus) => {
+const getStatusColorAndCopy = (state: LoanStatus): string[] => {
   switch (state) {
-    case 'state_movedToEscrow':
-      return 'yellow.400'
-    case 'state_defaulted':
-      return 'red.400'
-    case 'state_returned':
-      return 'green.300'
     case 'state_created':
-      return 'tezosBlue.400'
-    default:
-      return 'gray.400'
+      return ['Pending', 'yellow.400']
+    case 'state_bobFunded':
+      return ['Funded', 'yellow.400']
+    case 'state_movedToEscrow':
+      return ['Active', 'yellow.400']
+    case 'state_refundToBob':
+      return ['Repaid', 'green.300']
+    case 'state_returned':
+      return ['Repaid', 'green.300']
+    case 'state_released':
+      return ['Lender Deposit Returned', 'green.300']
+    case 'state_refundToAlex':
+      return ['Collateral Returned', 'green.300']
+
+    case 'state_defaulted':
+      return ['Defaulted', 'red.400']
+    case 'state_fortified':
+      return ['Lender Defaulted', 'red.400']
   }
 }
 
@@ -73,7 +82,7 @@ export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
     loanStatus,
   } = loan
   const textColor = useColorModeValue('gray.700', 'white')
-  const statusColor = getStatusColor(loanStatus)
+  const [statusText, statusColor] = getStatusColorAndCopy(loanStatus)
   const dueDateText = getDueDateText(loan).split(' ')
 
   return (
@@ -184,7 +193,7 @@ export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
 
       <Td>
         <Text color={statusColor} fontWeight={700}>
-          {loanStatus}
+          {statusText}
         </Text>
       </Td>
       <Td>
