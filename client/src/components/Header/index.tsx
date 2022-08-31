@@ -37,8 +37,10 @@ export const Header = () => {
       const tezos = wallet.toTezos()
       setTezosAccount(tezos)
     }
-    connectMetamaskWallet()
-    connectTempleWallet()
+    try {
+      connectMetamaskWallet()
+      connectTempleWallet()
+    } catch {}
   }, [])
 
   useEffect(() => {

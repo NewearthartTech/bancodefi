@@ -11,6 +11,7 @@ export const globalStyles = {
     },
     aquamarine: {
       400: '#00C2CB',
+      100: 'rgba(0, 194, 203, 0.2)',
     },
     tezosBlue: {
       400: '#2c7df7',
