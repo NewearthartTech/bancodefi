@@ -5,7 +5,7 @@ import {
   Flex,
   Icon,
   Progress,
-  Td,
+  GridItem,
   Text,
   Tr,
   Button,
@@ -51,7 +51,7 @@ const getStatusColorAndCopy = (state: LoanStatus): string[] => {
   }
 }
 
-const getDueDateText = (loan: Loan) => {
+const geGridItemueDateText = (loan: Loan) => {
   if (loan.loanStatus === 'state_created') {
     return '---'
   } else {
@@ -89,49 +89,41 @@ export const FundBorrowRow = ({
   } = loan
   const textColor = useColorModeValue('gray.700', 'white')
   const [statusText, statusColor] = getStatusColorAndCopy(loanStatus)
-  const dueDateText = getDueDateText(loan).split(' ')
+  const dueDateText = geGridItemueDateText(loan).split(' ')
   console.log(selected, 'selected')
   return (
-    <Tr
-      key={key}
-      onClick={() => setLoanData(loan)}
-      _hover={{
-        cursor: 'pointer',
-        bg: 'aquamarine.100',
-      }}
-      bg={selected && 'aquamarine.100'}
-    >
-      <Td minWidth={{ sm: '125px' }} pl="0px">
-        <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-          {/* <Avatar
-            name="Ryan Florence"
-            _hover={{ zIndex: '3', cursor: 'pointer' }}
-            key={requesterPFP}
-            src={requesterPFP}
-          /> */}
-          <Flex flexDirection="column" pl="10px">
-            <Text
-              fontSize="md"
-              color={textColor}
-              fontWeight="bold"
-              minWidth="100%"
-              my="0px"
-            >
-              Loan ID: {getShortenedWalletAddress(id)}
-            </Text>
-            <Text
-              my="0px"
-              fontSize="md"
-              color={'gray.400'}
-              fontWeight="bold"
-              minWidth="100%"
-            >
-              By: {getShortenedWalletAddress(requesterTzAddress)}
-            </Text>
-          </Flex>
+    <>
+      <GridItem
+        py="10px"
+        borderBottom={'solid 1px'}
+        borderBottomColor="gray.100"
+      >
+        <Flex flexDirection="column">
+          <Text
+            fontSize="md"
+            color={textColor}
+            fontWeight="bold"
+            minWidth="100%"
+            my="0px"
+          >
+            Loan ID: {getShortenedWalletAddress(id)}
+          </Text>
+          <Text
+            my="0px"
+            fontSize="md"
+            color={'gray.400'}
+            fontWeight="bold"
+            minWidth="100%"
+          >
+            By: {getShortenedWalletAddress(requesterTzAddress)}
+          </Text>
         </Flex>
-      </Td>
-      <Td>
+      </GridItem>
+      <GridItem
+        py="10px"
+        borderBottom={'solid 1px'}
+        borderBottomColor="gray.100"
+      >
         <Flex flexDirection="column">
           <Text
             fontSize="md"
@@ -152,8 +144,12 @@ export const FundBorrowRow = ({
             {collectionName}
           </Text> */}
         </Flex>
-      </Td>
-      <Td>
+      </GridItem>
+      <GridItem
+        py="10px"
+        borderBottom={'solid 1px'}
+        borderBottomColor="gray.100"
+      >
         <Flex flexDirection="column">
           <Text
             fontSize="md"
@@ -174,8 +170,12 @@ export const FundBorrowRow = ({
             XTZ
           </Text>
         </Flex>
-      </Td>
-      <Td>
+      </GridItem>
+      <GridItem
+        py="10px"
+        borderBottom={'solid 1px'}
+        borderBottomColor="gray.100"
+      >
         <Flex flexDirection="column">
           <Text
             fontSize="md"
@@ -196,14 +196,22 @@ export const FundBorrowRow = ({
             APR
           </Text>
         </Flex>
-      </Td>
+      </GridItem>
 
-      <Td>
+      <GridItem
+        py="10px"
+        borderBottom={'solid 1px'}
+        borderBottomColor="gray.100"
+      >
         <Text color={statusColor} fontWeight={700}>
           {statusText}
         </Text>
-      </Td>
-      <Td>
+      </GridItem>
+      <GridItem
+        py="10px"
+        borderBottom={'solid 1px'}
+        borderBottomColor="gray.100"
+      >
         <Flex flexDirection="column">
           {dueDateText.length > 1 ? (
             <>
@@ -239,7 +247,7 @@ export const FundBorrowRow = ({
             </Text>
           )}
         </Flex>
-      </Td>
-    </Tr>
+      </GridItem>
+    </>
   )
 }

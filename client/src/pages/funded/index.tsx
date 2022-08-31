@@ -15,6 +15,8 @@ import {
   IconButton,
   Input,
   Button,
+  Grid,
+  GridItem,
 } from '@chakra-ui/react'
 // Custom components
 import {
@@ -109,37 +111,27 @@ const Funded = () => {
           mr="20px"
         >
           <Text>Your Loans</Text>
-          <Table variant="simple" color={textColor}>
-            <Thead>
-              <Tr my=".8rem" ps="0px">
-                {headers.map((caption, idx) => {
-                  return (
-                    <Th
-                      color="gray.400"
-                      key={idx}
-                      ps={idx === 0 ? '0px' : null}
-                    >
-                      {caption}
-                    </Th>
-                  )
-                })}
-              </Tr>
-            </Thead>
-          </Table>
-
-          <Table variant="simple" color={textColor}>
-            <Tbody>
-              {filteredLoans.map((row) => {
-                return (
-                  <FundBorrowRow
-                    loan={row}
-                    key={row.id}
-                    setLoanData={setCurrLoan}
-                  />
-                )
-              })}
-            </Tbody>
-          </Table>
+          <Grid templateColumns={'2fr 2fr 1fr 1fr 1fr 1fr'}>
+            {headers.map((caption, idx) => {
+              return <GridItem color="gray.400">{caption}</GridItem>
+            })}
+          </Grid>
+          <Grid
+            templateColumns={'2fr 2fr 1fr 1fr 1fr 1fr'}
+            overflowY={'scroll'}
+            maxH="600px"
+          >
+            {filteredLoans.map((row) => {
+              return (
+                <FundBorrowRow
+                  loan={row}
+                  key={row.id}
+                  setLoanData={setCurrLoan}
+                  selected={currLoan === row}
+                />
+              )
+            })}
+          </Grid>
         </Card>
         <Flex w="30%" flexDirection={'column'} mr="20px">
           <Card h="100%" w="100%">

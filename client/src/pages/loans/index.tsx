@@ -15,6 +15,8 @@ import {
   IconButton,
   Input,
   Button,
+  Grid,
+  GridItem,
 } from '@chakra-ui/react'
 // Custom components
 import {
@@ -62,6 +64,15 @@ const headers: string[] = [
   'DURATION',
   '',
 ]
+
+export const columnWidths = {
+  DEAL: '200px',
+  COLLATERAL: '200px',
+  PRINCIPAL: '80px',
+  INTEREST: '80px',
+  DURARTION: '80px',
+  '': '120px',
+}
 
 const applyMinMax = (
   loans: Loan[],
@@ -248,41 +259,29 @@ const Loans = () => {
           <SearchBar />
           {filterSections}
         </Card>
-        <Card p="16px" overflowX={{ sm: 'scroll', xl: 'hidden' }}>
+        <Card p="16px" w="1000px">
           <Text>Loan Requests</Text>
-          <Table variant="simple" color={textColor}>
-            <Thead>
-              <Tr my=".8rem" ps="0px" key="header">
-                {headers.map((caption, idx) => {
-                  return (
-                    <Th
-                      color="gray.400"
-                      key={idx}
-                      ps={idx === 0 ? '0px' : null}
-                    >
-                      {caption}
-                    </Th>
-                  )
-                })}
-              </Tr>
-            </Thead>
-          </Table>
-          <Flex>
-            <Table variant="simple" color={textColor}>
-              <Tbody overflowY={'scroll'}>
-                {filteredLoans.map((row) => {
-                  return (
-                    <LoanRow
-                      loan={row}
-                      key={row.id}
-                      setCurrentLoan={setCurrentLoan}
-                      setShowModal={setShowFundModal}
-                    />
-                  )
-                })}
-              </Tbody>
-            </Table>
-          </Flex>
+          <Grid templateColumns={'2fr 2fr 1fr 1fr 1fr 1fr'}>
+            {headers.map((caption, idx) => {
+              return <GridItem color="gray.400">{caption}</GridItem>
+            })}
+          </Grid>
+          <Grid
+            templateColumns={'2fr 2fr 1fr 1fr 1fr 1fr'}
+            overflowY="scroll"
+            maxH={'600px'}
+          >
+            {filteredLoans.map((row) => {
+              return (
+                <LoanRow
+                  loan={row}
+                  key={row.id}
+                  setCurrentLoan={setCurrentLoan}
+                  setShowModal={setShowFundModal}
+                />
+              )
+            })}
+          </Grid>
         </Card>
       </Flex>
     </Flex>
