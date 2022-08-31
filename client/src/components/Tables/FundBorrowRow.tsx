@@ -21,6 +21,7 @@ interface LoanRow {
   loan: Loan
   key: string
   setLoanData: (loan: Loan) => void
+  selected?: boolean
 }
 
 //dee:todo // what is status here
@@ -72,7 +73,12 @@ const getDueDateText = (loan: Loan) => {
   }
 }
 
-export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
+export const FundBorrowRow = ({
+  loan,
+  key,
+  setLoanData,
+  selected,
+}: LoanRow) => {
   const {
     id,
     requesterTzAddress,
@@ -84,15 +90,16 @@ export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
   const textColor = useColorModeValue('gray.700', 'white')
   const [statusText, statusColor] = getStatusColorAndCopy(loanStatus)
   const dueDateText = getDueDateText(loan).split(' ')
-
+  console.log(selected, 'selected')
   return (
     <Tr
       key={key}
       onClick={() => setLoanData(loan)}
       _hover={{
         cursor: 'pointer',
-        bg: 'gray.100',
+        bg: 'aquamarine.100',
       }}
+      bg={selected && 'aquamarine.100'}
     >
       <Td minWidth={{ sm: '125px' }} pl="0px">
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">

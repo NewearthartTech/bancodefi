@@ -132,6 +132,7 @@ const Funded = () => {
                     loan={row}
                     key={row.id}
                     setLoanData={setCurrLoan}
+                    selected={currLoan === row}
                   />
                 )
               })}
