@@ -11,7 +11,7 @@ import {
   Button,
   useColorModeValue,
 } from '@chakra-ui/react'
-import React from 'react'
+import React, { useState } from 'react'
 import numeral from 'numeral'
 import dayjs from 'dayjs'
 import { LoanStatus } from 'src/generated_server'
@@ -73,12 +73,7 @@ const geGridItemueDateText = (loan: Loan) => {
   }
 }
 
-export const FundBorrowRow = ({
-  loan,
-  key,
-  setLoanData,
-  selected,
-}: LoanRow) => {
+export const FundBorrowRow = ({ loan, setLoanData, selected }: LoanRow) => {
   const {
     id,
     requesterTzAddress,
@@ -90,6 +85,7 @@ export const FundBorrowRow = ({
   const textColor = useColorModeValue('gray.700', 'white')
   const [statusText, statusColor] = getStatusColorAndCopy(loanStatus)
   const dueDateText = geGridItemueDateText(loan).split(' ')
+  const [hovered, setHovered] = useState(false)
   console.log(selected, 'selected')
   return (
     <>
@@ -97,6 +93,19 @@ export const FundBorrowRow = ({
         py="10px"
         borderBottom={'solid 1px'}
         borderBottomColor="gray.100"
+        _hover={{
+          cursor: 'pointer',
+        }}
+        onMouseEnter={() => {
+          setHovered(true)
+        }}
+        onMouseLeave={() => {
+          setHovered(false)
+        }}
+        onClick={() => {
+          setLoanData(loan)
+        }}
+        bg={selected || hovered ? 'aquamarine.100' : undefined}
       >
         <Flex flexDirection="column">
           <Text
@@ -123,6 +132,19 @@ export const FundBorrowRow = ({
         py="10px"
         borderBottom={'solid 1px'}
         borderBottomColor="gray.100"
+        _hover={{
+          cursor: 'pointer',
+        }}
+        onMouseEnter={() => {
+          setHovered(true)
+        }}
+        onMouseLeave={() => {
+          setHovered(false)
+        }}
+        onClick={() => {
+          setLoanData(loan)
+        }}
+        bg={selected || hovered ? 'aquamarine.100' : undefined}
       >
         <Flex flexDirection="column">
           <Text
@@ -149,6 +171,19 @@ export const FundBorrowRow = ({
         py="10px"
         borderBottom={'solid 1px'}
         borderBottomColor="gray.100"
+        _hover={{
+          cursor: 'pointer',
+        }}
+        onMouseEnter={() => {
+          setHovered(true)
+        }}
+        onMouseLeave={() => {
+          setHovered(false)
+        }}
+        onClick={() => {
+          setLoanData(loan)
+        }}
+        bg={selected || hovered ? 'aquamarine.100' : undefined}
       >
         <Flex flexDirection="column">
           <Text
@@ -175,6 +210,19 @@ export const FundBorrowRow = ({
         py="10px"
         borderBottom={'solid 1px'}
         borderBottomColor="gray.100"
+        _hover={{
+          cursor: 'pointer',
+        }}
+        onMouseEnter={() => {
+          setHovered(true)
+        }}
+        onMouseLeave={() => {
+          setHovered(false)
+        }}
+        onClick={() => {
+          setLoanData(loan)
+        }}
+        bg={selected || hovered ? 'aquamarine.100' : undefined}
       >
         <Flex flexDirection="column">
           <Text
@@ -202,6 +250,19 @@ export const FundBorrowRow = ({
         py="10px"
         borderBottom={'solid 1px'}
         borderBottomColor="gray.100"
+        _hover={{
+          cursor: 'pointer',
+        }}
+        onMouseEnter={() => {
+          setHovered(true)
+        }}
+        onMouseLeave={() => {
+          setHovered(false)
+        }}
+        onClick={() => {
+          setLoanData(loan)
+        }}
+        bg={selected || hovered ? 'aquamarine.100' : undefined}
       >
         <Text color={statusColor} fontWeight={700}>
           {statusText}
@@ -211,6 +272,19 @@ export const FundBorrowRow = ({
         py="10px"
         borderBottom={'solid 1px'}
         borderBottomColor="gray.100"
+        _hover={{
+          cursor: 'pointer',
+        }}
+        onMouseEnter={() => {
+          setHovered(true)
+        }}
+        onMouseLeave={() => {
+          setHovered(false)
+        }}
+        onClick={() => {
+          setLoanData(loan)
+        }}
+        bg={selected || hovered ? 'aquamarine.100' : undefined}
       >
         <Flex flexDirection="column">
           {dueDateText.length > 1 ? (
