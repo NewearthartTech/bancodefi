@@ -50,7 +50,7 @@ export const LoanRow = ({ loan, setCurrentLoan, setShowModal }: LoanRow) => {
               minWidth="100%"
               my="0px"
             >
-              Loan ID: {id}
+              Loan ID: {getShortenedWalletAddress(id)}
             </Text>
             <Text
               my="0px"

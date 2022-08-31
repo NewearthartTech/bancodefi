@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Provider } from 'react-redux'
 import {
   Flex,
@@ -51,6 +51,8 @@ import {
   RangeFilter,
 } from './state'
 import { Loan } from 'src/types'
+import { LoansApi } from 'src/generated_server'
+import { useConnectCalls as useEvmConnect } from 'src/web3/evmUtils'
 
 const headers: string[] = [
   'DEAL',
@@ -67,7 +69,24 @@ const Borrowed = () => {
   const [currLoan, setCurrLoan] = useState<Loan>()
   const textColor = useColorModeValue('gray.700', 'white')
   const dispatch = useAppDispatch()
-  const filteredLoans = data
+  const [filteredLoans, setFilteredLoans] = useState<Loan[]>([])
+
+  const { connect: evmConnect, readOnlyWeb3: evmRO } = useEvmConnect()
+
+  useEffect(() => {
+    const getLoans = async () => {
+      const api = new LoansApi(undefined, process.env.NEXT_PUBLIC_SERVER_URL)
+      const { account: requesterEvmAddress } = await evmConnect()
+      const {
+        data: rawLoans,
+      } = await api.apiLoansByBorrowerEvmAddressEvmAddressGet(
+        requesterEvmAddress,
+      )
+
+      setFilteredLoans(rawLoans)
+    }
+    getLoans()
+  }, [])
 
   return (
     <Flex direction={'column'}>
@@ -113,7 +132,7 @@ const Borrowed = () => {
                 return (
                   <FundBorrowRow
                     loan={row}
-                    key={row.loanID}
+                    key={row.id}
                     setLoanData={setCurrLoan}
                   />
                 )
