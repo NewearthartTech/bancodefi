@@ -8,6 +8,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { getShortenedWalletAddress } from 'src/utils'
+import { useLoanCalls } from 'src/web3/loanApis'
 
 interface LoanActivityRow {
   info: string
@@ -18,10 +19,6 @@ interface LoanActivityProps extends FlexProps {
   loan: Loan
   page: 'borrowed' | 'funded'
 }
-
-const repayLoan = (loan: Loan) => {}
-const claimLoan = (loan: Loan) => {}
-const claimRepayment = (loan: Loan) => {}
 
 const getLoanActivityByID = (loan: string): LoanActivityRow[] => {
   return [
@@ -34,6 +31,7 @@ const getLoanActivityByID = (loan: string): LoanActivityRow[] => {
 
 export const LoanActivity = ({ loan, page, ...props }: LoanActivityProps) => {
   const { id, requesterEvmAddress, loanStatus } = loan
+  const { repayLoan, getCollateral, releaseCollateral } = useLoanCalls()
   const loanActivity = getLoanActivityByID(id)
 
   const textColor = useColorModeValue('gray.700', 'white')
@@ -78,7 +76,7 @@ export const LoanActivity = ({ loan, page, ...props }: LoanActivityProps) => {
           <Button
             variant="dark"
             onClick={() => {
-              claimLoan(loan)
+              getCollateral(loan)
             }}
             ml="auto"
           >
@@ -101,7 +99,7 @@ export const LoanActivity = ({ loan, page, ...props }: LoanActivityProps) => {
           <Button
             variant="dark"
             onClick={() => {
-              claimRepayment(loan)
+              releaseCollateral(loan)
             }}
             ml="auto"
           >
