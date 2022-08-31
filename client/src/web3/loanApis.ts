@@ -123,6 +123,27 @@ function useLoanLogic() {
       throw new Error("You don't own this ")
   }
 
+  //called by borrower once lender has released Collateral
+  async function getCollateral(loan: ALoan):Promise<string[]> {
+    throw new Error("Not implemented");
+  }
+
+
+  //called by borrower
+  async function repayLoan(loan: ALoan):Promise<string[]> {
+    throw new Error("Not implemented");
+  }
+
+  //also called collect loan payment Called by lender
+  async function releaseCollateral(loan: ALoan):Promise<string[]> {
+    throw new Error("Not implemented");
+  }
+
+  //Called by lender
+  async function fundLoan(loan: ALoan):Promise<string[]> {
+    throw new Error("Not implemented");
+  }
+
   async function applyForLoan(loan: ALoan) {
     const api = new LoansApi(undefined, process.env.NEXT_PUBLIC_SERVER_URL)
 
