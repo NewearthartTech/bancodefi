@@ -78,7 +78,7 @@ const Apply = () => {
             >
               <IconBox
                 color={'white'}
-                bg={'teal.400'}
+                bg={'aquamarine.400'}
                 h="90px"
                 w="90px"
                 borderRadius="50%"

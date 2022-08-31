@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Provider } from 'react-redux'
 import {
   Flex,
@@ -51,6 +51,8 @@ import {
   RangeFilter,
 } from './state'
 import { Loan } from 'src/types'
+import { LoansApi } from 'src/generated_server'
+import { useConnectCalls as useEvmConnect } from 'src/web3/evmUtils'
 
 const headers: string[] = [
   'DEAL',
@@ -67,13 +69,30 @@ const Borrowed = () => {
   const [currLoan, setCurrLoan] = useState<Loan>()
   const textColor = useColorModeValue('gray.700', 'white')
   const dispatch = useAppDispatch()
-  const filteredLoans = data
+  const [filteredLoans, setFilteredLoans] = useState<Loan[]>([])
+
+  const { connect: evmConnect, readOnlyWeb3: evmRO } = useEvmConnect()
+
+  useEffect(() => {
+    const getLoans = async () => {
+      const api = new LoansApi(undefined, process.env.NEXT_PUBLIC_SERVER_URL)
+      const { account: requesterEvmAddress } = await evmConnect()
+      const {
+        data: rawLoans,
+      } = await api.apiLoansByBorrowerEvmAddressEvmAddressGet(
+        requesterEvmAddress,
+      )
+
+      setFilteredLoans(rawLoans)
+    }
+    getLoans()
+  }, [])
 
   return (
     <Flex direction={'column'}>
       <Flex>
         <Heading mt="0px" fontFamily="Vesterbro">
-          Lend
+          Loans
         </Heading>
         <Heading
           ml="5px"
@@ -81,7 +100,7 @@ const Borrowed = () => {
           fontFamily="Vesterbro"
           color="aquamarine.400"
         >
-          Tezos
+          Requested
         </Heading>
       </Flex>
       <Flex>
@@ -113,7 +132,7 @@ const Borrowed = () => {
                 return (
                   <FundBorrowRow
                     loan={row}
-                    key={row.loanID}
+                    key={row.id}
                     setLoanData={setCurrLoan}
                   />
                 )
@@ -124,7 +143,7 @@ const Borrowed = () => {
         <Flex w="30%" flexDirection={'column'} mr="20px">
           <Card h="100%" mb="20px" w="100%">
             <Text>Activity</Text>
-            {currLoan && <LoanActivity loan={currLoan} />}
+            {currLoan && <LoanActivity loan={currLoan} page="borrowed" />}
             {!currLoan && (
               <Text color={'gray.400'}>Select a loan to view activity</Text>
             )}

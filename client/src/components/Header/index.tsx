@@ -8,8 +8,6 @@ import { Card, MetaMaskIcon } from '@banco/components'
 import NextLink from 'next/link'
 
 export const Header = () => {
-  const [isMetamaskInstalled, setIsMetamaskInstalled] = useState<boolean>(false)
-  const [isTempleInstalled, setIsTempleInstalled] = useState<boolean>(false)
   const [ethereumAccount, setEthereumAccount] = useState<string | null>(null)
   const [tezosAccountAddress, setTezosAccountAddress] = useState<string>('')
 
@@ -18,16 +16,29 @@ export const Header = () => {
   const wallet = new TempleWallet('Banco')
 
   useEffect(() => {
-    if ((window as any).ethereum) {
-      //check if Metamask wallet is installed
-      setIsMetamaskInstalled(true)
+    //Does the User have an Ethereum wallet/account?
+    const connectMetamaskWallet = (): Promise<void> => {
+      return (window as any).ethereum
+        .request({
+          method: 'eth_requestAccounts',
+        })
+        .then((accounts: string[]) => {
+          setEthereumAccount(accounts[0])
+        })
+        .catch((error: any) => {
+          alert(`Something went wrong: ${error}`)
+        })
     }
-  }, [])
 
-  useEffect(() => {
-    TempleWallet.isAvailable().then((available) => {
-      setIsTempleInstalled(available)
-    })
+    //Does the User have an Ethereum wallet/account?
+    const connectTempleWallet = async (): Promise<void> => {
+      // @ts-ignore
+      await wallet.connect('ghostnet')
+      const tezos = wallet.toTezos()
+      setTezosAccount(tezos)
+    }
+    connectMetamaskWallet()
+    connectTempleWallet()
   }, [])
 
   useEffect(() => {
@@ -37,28 +48,6 @@ export const Header = () => {
         .then((pubKey: string) => setTezosAccountAddress(pubKey))
     }
   }, [tezosAccount])
-
-  //Does the User have an Ethereum wallet/account?
-  const connectMetamaskWallet = (): Promise<void> => {
-    return (window as any).ethereum
-      .request({
-        method: 'eth_requestAccounts',
-      })
-      .then((accounts: string[]) => {
-        setEthereumAccount(accounts[0])
-      })
-      .catch((error: any) => {
-        alert(`Something went wrong: ${error}`)
-      })
-  }
-
-  //Does the User have an Ethereum wallet/account?
-  const connectTempleWallet = async (): Promise<void> => {
-    // @ts-ignore
-    await wallet.connect('ghostnet')
-    const tezos = wallet.toTezos()
-    setTezosAccount(tezos)
-  }
 
   const HeaderDropdownContent = () => {
     return (
@@ -82,19 +71,6 @@ export const Header = () => {
             height="2px"
             mb="10px"
           ></Flex>
-          {!ethereumAccount && (
-            <Button
-              variant="dark"
-              onClick={
-                isMetamaskInstalled
-                  ? connectMetamaskWallet
-                  : () => window.open('https://metamask.io/', '_blank')
-              }
-              mb="10px"
-            >
-              {isMetamaskInstalled ? 'Connect Metamask' : 'Install Metamask'}
-            </Button>
-          )}
           {ethereumAccount && (
             <Flex width="200px" justifyContent={'center'} alignItems="center">
               <MetaMaskIcon w="24px" h="24px" mr="10px" />
@@ -111,20 +87,6 @@ export const Header = () => {
             height="2px"
             mb="10px"
           ></Flex>
-          {!tezosAccount && (
-            <Button
-              variant="dark"
-              onClick={
-                isTempleInstalled
-                  ? connectTempleWallet
-                  : () => window.open('https://templewallet.com/', '_blank')
-              }
-            >
-              {isTempleInstalled
-                ? 'Connect Temple Wallet'
-                : 'Install Temple Wallet'}
-            </Button>
-          )}
           {tezosAccount && (
             <Flex width="200px" justifyContent={'center'} alignItems="center">
               <Image

@@ -7,7 +7,9 @@ services:
     entrypoint: [ "/usr/bin/mongod", "--smallfiles", "--bind_ip_all"]
 
   server:
-    image: newearthart/bancoserver:1.1
+    image: newearthart/bancoserver:1.8
+    environment:
+    - ASPNETCORE_hostBuilder__reloadConfigOnChange=false
     ports:
       - 5012:80
 

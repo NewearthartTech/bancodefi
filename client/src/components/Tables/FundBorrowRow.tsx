@@ -15,6 +15,7 @@ import React from 'react'
 import numeral from 'numeral'
 import dayjs from 'dayjs'
 import { LoanStatus } from 'src/generated_server'
+import { getShortenedWalletAddress } from 'src/utils'
 
 interface LoanRow {
   loan: Loan
@@ -23,7 +24,7 @@ interface LoanRow {
 }
 
 //dee:todo // what is status here
-const status = "unknown"
+const status = 'unknown'
 
 const getStatusColor = (state: LoanStatus) => {
   switch (state) {
@@ -58,7 +59,7 @@ const getDueDateText = (loan: Loan) => {
     if (minuteDiff > 0) {
       return `${minuteDiff} Minute${minuteDiff > 1 ? 's' : ''}`
     }
-    return 'PASSED'
+    return 'EXPIRED'
   }
 }
 
@@ -100,7 +101,7 @@ export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
               minWidth="100%"
               my="0px"
             >
-              Loan ID: {id}
+              Loan ID: {getShortenedWalletAddress(id)}
             </Text>
             <Text
               my="0px"
@@ -109,7 +110,7 @@ export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
               fontWeight="bold"
               minWidth="100%"
             >
-              By: {requesterTzAddress}
+              By: {getShortenedWalletAddress(requesterTzAddress)}
             </Text>
           </Flex>
         </Flex>
@@ -123,7 +124,7 @@ export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
             minWidth="100%"
             my="0px"
           >
-            {erCaddress}
+            {getShortenedWalletAddress(erCaddress)}
           </Text>
           {/* <Text
             my="0px"
@@ -183,7 +184,7 @@ export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
 
       <Td>
         <Text color={statusColor} fontWeight={700}>
-          {status}
+          {loanStatus}
         </Text>
       </Td>
       <Td>
