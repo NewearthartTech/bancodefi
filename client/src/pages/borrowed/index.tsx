@@ -92,7 +92,7 @@ const Borrowed = () => {
     <Flex direction={'column'}>
       <Flex>
         <Heading mt="0px" fontFamily="Vesterbro">
-          Lend
+          Loans
         </Heading>
         <Heading
           ml="5px"
@@ -100,7 +100,7 @@ const Borrowed = () => {
           fontFamily="Vesterbro"
           color="aquamarine.400"
         >
-          Tezos
+          Requested
         </Heading>
       </Flex>
       <Flex>

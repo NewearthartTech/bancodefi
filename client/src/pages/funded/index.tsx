@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Provider } from 'react-redux'
 import {
   Flex,
@@ -52,6 +52,8 @@ import {
 } from './state'
 import { Loan } from 'src/types'
 
+import { LoansApi } from 'src/generated_server'
+import { useConnectCalls as useEvmConnect } from 'src/web3/evmUtils'
 const headers: string[] = [
   'DEAL',
   'COLLATERAL',
@@ -67,13 +69,28 @@ const Funded = () => {
   const [currLoan, setCurrLoan] = useState<Loan>()
   const textColor = useColorModeValue('gray.700', 'white')
   const dispatch = useAppDispatch()
-  const filteredLoans = data
+  const [filteredLoans, setFilteredLoans] = useState<Loan[]>([])
+
+  const { connect: evmConnect, readOnlyWeb3: evmRO } = useEvmConnect()
+
+  useEffect(() => {
+    const getLoans = async () => {
+      const api = new LoansApi(undefined, process.env.NEXT_PUBLIC_SERVER_URL)
+      const { account: requesterEvmAddress } = await evmConnect()
+      const {
+        data: rawLoans,
+      } = await api.apiLoansByLenderEvmAddressEvmAddressGet(requesterEvmAddress)
+
+      setFilteredLoans(rawLoans)
+    }
+    getLoans()
+  }, [])
 
   return (
     <Flex direction={'column'}>
       <Flex>
         <Heading mt="0px" fontFamily="Vesterbro">
-          Lend
+          Loans
         </Heading>
         <Heading
           ml="5px"
@@ -81,7 +98,7 @@ const Funded = () => {
           fontFamily="Vesterbro"
           color="aquamarine.400"
         >
-          Tezos
+          Funded
         </Heading>
       </Flex>
       <Flex>
