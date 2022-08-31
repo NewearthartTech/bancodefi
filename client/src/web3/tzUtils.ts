@@ -6,9 +6,10 @@ import { SHA3, Keccak } from 'sha3';
 import { char2Bytes } from '@taquito/utils';
 //import {LoanRecordStatus} from '../svrProtocol';
 
-export const SM1_ghostnet_address = 'KT1B4E5jnE42umeWb7HrnhgSrGPSxtR6JgCG';
 
-export const GHOSTNET_RPC = "https://ghostnet.api.tez.ie";
+
+export const TZNET_RPC = "https://ghostnet.smartpy.io";// "https://rpczero.tzbeta.net/";// "https://ghostnet.api.tez.ie";
+export const TXNETNAME = "ghostnet";
 
 export function tzSecrethash(secret: string) {
 
@@ -69,6 +70,7 @@ function useDApp(props: { appName: string }) {
 
     const ready = Boolean(tezos);
 
+    /*
     useEffect(() => {
         return NEInvokedWallet.onAvailabilityChange(async (available) => {
 
@@ -107,13 +109,24 @@ function useDApp(props: { appName: string }) {
             });
         }
     }, [wallet, appName, setState]);
+    */
 
     const connect = useCallback(
-        async (network: NEInvokedNetwork = {name:"ghostnet", rpc:GHOSTNET_RPC} , opts?: { forcePermission: boolean }) => {
+        async (network: NEInvokedNetwork = {name:TXNETNAME, rpc:TZNET_RPC} , opts?: { forcePermission: boolean }) => {
             try {
+
+                /*
                 if (!wallet) {
                     throw new Error('Temple Wallet is not available');
                 }
+                */
+                let perm;
+                try {
+                    perm = await NEInvokedWallet.getCurrentPermission();
+                } catch { }
+
+                const wlt = new NEInvokedWallet(appName, perm);
+
 
                 const loadtezos = async ()=>{
                     if (!!tezos && !!accountPkh) {
@@ -123,13 +136,13 @@ function useDApp(props: { appName: string }) {
                         console.log('Connecting to wallet');
                     }
     
-                    await wallet.connect(network, opts);
-                    const tzs = wallet.toTezos();
+                    await wlt.connect(network, opts);
+                    const tzs = wlt.toTezos();
                     const pkh = await tzs.wallet.pkh();
     
     
                     const toRet = {
-                        wallet,
+                        wallet:wlt,
                         tezos: tzs,
                         accountPkh: pkh,
                     };
@@ -142,8 +155,9 @@ function useDApp(props: { appName: string }) {
                 const tzRet = await loadtezos();
 
                 const tzLoanDetails = async (contractId:string)=>{
+                    debugger;
                     const byContractId = char2Bytes(contractId);
-                    const loanContract = await tzRet.tezos.wallet.at(SM1_ghostnet_address);
+                    const loanContract = await tzRet.tezos.wallet.at(process.env.NEXT_PUBLIC_TzApp_address);
                     const loanStorage:any = await loanContract.storage(); 
 
                     const k1:TzLoanRecord = await loanStorage.get(byContractId);
@@ -162,6 +176,7 @@ function useDApp(props: { appName: string }) {
 
 
             } catch (err: any) {
+                debugger;
                 console.error(`Failed to connect NEInvokedWallet: ${err?.message}`);
                 throw new Error(err?.message || (err?.toString()) || 'failed to connect to wallet');
                 //return ({error:err});

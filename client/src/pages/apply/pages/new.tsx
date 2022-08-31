@@ -286,7 +286,6 @@ const ApplyNew = () => {
             onClick={async () => {
               try {
                 console.log(JSON.stringify(formState))
-
                 const done = await applyForLoan(formState);
 
               } catch (error: any) {

@@ -39,7 +39,7 @@ function useLoanLogic() {
   }
 
   function evmPackedSecret(secret: string) {
-    return ethers.utils.keccak256(secret) || ''
+    return ethers.utils.keccak256(ethers.utils.toUtf8Bytes(secret) ) || ''
   }
 
   async function evmSecrethash(packedSecret: string) {
@@ -77,22 +77,25 @@ function useLoanLogic() {
 
   async function contracts(mode: 'readonly' | 'writeEnabled') {
     const { tezos, accountPkh: requesterTzAddress } = await tzConnect()
-
+    
     console.log(`using account ${requesterTzAddress}`)
 
-    const web3 = mode === 'readonly' ? await evmRO() : (await evmConnect()).web3
+    //const web3 = mode === 'readonly' ? await evmRO() : (await evmConnect()).web3
+  
+  //  const web3 = (await evmConnect()).web3
 
+  /*
     const assetSide = AssetSide__factory.connect(
       process.env.NEXT_PUBLIC_EvmApp_address,
-      web3,
+      web3.getSigner(),
     )
-
+*/
     const cashSide = await tezos.wallet.at(
-      process.env.KT1G6Qtph5X8LLMbwfYtpCzLMtgmmP4u5anZ,
+      process.env.NEXT_PUBLIC_TzApp_address,
     )
 
     return {
-      assetSide,
+      //assetSide,
       cashSide,
     }
   }
@@ -126,20 +129,31 @@ function useLoanLogic() {
     const { accountPkh: requesterTzAddress } = await tzConnect()
     const { account: requesterEvmAddress } = await evmConnect()
 
+    
+
     console.log(
       `tz account ${requesterTzAddress}, evmAddress ${requesterEvmAddress}`,
     )
 
-    const { assetSide, cashSide } = await contracts('writeEnabled')
+    const { /*assetSide,*/ cashSide } = await contracts('writeEnabled')
 
     const loanAmountWei = ethers.utils.parseEther(loan.loanAmount.toString())
+    
+    const { web3, account } = await evmConnect()
 
-    const loanId = await assetSide.computeContractId(
-      loan.requesterEvmAddress,
-      loan.tokenAddress,
-      loanAmountWei,
+    const assetSide = AssetSide__factory.connect(
+      process.env.NEXT_PUBLIC_EvmApp_address,
+      web3.getSigner(account),
     )
 
+
+    const loanId = await assetSide.computeContractId(
+      requesterEvmAddress,
+      loan.erCaddress,
+      loan.tokenAddress,
+    )
+
+    
     const currentTimeInSec = Math.round(new Date().getTime() / 1000)
 
     let loanDays = loan.loanDuration
@@ -155,6 +169,7 @@ function useLoanLogic() {
 
     const loanEnds = currentTimeInSec + 3600 * 24 * loanDays
 
+    
     const secret1 = evmPackedSecret(uuidv4())
 
     const exists = await assetSide.getContract1(loanId)
@@ -165,14 +180,19 @@ function useLoanLogic() {
       console.log('loan has been requested')
       returnLogs.push(`loan has already been requested on the asset side`)
     } else {
+      debugger;
+      const ecrypted = await encrypter(requesterEvmAddress, secret1);
+      debugger
       const tx = await assetSide.askForLoan(
-        loan.tokenAddress,
+        loan.erCaddress,
         loan.tokenAddress,
         requesterEvmAddress,
         evmSecrethash(secret1),
-        await encrypter(requesterEvmAddress, secret1),
-        loanEnds,
+        ecrypted,
+        loanEnds
       )
+
+      debugger;
 
       returnLogs.push(`loan requested on the asset side : ${tx.hash}`)
     }

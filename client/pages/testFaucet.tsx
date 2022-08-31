@@ -22,7 +22,7 @@ const TestFaucet = () => {
   async function checkMyBalance() {
     try {
       setCheckbalance({ isLoading: true })
-
+     
       const { account } = await evmConnect()
 
       const { ownedNfts } = await getAlchemy().nft.getNftsForOwner(account, {
@@ -80,7 +80,7 @@ const TestFaucet = () => {
       <Button
         disabled={mintNFT?.isLoading}
         style={{ maxWidth: '20rem', marginTop:"2rem" }}
-        onClick={() => checkMyBalance}>
+        onClick={() => checkMyBalance()}>
         Check my balance
       </Button>
 
