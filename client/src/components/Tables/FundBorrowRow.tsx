@@ -5,13 +5,13 @@ import {
   Flex,
   Icon,
   Progress,
-  Td,
+  GridItem,
   Text,
   Tr,
   Button,
   useColorModeValue,
 } from '@chakra-ui/react'
-import React from 'react'
+import React, { useState } from 'react'
 import numeral from 'numeral'
 import dayjs from 'dayjs'
 import { LoanStatus } from 'src/generated_server'
@@ -21,27 +21,37 @@ interface LoanRow {
   loan: Loan
   key: string
   setLoanData: (loan: Loan) => void
+  selected?: boolean
 }
 
 //dee:todo // what is status here
 const status = 'unknown'
 
-const getStatusColor = (state: LoanStatus) => {
+const getStatusColorAndCopy = (state: LoanStatus): string[] => {
   switch (state) {
-    case 'state_movedToEscrow':
-      return 'yellow.400'
-    case 'state_defaulted':
-      return 'red.400'
-    case 'state_returned':
-      return 'green.300'
     case 'state_created':
-      return 'tezosBlue.400'
-    default:
-      return 'gray.400'
+      return ['Pending', 'yellow.400']
+    case 'state_bobFunded':
+      return ['Funded', 'yellow.400']
+    case 'state_movedToEscrow':
+      return ['Active', 'yellow.400']
+    case 'state_refundToBob':
+      return ['Repaid', 'green.300']
+    case 'state_returned':
+      return ['Repaid', 'green.300']
+    case 'state_released':
+      return ['Lender Deposit Returned', 'green.300']
+    case 'state_refundToAlex':
+      return ['Collateral Returned', 'green.300']
+
+    case 'state_defaulted':
+      return ['Defaulted', 'red.400']
+    case 'state_fortified':
+      return ['Lender Defaulted', 'red.400']
   }
 }
 
-const getDueDateText = (loan: Loan) => {
+const geGridItemueDateText = (loan: Loan) => {
   if (loan.loanStatus === 'state_created') {
     return '---'
   } else {
@@ -63,7 +73,7 @@ const getDueDateText = (loan: Loan) => {
   }
 }
 
-export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
+export const FundBorrowRow = ({ loan, setLoanData, selected }: LoanRow) => {
   const {
     id,
     requesterTzAddress,
@@ -73,49 +83,69 @@ export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
     loanStatus,
   } = loan
   const textColor = useColorModeValue('gray.700', 'white')
-  const statusColor = getStatusColor(loanStatus)
-  const dueDateText = getDueDateText(loan).split(' ')
-
+  const [statusText, statusColor] = getStatusColorAndCopy(loanStatus)
+  const dueDateText = geGridItemueDateText(loan).split(' ')
+  const [hovered, setHovered] = useState(false)
+  console.log(selected, 'selected')
   return (
-    <Tr
-      key={key}
-      onClick={() => setLoanData(loan)}
-      _hover={{
-        cursor: 'pointer',
-        bg: 'gray.100',
-      }}
-    >
-      <Td minWidth={{ sm: '125px' }} pl="0px">
-        <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-          {/* <Avatar
-            name="Ryan Florence"
-            _hover={{ zIndex: '3', cursor: 'pointer' }}
-            key={requesterPFP}
-            src={requesterPFP}
-          /> */}
-          <Flex flexDirection="column" pl="10px">
-            <Text
-              fontSize="md"
-              color={textColor}
-              fontWeight="bold"
-              minWidth="100%"
-              my="0px"
-            >
-              Loan ID: {getShortenedWalletAddress(id)}
-            </Text>
-            <Text
-              my="0px"
-              fontSize="md"
-              color={'gray.400'}
-              fontWeight="bold"
-              minWidth="100%"
-            >
-              By: {getShortenedWalletAddress(requesterTzAddress)}
-            </Text>
-          </Flex>
+    <>
+      <GridItem
+        py="10px"
+        borderBottom={'solid 1px'}
+        borderBottomColor="gray.100"
+        _hover={{
+          cursor: 'pointer',
+        }}
+        onMouseEnter={() => {
+          setHovered(true)
+        }}
+        onMouseLeave={() => {
+          setHovered(false)
+        }}
+        onClick={() => {
+          setLoanData(loan)
+        }}
+        bg={selected || hovered ? 'aquamarine.100' : undefined}
+      >
+        <Flex flexDirection="column">
+          <Text
+            fontSize="md"
+            color={textColor}
+            fontWeight="bold"
+            minWidth="100%"
+            my="0px"
+          >
+            Loan ID: {getShortenedWalletAddress(id)}
+          </Text>
+          <Text
+            my="0px"
+            fontSize="md"
+            color={'gray.400'}
+            fontWeight="bold"
+            minWidth="100%"
+          >
+            By: {getShortenedWalletAddress(requesterTzAddress)}
+          </Text>
         </Flex>
-      </Td>
-      <Td>
+      </GridItem>
+      <GridItem
+        py="10px"
+        borderBottom={'solid 1px'}
+        borderBottomColor="gray.100"
+        _hover={{
+          cursor: 'pointer',
+        }}
+        onMouseEnter={() => {
+          setHovered(true)
+        }}
+        onMouseLeave={() => {
+          setHovered(false)
+        }}
+        onClick={() => {
+          setLoanData(loan)
+        }}
+        bg={selected || hovered ? 'aquamarine.100' : undefined}
+      >
         <Flex flexDirection="column">
           <Text
             fontSize="md"
@@ -136,8 +166,25 @@ export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
             {collectionName}
           </Text> */}
         </Flex>
-      </Td>
-      <Td>
+      </GridItem>
+      <GridItem
+        py="10px"
+        borderBottom={'solid 1px'}
+        borderBottomColor="gray.100"
+        _hover={{
+          cursor: 'pointer',
+        }}
+        onMouseEnter={() => {
+          setHovered(true)
+        }}
+        onMouseLeave={() => {
+          setHovered(false)
+        }}
+        onClick={() => {
+          setLoanData(loan)
+        }}
+        bg={selected || hovered ? 'aquamarine.100' : undefined}
+      >
         <Flex flexDirection="column">
           <Text
             fontSize="md"
@@ -158,8 +205,25 @@ export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
             XTZ
           </Text>
         </Flex>
-      </Td>
-      <Td>
+      </GridItem>
+      <GridItem
+        py="10px"
+        borderBottom={'solid 1px'}
+        borderBottomColor="gray.100"
+        _hover={{
+          cursor: 'pointer',
+        }}
+        onMouseEnter={() => {
+          setHovered(true)
+        }}
+        onMouseLeave={() => {
+          setHovered(false)
+        }}
+        onClick={() => {
+          setLoanData(loan)
+        }}
+        bg={selected || hovered ? 'aquamarine.100' : undefined}
+      >
         <Flex flexDirection="column">
           <Text
             fontSize="md"
@@ -180,14 +244,48 @@ export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
             APR
           </Text>
         </Flex>
-      </Td>
+      </GridItem>
 
-      <Td>
+      <GridItem
+        py="10px"
+        borderBottom={'solid 1px'}
+        borderBottomColor="gray.100"
+        _hover={{
+          cursor: 'pointer',
+        }}
+        onMouseEnter={() => {
+          setHovered(true)
+        }}
+        onMouseLeave={() => {
+          setHovered(false)
+        }}
+        onClick={() => {
+          setLoanData(loan)
+        }}
+        bg={selected || hovered ? 'aquamarine.100' : undefined}
+      >
         <Text color={statusColor} fontWeight={700}>
-          {loanStatus}
+          {statusText}
         </Text>
-      </Td>
-      <Td>
+      </GridItem>
+      <GridItem
+        py="10px"
+        borderBottom={'solid 1px'}
+        borderBottomColor="gray.100"
+        _hover={{
+          cursor: 'pointer',
+        }}
+        onMouseEnter={() => {
+          setHovered(true)
+        }}
+        onMouseLeave={() => {
+          setHovered(false)
+        }}
+        onClick={() => {
+          setLoanData(loan)
+        }}
+        bg={selected || hovered ? 'aquamarine.100' : undefined}
+      >
         <Flex flexDirection="column">
           {dueDateText.length > 1 ? (
             <>
@@ -223,7 +321,7 @@ export const FundBorrowRow = ({ loan, key, setLoanData }: LoanRow) => {
             </Text>
           )}
         </Flex>
-      </Td>
-    </Tr>
+      </GridItem>
+    </>
   )
 }

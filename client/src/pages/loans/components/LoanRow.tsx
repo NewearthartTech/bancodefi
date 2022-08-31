@@ -5,16 +5,17 @@ import {
   Flex,
   Icon,
   Progress,
-  Td,
   Text,
   Tr,
   Button,
   useColorModeValue,
+  GridItem,
 } from '@chakra-ui/react'
 import React from 'react'
 import numeral from 'numeral'
 import { getShortenedWalletAddress } from 'src/utils'
 import { capitalize } from 'lodash'
+import { columnWidths } from '../'
 
 interface LoanRow {
   loan: Loan
@@ -34,46 +35,28 @@ export const LoanRow = ({ loan, setCurrentLoan, setShowModal }: LoanRow) => {
   } = loan
   const textColor = useColorModeValue('gray.700', 'white')
   return (
-    <Tr key={id} overflowX="scroll">
-      <Td minWidth={{ sm: '125px' }} pl="0px">
-        <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-          {/* <Avatar
-            name="Ryan Florence"
-            _hover={{ zIndex: '3', cursor: 'pointer' }}
-            key={requesterPFP}
-            src={requesterPFP}
-          /> */}
-          <Flex flexDirection="column" pl="10px">
-            <Text
-              fontSize="md"
-              color={textColor}
-              fontWeight="bold"
-              minWidth="100%"
-              my="0px"
-            >
-              Loan ID: {getShortenedWalletAddress(id)}
-            </Text>
-            <Text
-              my="0px"
-              fontSize="md"
-              color={'gray.400'}
-              fontWeight="bold"
-              minWidth="100%"
-            >
-              By: {getShortenedWalletAddress(requesterTzAddress)}
-            </Text>
-          </Flex>
+    <>
+      <GridItem
+        py="10px"
+        borderBottom={'solid 1px'}
+        borderBottomColor="gray.100"
+      >
+        <Flex flexDirection="column" width={columnWidths.DEAL}>
+          <Text fontSize="md" color={textColor} fontWeight="bold" my="0px">
+            Loan ID: {getShortenedWalletAddress(id)}
+          </Text>
+          <Text my="0px" fontSize="md" color={'gray.400'} fontWeight="bold">
+            By: {getShortenedWalletAddress(requesterTzAddress)}
+          </Text>
         </Flex>
-      </Td>
-      <Td>
+      </GridItem>
+      <GridItem
+        py="10px"
+        borderBottom={'solid 1px'}
+        borderBottomColor="gray.100"
+      >
         <Flex flexDirection="column">
-          <Text
-            fontSize="md"
-            color={textColor}
-            fontWeight="bold"
-            minWidth="100%"
-            my="0px"
-          >
+          <Text fontSize="md" color={textColor} fontWeight="bold" my="0px">
             {getShortenedWalletAddress(erCaddress)}
           </Text>
           {/* <Text
@@ -86,8 +69,12 @@ export const LoanRow = ({ loan, setCurrentLoan, setShowModal }: LoanRow) => {
             {collectionName}
           </Text> */}
         </Flex>
-      </Td>
-      <Td>
+      </GridItem>
+      <GridItem
+        py="10px"
+        borderBottom={'solid 1px'}
+        borderBottomColor="gray.100"
+      >
         <Flex flexDirection="column">
           <Text
             fontSize="md"
@@ -108,8 +95,12 @@ export const LoanRow = ({ loan, setCurrentLoan, setShowModal }: LoanRow) => {
             XTZ
           </Text>
         </Flex>
-      </Td>
-      <Td>
+      </GridItem>
+      <GridItem
+        py="10px"
+        borderBottom={'solid 1px'}
+        borderBottomColor="gray.100"
+      >
         <Flex flexDirection="column">
           <Text
             fontSize="md"
@@ -130,8 +121,12 @@ export const LoanRow = ({ loan, setCurrentLoan, setShowModal }: LoanRow) => {
             APR
           </Text>
         </Flex>
-      </Td>
-      <Td>
+      </GridItem>
+      <GridItem
+        py="10px"
+        borderBottom={'solid 1px'}
+        borderBottomColor="gray.100"
+      >
         <Flex flexDirection="column">
           <Text
             fontSize="md"
@@ -152,8 +147,12 @@ export const LoanRow = ({ loan, setCurrentLoan, setShowModal }: LoanRow) => {
             {capitalize(loanDurationWindow)}
           </Text>
         </Flex>
-      </Td>
-      <Td>
+      </GridItem>
+      <GridItem
+        py="10px"
+        borderBottom={'solid 1px'}
+        borderBottomColor="gray.100"
+      >
         <Button
           variant={'dark'}
           onClick={() => {
@@ -163,7 +162,7 @@ export const LoanRow = ({ loan, setCurrentLoan, setShowModal }: LoanRow) => {
         >
           Fund
         </Button>
-      </Td>
-    </Tr>
+      </GridItem>
+    </>
   )
 }
