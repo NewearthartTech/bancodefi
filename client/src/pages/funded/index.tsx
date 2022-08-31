@@ -130,7 +130,7 @@ const Funded = () => {
                 return (
                   <FundBorrowRow
                     loan={row}
-                    key={row.loanID}
+                    key={row.id}
                     setLoanData={setCurrLoan}
                   />
                 )
@@ -141,7 +141,7 @@ const Funded = () => {
         <Flex w="30%" flexDirection={'column'} mr="20px">
           <Card h="100%" w="100%">
             <Text>Activity</Text>
-            {currLoan && <LoanActivity loan={currLoan} />}
+            {currLoan && <LoanActivity loan={currLoan} page="funded" />}
             {!currLoan && (
               <Text color={'gray.400'}>Select a loan to view activity</Text>
             )}

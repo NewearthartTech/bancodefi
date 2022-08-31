@@ -143,7 +143,7 @@ const Borrowed = () => {
         <Flex w="30%" flexDirection={'column'} mr="20px">
           <Card h="100%" mb="20px" w="100%">
             <Text>Activity</Text>
-            {currLoan && <LoanActivity loan={currLoan} />}
+            {currLoan && <LoanActivity loan={currLoan} page="borrowed" />}
             {!currLoan && (
               <Text color={'gray.400'}>Select a loan to view activity</Text>
             )}

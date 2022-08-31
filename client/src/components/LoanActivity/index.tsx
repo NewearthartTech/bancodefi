@@ -7,6 +7,7 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react'
+import { getShortenedWalletAddress } from 'src/utils'
 
 interface LoanActivityRow {
   info: string
@@ -15,9 +16,12 @@ interface LoanActivityRow {
 
 interface LoanActivityProps extends FlexProps {
   loan: Loan
+  page: 'borrowed' | 'funded'
 }
 
 const repayLoan = (loan: Loan) => {}
+const claimLoan = (loan: Loan) => {}
+const claimRepayment = (loan: Loan) => {}
 
 const getLoanActivityByID = (loan: string): LoanActivityRow[] => {
   return [
@@ -28,9 +32,9 @@ const getLoanActivityByID = (loan: string): LoanActivityRow[] => {
   ]
 }
 
-export const LoanActivity = ({ loan, ...props }: LoanActivityProps) => {
-  const { loanID, loanRequester, requesterPFP } = loan
-  const loanActivity = getLoanActivityByID(loanID)
+export const LoanActivity = ({ loan, page, ...props }: LoanActivityProps) => {
+  const { id, requesterEvmAddress, loanStatus } = loan
+  const loanActivity = getLoanActivityByID(id)
 
   const textColor = useColorModeValue('gray.700', 'white')
   return (
@@ -44,12 +48,12 @@ export const LoanActivity = ({ loan, ...props }: LoanActivityProps) => {
         borderBottom="solid 1px"
         borderBottomColor="gray.300"
       >
-        <Avatar
+        {/* <Avatar
           name="Ryan Florence"
           _hover={{ zIndex: '3', cursor: 'pointer' }}
           key={requesterPFP}
           src={requesterPFP}
-        />
+        /> */}
         <Flex flexDirection="column" pl="10px">
           <Text
             fontSize="md"
@@ -58,7 +62,7 @@ export const LoanActivity = ({ loan, ...props }: LoanActivityProps) => {
             minWidth="100%"
             my="0px"
           >
-            Loan ID: {loanID}
+            LID: {getShortenedWalletAddress(id)}
           </Text>
           <Text
             my="0px"
@@ -67,18 +71,43 @@ export const LoanActivity = ({ loan, ...props }: LoanActivityProps) => {
             fontWeight="bold"
             minWidth="100%"
           >
-            By: {loanRequester}
+            By: {getShortenedWalletAddress(requesterEvmAddress)}
           </Text>
         </Flex>
-        <Button
-          variant="dark"
-          onClick={() => {
-            repayLoan(loan)
-          }}
-          ml="auto"
-        >
-          Repay Loan
-        </Button>
+        {loanStatus === 'state_movedToEscrow' && page === 'borrowed' && (
+          <Button
+            variant="dark"
+            onClick={() => {
+              claimLoan(loan)
+            }}
+            ml="auto"
+          >
+            Claim Loan
+          </Button>
+        )}
+        {loanStatus === 'state_released' && page === 'borrowed' && (
+          <Button
+            variant="dark"
+            onClick={() => {
+              repayLoan(loan)
+            }}
+            ml="auto"
+          >
+            Repay Loan
+          </Button>
+        )}
+
+        {loanStatus === 'state_returned' && page === 'funded' && (
+          <Button
+            variant="dark"
+            onClick={() => {
+              claimRepayment(loan)
+            }}
+            ml="auto"
+          >
+            Claim Repayment
+          </Button>
+        )}
       </Flex>
 
       {loanActivity.map((activity) => {
