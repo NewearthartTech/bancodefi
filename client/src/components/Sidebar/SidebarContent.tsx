@@ -138,7 +138,6 @@ export const SidebarContent = ({ logoText, routes }) => {
       <Box pt={'25px'} mb="12px">
         <Link
           href={`/loans`}
-          target="_blank"
           display="flex"
           lineHeight="100%"
           mb="10px"
