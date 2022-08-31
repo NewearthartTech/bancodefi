@@ -49,14 +49,15 @@ class MyContract(sp.Contract):
     # STEP 1 -Called by Alex - Alex creates a loan record with Secret 1
 
     @sp.entry_point
-    def askForLoan(self, contractId, secret1Hash, loanAmount, loanInterest, lockedTill):
+    def askForLoan(self, contractId, secret1Hash, loanAmount, loanInterest, lockedTillDays):
 
         sp.verify(~ self.data.contains(contractId),
                   "contract already exists")
 
         sp.verify(loanAmount > sp.mutez(0), "amount must be > 0")
-        sp.verify(lockedTill > sp.now, "timeLock time must be in the future")
+        sp.verify(lockedTillDays > 1, "timeLock time must be in the future")
 
+        lockedTill = sp.now.add_days(lockedTillDays)
         reqTill = sp.now.add_days(1)  # 1 day from now
         acceptTill = reqTill.add_days(1)  # //1 day from reqTill
         releaseTill = lockedTill.add_days(1)  # //1 day from _lockedTill
@@ -207,7 +208,7 @@ def test():
       secret1Hash =sp.sha3(secret1),
       loanAmount= loanAmount,
       loanInterest=sp.mutez(2),
-      lockedTill=sp.now.add_days(30)
+      lockedTillDays=30
       ).run(
         sender=alex
       )

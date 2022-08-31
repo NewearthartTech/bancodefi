@@ -47,8 +47,8 @@ import {
   store,
   FormState,
 } from '../state'
-import { LoansApi, ALoan } from '../../../generated_server'
-import { useConnect as useTzConnect } from '../../../web3/tzUtils'
+
+import { useLoanCalls } from '../../../web3/loanApis'
 import {
   useConnectCalls as useEvmConnect,
   getAlchemy,
@@ -207,8 +207,8 @@ const ApplyNew = () => {
     checkEthereumConnection()
   })
 
-  const tzConnect = useTzConnect()
-  const { connect: evmConnect, readOnlyWeb3: evmRO } = useEvmConnect()
+  const {ensureNftIsValid, applyForLoan} = useLoanCalls()
+  
   return (
     <Flex direction={'column'}>
       <ListModal
@@ -291,27 +291,11 @@ const ApplyNew = () => {
                   try {
                     setVerificationStatus('verifying')
 
-                    if (!formState.erCaddress || !formState.tokenAddress)
-                      throw new Error('token adddress and Id are required')
-
-                    const web3ro = await evmRO()
-
-                    const ctx = AssetFaucet__factory.connect(
-                      formState.erCaddress,
-                      web3ro,
-                    )
-
-                    const tokenOwner = await ctx.ownerOf(formState.tokenAddress)
-
-                    const { account: requesterEvmAddress } = await evmConnect()
-
-                    if (
-                      tokenOwner.toLowerCase() !=
-                      requesterEvmAddress.toLowerCase()
-                    )
-                      throw new Error("You don't own this ")
                     setVerificationStatus('verified')
-                    setOwnerAddress(tokenOwner)
+
+                    //await ensureNftIsValid({
+                        //todo: update the  to get tokenOwner
+                    //setOwnerAddress(tokenOwner)
 
                     verifyNFT(formState, dispatch)
                   } catch (error: any) {
@@ -451,7 +435,7 @@ const ApplyNew = () => {
           <Button
             width="100%"
             variant="aquamarine"
-            disabled={!(ethereumAccountConnected && tezosAccountConnected)}
+            //disabled={!(ethereumAccountConnected && tezosAccountConnected)}
             background={
               !(ethereumAccountConnected && tezosAccountConnected)
                 ? 'red.400'
@@ -461,19 +445,8 @@ const ApplyNew = () => {
               try {
                 setIsModalOpen(true)
 
-                const { accountPkh: requesterTzAddress } = await tzConnect()
-                const { account: requesterEvmAddress } = await evmConnect()
+                const done = await applyForLoan(formState);
 
-                const api = new LoansApi(
-                  undefined,
-                  process.env.NEXT_PUBLIC_SERVER_URL,
-                )
-
-                const done = await api.apiLoansApplyPost({
-                  ...formState,
-                  requesterTzAddress,
-                  requesterEvmAddress,
-                })
                 setModalState('success')
               } catch (error: any) {
                 //todo: Show connection error here
@@ -483,7 +456,7 @@ const ApplyNew = () => {
               }
             }}
           >
-            {!(ethereumAccountConnected && tezosAccountConnected)
+            {false /*|| !(ethereumAccountConnected && tezosAccountConnected)*/
               ? 'Please Connect Your Wallets'
               : 'List Loan Request'}
           </Button>

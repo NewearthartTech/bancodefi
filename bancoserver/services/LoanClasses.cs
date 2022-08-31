@@ -13,8 +13,10 @@ namespace bancoserver.services;
 [BsonIgnoreExtraElements]
 public class ALoan
 {
-    [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
-    [BsonRepresentation(BsonType.ObjectId)]
+    /// <summary>
+    /// This is actually calculated by the EVM contract
+    /// </summary>
+    [BsonRepresentation(BsonType.String)]
     public string id { get; set; } = "";
 
 
@@ -57,6 +59,9 @@ public class ALoan
 
     [Required]
     public string RequesterEvmAddress { get; set; } = "";
+
+    
+    public LenderDetails? Lender { get; set; }
 }
 
 [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
@@ -75,6 +80,16 @@ public enum LoanStatus {
     state_defaulted = 6,
     state_released = 7,
     state_fortified = 8,
+}
+
+public class LenderDetails
+{
+    [Required]
+    public string TzAddress { get; set; } = "";
+
+    [Required]
+    public string EvmAddress { get; set; } = "";
+
 }
 
 

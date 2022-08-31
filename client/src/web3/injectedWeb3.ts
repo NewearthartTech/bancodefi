@@ -27,6 +27,7 @@ export class InjectedWeb3  {
   }
 
   connect = async (chainConfig: ChainConfigs, chainId?: string) => {
+    
     if (chainId) {
       await this.ensureCorrectChain(chainConfig, chainId)
     }

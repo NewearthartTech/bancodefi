@@ -20,8 +20,54 @@ public class LoansController : ControllerBase
         _db = db;
     }
 
+
+    [HttpGet("byBorrowerEvmAddress/{evmAddress}")]
+    public async Task<ALoan[]> LoanByBorrowerEvmAddress(string evmAddress)
+    {
+        var loanCollection = _db.getCollection<ALoan>();
+
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+        return (await loanCollection.Find(l => l.RequesterEvmAddress == evmAddress).ToListAsync()).ToArray();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+
+    }
+
+    [HttpGet("byBorrowerTzAddress/{tzAddress}")]
+    public async Task<ALoan[]> LoanByBorrowerTzAddress(string tzAddress)
+    {
+        var loanCollection = _db.getCollection<ALoan>();
+
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+        return (await loanCollection.Find(l => l.RequesterTzAddress == tzAddress).ToListAsync()).ToArray();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+
+    }
+
+
+    [HttpGet("byLenderEvmAddress/{evmAddress}")]
+    public async Task<ALoan[]> LoanByLenderEvmAddress(string evmAddress)
+    {
+        var loanCollection = _db.getCollection<ALoan>();
+
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+        return (await loanCollection.Find(l => l.Lender.EvmAddress == evmAddress).ToListAsync()).ToArray();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+
+    }
+
+    [HttpGet("byLenderTzAddress/{tzAddress}")]
+    public async Task<ALoan[]> LoanByLenderTzAddress(string tzAddress)
+    {
+        var loanCollection = _db.getCollection<ALoan>();
+
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+        return (await loanCollection.Find(l => l.Lender.TzAddress == tzAddress).ToListAsync()).ToArray();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+
+    }
+
     [HttpGet("byId/{loanId}")]
-    public async Task<ALoan> List(string loanId)
+    public async Task<ALoan> LoanById(string loanId)
     {
         var loanCollection = _db.getCollection<ALoan>();
 
@@ -39,15 +85,18 @@ public class LoansController : ControllerBase
         return loans.ToArray();
     }
 
-    [HttpPost("apply")]
-    public async Task<ALoan> Apply([FromBody] ALoan loan)
+    [HttpPost("update")]
+    public async Task<ALoan> Update([FromBody] ALoan loan)
     {
         var loanCollection = _db.getCollection<ALoan>();
 
-        if (!string.IsNullOrWhiteSpace(loan.id))
-            throw new NotImplementedException();
+        //dee: todo: We need to get the loan status from Blockchain and update it, not just
+        //TRUST the front end
 
-        await loanCollection.InsertOneAsync(loan);
+        await loanCollection.ReplaceOneAsync(l => l.id == loan.id, loan, new ReplaceOptions
+        {
+            IsUpsert = true
+        });
 
         return loan;
     }

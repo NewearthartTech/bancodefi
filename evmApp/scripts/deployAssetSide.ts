@@ -13,6 +13,8 @@ async function main() {
   const factory = await ethers.getContractFactory("AssetSide");
   const contract = await factory.deploy();
 
+  await contract.deployed();
+
   console.log(`AssetSide deployed to ${contract.address}`);
 }
 
