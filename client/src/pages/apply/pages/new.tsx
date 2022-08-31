@@ -373,18 +373,31 @@ const ApplyNew = () => {
                 borderColor: { mainTeal },
               }}
               width="100%"
+              alignItems={'center'}
             >
               <Input
                 fontSize="xs"
                 color={mainText}
                 placeholder="Loan Amount in XTZ"
                 borderRadius="inherit"
-                mr="4px"
+                mr="10px"
                 type="number"
                 onChange={(e) => {
                   dispatch(actions.setLoanAmount((e as any).target.value))
                 }}
               />
+
+              <IconBox
+                color={'white'}
+                bg={'tezosBlue.400'}
+                minHeight="30px"
+                h="30px"
+                minWidth="30px"
+                w="30px"
+                borderRadius="50%"
+              >
+                <TezosLogo w="20px" h="20px" />
+              </IconBox>
             </InputGroup>
           </Flex>
           <Flex
