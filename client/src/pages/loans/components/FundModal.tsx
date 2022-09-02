@@ -24,6 +24,7 @@ import NextLink from 'next/link'
 import { useState } from 'react'
 import { getShortenedWalletAddress } from '@banco/utils'
 import numeral from 'numeral'
+import { useLoanCalls } from 'src/web3/loanApis'
 
 export type ModalState = 'initial' | 'processing' | 'success' | 'error'
 
@@ -33,10 +34,9 @@ interface FundModalProps {
   loan: Loan
 }
 
-const getModalButton = () => {
+const getModalButton = (fundLoan) => {
   const [modalState, setModalState] = useState<ModalState>('initial')
   const [modalError, setModalError] = useState('')
-  const fundLoan = () => {}
   switch (modalState) {
     case 'initial':
       return (
@@ -125,9 +125,12 @@ export const FundModal = ({ isOpen, onClose, loan }: FundModalProps) => {
     loanDuration,
     loanDurationWindow,
   } = loan
-  const modalButton = getModalButton()
-  const textColor = useColorModeValue('gray.700', 'white')
+  const { fundLoan } = useLoanCalls()
 
+  const modalButton = getModalButton(() => {
+    fundLoan(loan)
+  })
+  const textColor = useColorModeValue('gray.700', 'white')
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
