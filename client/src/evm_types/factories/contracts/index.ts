@@ -4,4 +4,3 @@
 export { AssetFaucet__factory } from "./AssetFaucet__factory";
 export { AssetSide__factory } from "./AssetSide__factory";
 export { Common__factory } from "./Common__factory";
-export { Lock__factory } from "./Lock__factory";

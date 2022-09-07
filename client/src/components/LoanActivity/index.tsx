@@ -31,7 +31,7 @@ const getLoanActivityByID = (loan: string): LoanActivityRow[] => {
 
 export const LoanActivity = ({ loan, page, ...props }: LoanActivityProps) => {
   const { id, requesterEvmAddress, loanStatus } = loan
-  const { repayLoan, getCollateral, releaseCollateral } = useLoanCalls()
+  const { repayLoan, releaseCollateral, acceptLoan } = useLoanCalls()
   const loanActivity = getLoanActivityByID(id)
 
   const textColor = useColorModeValue('gray.700', 'white')
@@ -72,22 +72,23 @@ export const LoanActivity = ({ loan, page, ...props }: LoanActivityProps) => {
             By: {getShortenedWalletAddress(requesterEvmAddress)}
           </Text>
         </Flex>
-        {loanStatus === 'state_movedToEscrow' && page === 'borrowed' && (
+        {loanStatus === 'state_bobFunded' && page === 'borrowed' && (
           <Button
             variant="dark"
             onClick={() => {
-              getCollateral(loan)
+              acceptLoan(loan)
             }}
             ml="auto"
           >
             Claim Loan
           </Button>
         )}
-        {loanStatus === 'state_released' && page === 'borrowed' && (
+        {loanStatus === 'state_movedToEscrow' && page === 'borrowed' && (
           <Button
             variant="dark"
             onClick={() => {
-              repayLoan(loan)
+              // TODO CHANGE THIS BACK TO REPAY
+              acceptLoan(loan)
             }}
             ml="auto"
           >
@@ -95,7 +96,7 @@ export const LoanActivity = ({ loan, page, ...props }: LoanActivityProps) => {
           </Button>
         )}
 
-        {loanStatus === 'state_returned' && page === 'funded' && (
+        {loanStatus === 'state_refundToBob' && page === 'funded' && (
           <Button
             variant="dark"
             onClick={() => {
@@ -103,7 +104,7 @@ export const LoanActivity = ({ loan, page, ...props }: LoanActivityProps) => {
             }}
             ml="auto"
           >
-            Claim Repayment
+            Release Collateral
           </Button>
         )}
       </Flex>

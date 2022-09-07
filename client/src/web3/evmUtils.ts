@@ -47,7 +47,7 @@ function useWeb3() {
         4: {
           hexChainId: '0x4',
           rpcProvider:
-            'https://eth-rinkeby.alchemyapi.io/v2/wUa6CvTsOs5kmoeByPGofX8aa3xmiV-a',
+            'https://rinkeby.infura.io/v3/bced4aee73954d9bb24a860ac21062b5',
           name: 'Rinkeby',
         },
       },

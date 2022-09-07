@@ -4,4 +4,3 @@
 export type { AssetFaucet } from "./AssetFaucet";
 export type { AssetSide } from "./AssetSide";
 export type { Common } from "./Common";
-export type { Lock } from "./Lock";

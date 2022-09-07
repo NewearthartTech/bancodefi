@@ -47,6 +47,16 @@ const _abi = [
     name: "getContract1",
     outputs: [
       {
+        internalType: "string",
+        name: "secret1encrypted",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "secret2encrypted",
+        type: "string",
+      },
+      {
         internalType: "address",
         name: "assetContract",
         type: "address",

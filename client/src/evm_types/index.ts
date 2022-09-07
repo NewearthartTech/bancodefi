@@ -28,5 +28,3 @@ export type { AssetSide } from "./contracts/AssetSide";
 export { AssetSide__factory } from "./factories/contracts/AssetSide__factory";
 export type { Common } from "./contracts/Common";
 export { Common__factory } from "./factories/contracts/Common__factory";
-export type { Lock } from "./contracts/Lock";
-export { Lock__factory } from "./factories/contracts/Lock__factory";
