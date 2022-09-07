@@ -123,8 +123,8 @@ abstract contract Common {
         public
         view
         returns (
-        //string memory secret1encrypted,
-        //string memory secret2encrypted,
+        string memory secret1encrypted,
+        string memory secret2encrypted,
 
         //address  and tokenId of the ERC721 asset
         address assetContract,
@@ -145,7 +145,7 @@ abstract contract Common {
     {
         if (haveContract(_contractId) == false)
             return (
-          //      "","", 
+                "","", 
 
                 address(0), 0, 
                 
@@ -157,8 +157,8 @@ abstract contract Common {
 
         LockedLoan storage c = contracts[_contractId];
         return (
-            //c.secret1encrypted,            c.secret2encrypted,
-            
+            c.secret1encrypted,
+            c.secret2encrypted,
             c.assetContract,
             c.tokenId,
             c.loanAmount, 

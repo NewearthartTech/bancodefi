@@ -108,6 +108,8 @@ export interface Common extends BaseContract {
     ): Promise<
       [
         string,
+        string,
+        string,
         BigNumber,
         BigNumber,
         BigNumber,
@@ -116,6 +118,8 @@ export interface Common extends BaseContract {
         string,
         number
       ] & {
+        secret1encrypted: string;
+        secret2encrypted: string;
         assetContract: string;
         tokenId: BigNumber;
         loanAmount: BigNumber;
@@ -166,6 +170,8 @@ export interface Common extends BaseContract {
   ): Promise<
     [
       string,
+      string,
+      string,
       BigNumber,
       BigNumber,
       BigNumber,
@@ -174,6 +180,8 @@ export interface Common extends BaseContract {
       string,
       number
     ] & {
+      secret1encrypted: string;
+      secret2encrypted: string;
       assetContract: string;
       tokenId: BigNumber;
       loanAmount: BigNumber;
@@ -224,6 +232,8 @@ export interface Common extends BaseContract {
     ): Promise<
       [
         string,
+        string,
+        string,
         BigNumber,
         BigNumber,
         BigNumber,
@@ -232,6 +242,8 @@ export interface Common extends BaseContract {
         string,
         number
       ] & {
+        secret1encrypted: string;
+        secret2encrypted: string;
         assetContract: string;
         tokenId: BigNumber;
         loanAmount: BigNumber;

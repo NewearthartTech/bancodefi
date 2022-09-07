@@ -1,4 +1,4 @@
-import { LoansApi, ALoan } from '../generated_server'
+import { LoansApi, ALoan, LoanStatus } from '../generated_server'
 import { useConnect as useTzConnect } from './tzUtils'
 import { useConnectCalls as useEvmConnect } from './evmUtils'
 import { AssetFaucet__factory, AssetSide__factory } from '../evm_types'
@@ -8,6 +8,7 @@ import { ethers } from 'ethers'
 import { v4 as uuidv4 } from 'uuid'
 import { char2Bytes } from '@taquito/utils'
 import { SHA3, Keccak } from 'sha3'
+import { getStatusNumberByEnum } from 'src/utils/asyncUtils'
 
 //NOT sure whey there need to be require and cannot be imported
 const ethUtil = require('ethereumjs-util')
@@ -75,6 +76,23 @@ function useLoanLogic() {
     }
   }
 
+  const decrypter = async (webAccount: string, encryptedMessage: string) => {
+    try {
+      const { web3 } = await evmConnect()
+
+      const decrypted: string = await web3.provider.request({
+        method: 'eth_decrypt',
+        params: [encryptedMessage, webAccount],
+      })
+
+      return decrypted
+    } catch (err: any) {
+      throw new Error(
+        `Your provider doesn't support encryption. please try metamask: ${err}`,
+      )
+    }
+  }
+
   async function contracts(mode: 'readonly' | 'writeEnabled') {
     const { tezos, accountPkh: requesterTzAddress } = await tzConnect()
 
@@ -123,25 +141,173 @@ function useLoanLogic() {
       throw new Error("You don't own this ")
   }
 
-  //called by borrower once lender has released Collateral
-  async function getCollateral(loan: ALoan):Promise<string[]> {
-    throw new Error("Not implemented");
+  //called by borrower
+  async function repayLoan(loan: ALoan): Promise<string[]> {
+    const api = new LoansApi(undefined, process.env.NEXT_PUBLIC_SERVER_URL)
+    throw new Error('Not implemented')
+    await api.apiLoansUpdatePost({
+      ...loan,
+      loanStatus: 'state_returned',
+    })
   }
 
-
   //called by borrower
-  async function repayLoan(loan: ALoan):Promise<string[]> {
-    throw new Error("Not implemented");
+  async function acceptLoan(loan: ALoan): Promise<string[]> {
+    const api = new LoansApi(undefined, process.env.NEXT_PUBLIC_SERVER_URL)
+
+    const { accountPkh: requesterTzAddress } = await tzConnect()
+    const { account: requesterEvmAddress } = await evmConnect()
+
+    console.log(
+      `tz account ${requesterTzAddress}, evmAddress ${requesterEvmAddress}`,
+    )
+
+    const { /*assetSide,*/ cashSide } = await contracts('writeEnabled')
+
+    const { web3, account } = await evmConnect()
+
+    const assetSide = AssetSide__factory.connect(
+      process.env.NEXT_PUBLIC_EvmApp_address,
+      web3.getSigner(account),
+    )
+
+    const loanId = loan.id
+
+    const secret2 = evmPackedSecret(uuidv4())
+
+    const returnLogs: string[] = []
+
+    const { status: evmStatus } = await await assetSide.getContract1(loanId)
+
+    const { secret1encrypted } = await await assetSide.getContract1(loanId)
+
+    const secret1 = await decrypter(requesterEvmAddress, secret1encrypted)
+    // debugger
+    console.log('evmStatus, preimage, secrethash', evmStatus)
+
+    if (evmStatus === getStatusNumberByEnum(LoanStatus.MovedToEscrow)) {
+      console.log('loan has been accepted on asset side')
+      returnLogs.push(`loan has already been accepted on the asset side`)
+    } else {
+      const tx = await assetSide.acceptLoan(loanId, secret1)
+
+      returnLogs.push(`loan accepted on the asset side : ${tx.hash}`)
+    }
+    const byContractId = char2Bytes(loanId)
+    // const hashedImage = tzSecrethash(decryptedImage)
+    const decryptedBytes = char2Bytes(secret1)
+    // const sha = ethers.utils.sha256(ethers.utils.toUtf8Bytes(decryptedImage))
+    // const shaBytes = char2Bytes(sha)
+    debugger
+
+    const cashSideStorage: any = await cashSide.storage()
+    const { status: tzStatus } = cashSideStorage.get(byContractId)
+
+    if (tzStatus === getStatusNumberByEnum(LoanStatus.MovedToEscrow)) {
+      console.log('loan has been accepted on cash side')
+      returnLogs.push(`loan has already been accepted on the cash side`)
+    } else {
+      const opn = await cashSide.methods
+        .acceptLoan(byContractId, decryptedBytes)
+        .send()
+
+      const results = await opn.confirmation()
+      returnLogs.push(`loan accepted on the cash side : ${opn.opHash}`)
+      console.log(`loan accepted on the cash side : ${opn.opHash}`)
+    }
+
+    await api.apiLoansUpdatePost({
+      ...loan,
+      loanStatus: 'state_movedToEscrow',
+    })
+
+    return returnLogs
   }
 
   //also called collect loan payment Called by lender
-  async function releaseCollateral(loan: ALoan):Promise<string[]> {
-    throw new Error("Not implemented");
+  async function releaseCollateral(loan: ALoan): Promise<string[]> {
+    const api = new LoansApi(undefined, process.env.NEXT_PUBLIC_SERVER_URL)
+    throw new Error('Not implemented')
+    await api.apiLoansUpdatePost({
+      ...loan,
+      loanStatus: 'state_released',
+    })
   }
 
   //Called by lender
-  async function fundLoan(loan: ALoan):Promise<string[]> {
-    throw new Error("Not implemented");
+  async function fundLoan(loan: ALoan): Promise<string[]> {
+    const api = new LoansApi(undefined, process.env.NEXT_PUBLIC_SERVER_URL)
+
+    const { accountPkh: lenderTzAddress } = await tzConnect()
+    const { account: lenderEvmAddress } = await evmConnect()
+
+    console.log(`tz account ${lenderTzAddress}, evmAddress ${lenderEvmAddress}`)
+
+    const { /*assetSide,*/ cashSide } = await contracts('writeEnabled')
+
+    const { web3, account } = await evmConnect()
+
+    const assetSide = AssetSide__factory.connect(
+      process.env.NEXT_PUBLIC_EvmApp_address,
+      web3.getSigner(account),
+    )
+
+    const loanId = loan.id
+
+    const secret2 = evmPackedSecret(uuidv4())
+
+    const returnLogs: string[] = []
+
+    const ecryptedSecret2 = await encrypter(lenderEvmAddress, secret2)
+
+    // lets connect again
+    const evmHashSecret2 = await evmSecrethash(secret2)
+    const { status: evmStatus } = await await assetSide.getContract1(loanId)
+
+    console.log('evmStatus', evmStatus)
+
+    if (evmStatus === getStatusNumberByEnum(LoanStatus.BobFunded)) {
+      console.log('loan has been filled on asset side')
+      returnLogs.push(`loan has already been filled on the asset side`)
+    } else {
+      const tx = await assetSide.giveLoan(
+        loanId,
+        evmHashSecret2,
+        ecryptedSecret2,
+      )
+
+      returnLogs.push(`loan filled on the asset side : ${tx.hash}`)
+      console.log(`loan filled on the asset side : ${tx.hash}`)
+    }
+    const byContractId = char2Bytes(loanId)
+    const hash2 = tzSecrethash(secret2)
+
+    const cashSideStorage: any = await cashSide.storage()
+    const { status: tzStatus } = cashSideStorage.get(byContractId)
+
+    if (tzStatus === getStatusNumberByEnum(LoanStatus.BobFunded)) {
+      console.log('loan has been filled on cash side')
+      returnLogs.push(`loan has already been filled on the cash side`)
+    } else {
+      const opn = await cashSide.methods
+        .giveLoan(byContractId, hash2)
+        .send({ amount: loan.loanAmount })
+
+      const results = await opn.confirmation()
+      returnLogs.push(`loan filled on the cash side : ${opn.opHash}`)
+      console.log(`loan filled on the cash side : ${opn.opHash}`)
+    }
+
+    await api.apiLoansUpdatePost({
+      ...loan,
+      loanStatus: 'state_bobFunded',
+      lender: {
+        tzAddress: lenderTzAddress,
+        evmAddress: lenderEvmAddress,
+      },
+    })
+
+    return returnLogs
   }
 
   async function applyForLoan(loan: ALoan) {
@@ -282,10 +448,10 @@ function useLoanLogic() {
     () => ({
       applyForLoan,
       ensureNftIsValid,
-      getCollateral,
       repayLoan,
+      acceptLoan,
       releaseCollateral,
-      fundLoan
+      fundLoan,
     }),
     [],
   )

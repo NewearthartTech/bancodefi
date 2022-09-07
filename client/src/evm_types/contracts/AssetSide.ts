@@ -246,6 +246,8 @@ export interface AssetSide extends BaseContract {
     ): Promise<
       [
         string,
+        string,
+        string,
         BigNumber,
         BigNumber,
         BigNumber,
@@ -254,6 +256,8 @@ export interface AssetSide extends BaseContract {
         string,
         number
       ] & {
+        secret1encrypted: string;
+        secret2encrypted: string;
         assetContract: string;
         tokenId: BigNumber;
         loanAmount: BigNumber;
@@ -352,6 +356,8 @@ export interface AssetSide extends BaseContract {
   ): Promise<
     [
       string,
+      string,
+      string,
       BigNumber,
       BigNumber,
       BigNumber,
@@ -360,6 +366,8 @@ export interface AssetSide extends BaseContract {
       string,
       number
     ] & {
+      secret1encrypted: string;
+      secret2encrypted: string;
       assetContract: string;
       tokenId: BigNumber;
       loanAmount: BigNumber;
@@ -458,6 +466,8 @@ export interface AssetSide extends BaseContract {
     ): Promise<
       [
         string,
+        string,
+        string,
         BigNumber,
         BigNumber,
         BigNumber,
@@ -466,6 +476,8 @@ export interface AssetSide extends BaseContract {
         string,
         number
       ] & {
+        secret1encrypted: string;
+        secret2encrypted: string;
         assetContract: string;
         tokenId: BigNumber;
         loanAmount: BigNumber;

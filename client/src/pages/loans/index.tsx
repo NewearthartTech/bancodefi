@@ -52,9 +52,10 @@ import {
   RangeFilter,
 } from './state'
 import { Loan } from 'src/types'
-import { LoansApi } from 'src/generated_server'
+import { LoansApi, LoanStatus } from 'src/generated_server'
 import { getDaysFromDuration } from '@banco/utils'
 import { FundModal } from './components/FundModal'
+import { getStatusNumberByEnum } from 'src/utils/asyncUtils'
 
 const headers: string[] = [
   'DEAL',
@@ -115,6 +116,7 @@ const applyFilter = (
 }
 
 const filterLoans = (loans: Loan[], filters: FilterState): Loan[] => {
+  if (loans.length === 0) return loans
   const { principalAmountRange, interestRange, durationRange } = filters
   let newLoans = clone(loans)
   newLoans = applyFilter(
@@ -167,7 +169,7 @@ const Loans = () => {
     filterState,
   ])
   const [filterSections, setFilterSections] = useState<React.ReactChild[]>([])
-
+  getStatusNumberByEnum(LoanStatus.BobFunded)
   useEffect(() => {
     dispatch(actions.setFilterSections(FILTER_SECTIONS))
   }, [])
@@ -178,6 +180,10 @@ const Loans = () => {
       const { data: rawLoans } = await api.apiLoansListLoansStatusGet(
         'state_created',
       )
+      if (rawLoans.length === 0) {
+        setRawLoans(rawLoans)
+        return
+      }
       applyMinMax(
         rawLoans,
         (loan) => loan.loanAmount,
