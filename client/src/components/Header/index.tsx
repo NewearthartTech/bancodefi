@@ -13,7 +13,7 @@ export const Header = () => {
 
   const [tezosAccount, setTezosAccount] = useState<TezosToolkit | null>(null)
   const [showWallets, setShowWallets] = useState(false)
-  const wallet = new TempleWallet('Banco')
+  const wallet = new TempleWallet('MetaBanc')
 
   useEffect(() => {
     //Does the User have an Ethereum wallet/account?
@@ -118,7 +118,7 @@ export const Header = () => {
       position="relative"
       zIndex={10}
     >
-      <NextLink href={'https://mercuri.gitbook.io/banco-litepaper/'} passHref>
+      <NextLink href={'https://mercurilabs.gitbook.io/metabanc/'} passHref>
         <Button variant="transparent-with-icon">Litepaper</Button>
       </NextLink>
       <NextLink href={'/faucet'} passHref>

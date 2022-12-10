@@ -45,7 +45,7 @@ export const Sidebar = (props) => {
           m={sidebarMargins}
           borderRadius={sidebarRadius}
         >
-          <SidebarContent routes={routes} logoText={'Banco'} />
+          <SidebarContent routes={routes} logoText={'MetaBanc'} />
         </Box>
       </Box>
     </Box>

@@ -104,13 +104,13 @@ export const DefaultLayout = ({ children }: DefaultLayout) => {
   // Chakra Color Mode
   return (
     <ChakraProvider theme={theme} resetCSS={false}>
-      <TzAppProvider appName="banco">
+      <TzAppProvider appName="MetaBanc">
         <EvmProvider>
           <LoanApiProvider>
             <Fonts />
             <Sidebar
               routes={routes}
-              logoText={'Banco'}
+              logoText={'MetaBanc'}
               display="none"
               sidebarVariant={sidebarVariant}
             />
