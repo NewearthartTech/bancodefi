@@ -1,9 +1,9 @@
-# Banco DeFi
-Credit rated P2P multi-chain financing marketplace
+# MetaBanc by Mercuri Labs
+Credit rated multi-chain financing
 
 MVP: https://bancodefi.staging.newearthart.tech/
 
-Litepaper: https://mercuri.gitbook.io/banco-litepaper/
+Litepaper: https://mercurilabs.gitbook.io/metabanc/
 
 Smart Contract Addresses: 
 
